@@ -3,7 +3,6 @@ node_modules
 # Project Files
 /affinity
 /blender
-/static/models
 
 # Output
 .output

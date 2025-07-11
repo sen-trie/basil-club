@@ -29,6 +29,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@threlte/core": "^8.0.5",
     "@threlte/extras": "^9.4.1",
+    "node-html-parser": "^7.0.1",
     "three": "^0.178.0"
   }
 }
