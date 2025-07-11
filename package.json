@@ -9,7 +9,7 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "model": "node scripts/model-pipeline.js",
-    "deploy": "npm run build && npx gh-pages -d build -t true"
+    "deploy": "npm run build && npx gh-pages -d build"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^6.0.1",

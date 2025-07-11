@@ -2,7 +2,9 @@ import { error } from '@sveltejs/kit';
 
 const files = import.meta.glob('$lib/recipes/*.md', { query: '?raw', import: 'default' });
 
-export const prerender = true;
+export const entries = async () => {
+    return [{ slug: 'cake' }];
+};
 
 export async function load({ params }) {
 	const slug = params.slug;
