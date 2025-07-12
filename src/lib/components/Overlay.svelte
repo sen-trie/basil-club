@@ -17,7 +17,7 @@
   <Pane />
 </div>
 
-{#if !pageStarted}
+<!-- {#if !pageStarted}
   <div class="abs intro-screen">
     <button
       onclick={() => {
@@ -25,15 +25,12 @@
       }}>START</button
     >
   </div>
-{/if}
+{/if} -->
 
 <style>
   .abs {
     position: absolute;
     z-index: 10;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
   }
 
   .abs > * {
