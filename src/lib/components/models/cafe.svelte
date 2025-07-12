@@ -4,29 +4,27 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 -->
 
 <script context="module">
-  import { T } from '@threlte/core'
-  import { useGltf, useDraco } from '@threlte/extras'
+  import { T } from "@threlte/core";
+  import { useGltf, useDraco } from "@threlte/extras";
 
   const load = () => {
-    return useGltf('/models/cafe-transformed.glb', { dracoLoader: useDraco() })
-  }
+    return useGltf("/models/cafe-transformed.glb", { dracoLoader: useDraco() });
+  };
 
   export const preload = async () => {
-    await load()
-  }
+    await load();
+  };
 </script>
 
 <script>
-  let { fallback, error, children, ref = $bindable(), ...props } = $props()
+  let { fallback, error, children, ref = $bindable(), ...props } = $props();
+  import { useCursor } from "@threlte/extras";
 
-  const gltf = load()
+  const gltf = load();
+  const { onPointerEnter, onPointerLeave } = useCursor();
 </script>
 
-<T.Group
-  bind:ref
-  dispose={false}
-  {...props}
->
+<T.Group bind:ref dispose={false} {...props}>
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}
@@ -36,374 +34,354 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       material={gltf.materials.Backdrop}
       position={[4.25, 5.89, 11.56]}
     />
-    <T.Group
-      name="Top"
-      position={[-1.58, 7.34, -1.92]}
-    >
+    <T.Group name="Top" position={[-1.58, 7.34, -1.92]}>
       <T.Mesh
         name="Cube011"
         geometry={gltf.nodes.Cube011.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
       <T.Mesh
         name="Cube011_1"
         geometry={gltf.nodes.Cube011_1.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
       <T.Mesh
         name="Cube011_2"
         geometry={gltf.nodes.Cube011_2.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
       <T.Mesh
         name="Cube011_3"
         geometry={gltf.nodes.Cube011_3.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
       <T.Mesh
         name="Cube011_4"
         geometry={gltf.nodes.Cube011_4.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
       <T.Mesh
         name="Cube011_5"
         geometry={gltf.nodes.Cube011_5.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
       <T.Mesh
         name="Cube011_6"
         geometry={gltf.nodes.Cube011_6.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
       <T.Mesh
         name="Cube011_7"
         geometry={gltf.nodes.Cube011_7.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
       <T.Mesh
         name="Cube011_8"
         geometry={gltf.nodes.Cube011_8.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
       <T.Mesh
         name="Cube011_9"
         geometry={gltf.nodes.Cube011_9.geometry}
-        material={gltf.materials['Ceiling Beam']}
+        material={gltf.materials["Painting Set"]}
       />
-      <T.Mesh
-        name="Cube011_10"
-        geometry={gltf.nodes.Cube011_10.geometry}
-        material={gltf.materials['Ceiling Beam']}
-      />
-      <T.Group
-        name="Eight"
-        position={[0.02, -1.99, -1.68]}
-      >
+      <T.Group name="Eight" position={[0.02, -1.99, -1.68]}>
         <T.Mesh
           name="Cube031"
           geometry={gltf.nodes.Cube031.geometry}
-          material={gltf.materials.Menu}
+          material={gltf.materials["Photo Frame"]}
         />
         <T.Mesh
           name="Cube031_1"
           geometry={gltf.nodes.Cube031_1.geometry}
-          material={gltf.materials.Menu}
+          material={gltf.materials["Photo Frame"]}
         />
         <T.Mesh
-          name="Cube031_2"
-          geometry={gltf.nodes.Cube031_2.geometry}
-          material={gltf.materials.Menu}
+          name="Photo_Frame_1"
+          geometry={gltf.nodes.Photo_Frame_1.geometry}
+          material={gltf.materials["Photo Frame"]}
         />
         <T.Mesh
-          name="Cube031_3"
-          geometry={gltf.nodes.Cube031_3.geometry}
-          material={gltf.materials.Menu}
+          name="Photo_Frame_2"
+          geometry={gltf.nodes.Photo_Frame_2.geometry}
+          material={gltf.materials["Photo Frame"]}
         />
         <T.Mesh
-          name="Cube031_4"
-          geometry={gltf.nodes.Cube031_4.geometry}
-          material={gltf.materials.Menu}
+          name="Photo_Frame_3"
+          geometry={gltf.nodes.Photo_Frame_3.geometry}
+          material={gltf.materials["Photo Frame"]}
         />
         <T.Mesh
-          name="Cube031_5"
-          geometry={gltf.nodes.Cube031_5.geometry}
-          material={gltf.materials.Menu}
+          name="Photo_Frame_4"
+          geometry={gltf.nodes.Photo_Frame_4.geometry}
+          material={gltf.materials["Photo Frame"]}
         />
         <T.Mesh
-          name="Cube031_6"
-          geometry={gltf.nodes.Cube031_6.geometry}
-          material={gltf.materials.Menu}
-        />
-        <T.Mesh
-          name="Cube031_7"
-          geometry={gltf.nodes.Cube031_7.geometry}
-          material={gltf.materials.Menu}
+          name="Photo_Frame_5"
+          geometry={gltf.nodes.Photo_Frame_5.geometry}
+          material={gltf.materials["Photo Frame"]}
         />
       </T.Group>
-      <T.Group
-        name="Eleven"
-        position={[5.83, -2.86, -1.43]}
-      >
+      <T.Group name="Eleven" position={[5.83, -2.86, -1.43]}>
         <T.Mesh
           name="Cube014"
           geometry={gltf.nodes.Cube014.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_1"
           geometry={gltf.nodes.Cube014_1.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_2"
           geometry={gltf.nodes.Cube014_2.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_3"
           geometry={gltf.nodes.Cube014_3.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_4"
           geometry={gltf.nodes.Cube014_4.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_5"
           geometry={gltf.nodes.Cube014_5.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_6"
           geometry={gltf.nodes.Cube014_6.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_7"
           geometry={gltf.nodes.Cube014_7.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_8"
           geometry={gltf.nodes.Cube014_8.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_9"
           geometry={gltf.nodes.Cube014_9.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_10"
           geometry={gltf.nodes.Cube014_10.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_11"
           geometry={gltf.nodes.Cube014_11.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
         <T.Mesh
           name="Cube014_12"
           geometry={gltf.nodes.Cube014_12.geometry}
-          material={gltf.materials['Light Metal Counter']}
+          material={gltf.materials["Light Metal Counter"]}
         />
       </T.Group>
-      <T.Group
-        name="Nine"
-        position={[-0.68, -4.13, 1.12]}
-      >
+      <T.Group name="Nine" position={[-0.68, -4.13, 1.12]}>
         <T.Mesh
           name="Cube032"
           geometry={gltf.nodes.Cube032.geometry}
-          material={gltf.materials['Welcome Mat.001']}
+          material={gltf.materials["Welcome Mat.001"]}
         />
         <T.Mesh
           name="Cube032_1"
           geometry={gltf.nodes.Cube032_1.geometry}
-          material={gltf.materials['Welcome Mat.001']}
+          material={gltf.materials["Welcome Mat.001"]}
         />
         <T.Mesh
           name="Cube032_2"
           geometry={gltf.nodes.Cube032_2.geometry}
-          material={gltf.materials['Welcome Mat.001']}
+          material={gltf.materials["Welcome Mat.001"]}
         />
         <T.Mesh
           name="Cube032_3"
           geometry={gltf.nodes.Cube032_3.geometry}
-          material={gltf.materials['Welcome Mat.001']}
+          material={gltf.materials["Welcome Mat.001"]}
         />
         <T.Mesh
           name="Cube032_4"
           geometry={gltf.nodes.Cube032_4.geometry}
-          material={gltf.materials['Welcome Mat.001']}
+          material={gltf.materials["Welcome Mat.001"]}
         />
         <T.Mesh
           name="Cube032_5"
           geometry={gltf.nodes.Cube032_5.geometry}
-          material={gltf.materials['Welcome Mat.001']}
+          material={gltf.materials["Welcome Mat.001"]}
         />
         <T.Mesh
           name="Cube032_6"
           geometry={gltf.nodes.Cube032_6.geometry}
-          material={gltf.materials['Welcome Mat.001']}
+          material={gltf.materials["Welcome Mat.001"]}
         />
         <T.Mesh
           name="Cube032_7"
           geometry={gltf.nodes.Cube032_7.geometry}
-          material={gltf.materials['Welcome Mat.001']}
+          material={gltf.materials["Welcome Mat.001"]}
         />
         <T.Mesh
           name="Cube032_8"
           geometry={gltf.nodes.Cube032_8.geometry}
-          material={gltf.materials['Welcome Mat.001']}
+          material={gltf.materials["Welcome Mat.001"]}
         />
       </T.Group>
-      <T.Group
-        name="Six"
-        position={[-0.68, -4.13, 1.12]}
-      >
+      <T.Mesh
+        name="Painting_Set"
+        geometry={gltf.nodes.Painting_Set.geometry}
+        material={gltf.materials["Painting Set"]}
+        onpointerenter={onPointerEnter}
+        onpointerleave={onPointerLeave}
+        onclick={(e) => {
+          e.stopPropagation();
+          console.log("nigger");
+        }}
+      />
+      <T.Group name="Six" position={[-0.68, -4.13, 1.12]}>
         <T.Mesh
           name="Cube033"
           geometry={gltf.nodes.Cube033.geometry}
-          material={gltf.materials['Dark Floor']}
+          material={gltf.materials["Dark Floor"]}
         />
         <T.Mesh
           name="Cube033_1"
           geometry={gltf.nodes.Cube033_1.geometry}
-          material={gltf.materials['Dark Floor']}
+          material={gltf.materials["Dark Floor"]}
         />
         <T.Mesh
           name="Cube033_2"
           geometry={gltf.nodes.Cube033_2.geometry}
-          material={gltf.materials['Dark Floor']}
+          material={gltf.materials["Dark Floor"]}
         />
         <T.Mesh
           name="Cube033_3"
           geometry={gltf.nodes.Cube033_3.geometry}
-          material={gltf.materials['Dark Floor']}
+          material={gltf.materials["Dark Floor"]}
         />
         <T.Mesh
           name="Cube033_4"
           geometry={gltf.nodes.Cube033_4.geometry}
-          material={gltf.materials['Dark Floor']}
+          material={gltf.materials["Dark Floor"]}
         />
         <T.Mesh
           name="Cube033_5"
           geometry={gltf.nodes.Cube033_5.geometry}
-          material={gltf.materials['Dark Floor']}
+          material={gltf.materials["Dark Floor"]}
         />
         <T.Mesh
           name="Cube033_6"
           geometry={gltf.nodes.Cube033_6.geometry}
-          material={gltf.materials['Dark Floor']}
+          material={gltf.materials["Dark Floor"]}
         />
       </T.Group>
-      <T.Group
-        name="Ten"
-        position={[4.12, -2.77, 0.75]}
-      >
+      <T.Group name="Ten" position={[4.12, -2.77, 0.75]}>
         <T.Mesh
           name="Cube035"
           geometry={gltf.nodes.Cube035.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_1"
           geometry={gltf.nodes.Cube035_1.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_2"
           geometry={gltf.nodes.Cube035_2.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_3"
           geometry={gltf.nodes.Cube035_3.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_4"
           geometry={gltf.nodes.Cube035_4.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_5"
           geometry={gltf.nodes.Cube035_5.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_6"
           geometry={gltf.nodes.Cube035_6.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_7"
           geometry={gltf.nodes.Cube035_7.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_8"
           geometry={gltf.nodes.Cube035_8.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_9"
           geometry={gltf.nodes.Cube035_9.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_10"
           geometry={gltf.nodes.Cube035_10.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_11"
           geometry={gltf.nodes.Cube035_11.geometry}
-          material={gltf.materials['Glazed Glass']}
+          material={gltf.materials["Glazed Glass"]}
         />
         <T.Mesh
           name="Cube035_12"
           geometry={gltf.nodes.Cube035_12.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_13"
           geometry={gltf.nodes.Cube035_13.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_14"
           geometry={gltf.nodes.Cube035_14.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_15"
           geometry={gltf.nodes.Cube035_15.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_16"
           geometry={gltf.nodes.Cube035_16.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_17"
           geometry={gltf.nodes.Cube035_17.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
         <T.Mesh
           name="Cube035_18"
           geometry={gltf.nodes.Cube035_18.geometry}
-          material={gltf.materials['Material.002']}
+          material={gltf.materials["Material.002"]}
         />
       </T.Group>
-      <T.Group
-        name="Twelve"
-        position={[1.27, -2.64, 0.69]}
-      >
+      <T.Group name="Twelve" position={[1.27, -2.64, 0.69]}>
         <T.Mesh
           name="Cube036"
           geometry={gltf.nodes.Cube036.geometry}
@@ -441,70 +419,66 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         />
       </T.Group>
     </T.Group>
-    <T.Group
-      name="Bottom"
-      position={[2.15, 1.47, -2.77]}
-      scale={0.9}
-    >
+    <T.Group name="Bottom" position={[2.15, 1.47, -2.77]} scale={0.9}>
       <T.Mesh
         name="Cube013"
         geometry={gltf.nodes.Cube013.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_1"
         geometry={gltf.nodes.Cube013_1.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_2"
         geometry={gltf.nodes.Cube013_2.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_3"
         geometry={gltf.nodes.Cube013_3.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_4"
         geometry={gltf.nodes.Cube013_4.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_5"
         geometry={gltf.nodes.Cube013_5.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_6"
         geometry={gltf.nodes.Cube013_6.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_7"
         geometry={gltf.nodes.Cube013_7.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_8"
         geometry={gltf.nodes.Cube013_8.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_9"
         geometry={gltf.nodes.Cube013_9.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_10"
         geometry={gltf.nodes.Cube013_10.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Mesh
         name="Cube013_11"
         geometry={gltf.nodes.Cube013_11.geometry}
-        material={gltf.materials['Condiment Station Top']}
+        material={gltf.materials["Condiment Station Top"]}
       />
       <T.Group
         name="Four"
@@ -543,97 +517,77 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           material={gltf.materials.SeatTop}
         />
       </T.Group>
-      <T.Group
-        name="Seven"
-        position={[-4.99, -0.71, 1.64]}
-      >
+      <T.Group name="Seven" position={[-4.99, -0.71, 1.64]}>
         <T.Mesh
           name="Cube045"
           geometry={gltf.nodes.Cube045.geometry}
-          material={gltf.materials.Sideboard}
+          material={gltf.materials["Lego Group"]}
         />
         <T.Mesh
           name="Cube045_1"
           geometry={gltf.nodes.Cube045_1.geometry}
-          material={gltf.materials['Stair Glass']}
+          material={gltf.materials["Stair Glass"]}
         />
         <T.Mesh
           name="Cube045_2"
           geometry={gltf.nodes.Cube045_2.geometry}
-          material={gltf.materials.Sideboard}
+          material={gltf.materials["Lego Group"]}
         />
         <T.Mesh
           name="Cube045_3"
           geometry={gltf.nodes.Cube045_3.geometry}
-          material={gltf.materials.Sideboard}
+          material={gltf.materials["Lego Group"]}
         />
         <T.Mesh
-          name="Cube045_4"
-          geometry={gltf.nodes.Cube045_4.geometry}
-          material={gltf.materials.Sideboard}
-        />
-        <T.Mesh
-          name="Cube045_5"
-          geometry={gltf.nodes.Cube045_5.geometry}
-          material={gltf.materials.Sideboard}
-        />
-        <T.Mesh
-          name="Cube045_6"
-          geometry={gltf.nodes.Cube045_6.geometry}
-          material={gltf.materials.Sideboard}
+          name="Earl_Street"
+          geometry={gltf.nodes.Earl_Street.geometry}
+          material={gltf.materials["Lego Group"]}
         />
       </T.Group>
-      <T.Group
-        name="Two"
-        position={[-3.35, -2.31, 3.86]}
-        scale={1.12}
-      >
+      <T.Group name="Two" position={[-3.35, -2.31, 3.86]} scale={1.12}>
         <T.Mesh
           name="Cube048"
           geometry={gltf.nodes.Cube048.geometry}
-          material={gltf.materials['Bag Holder']}
+          material={gltf.materials["Bag Holder"]}
         />
         <T.Mesh
           name="Cube048_1"
           geometry={gltf.nodes.Cube048_1.geometry}
-          material={gltf.materials['Bag Holder']}
+          material={gltf.materials["Bag Holder"]}
         />
         <T.Mesh
           name="Cube048_2"
           geometry={gltf.nodes.Cube048_2.geometry}
-          material={gltf.materials['Bag Holder']}
+          material={gltf.materials["Bag Holder"]}
         />
         <T.Mesh
           name="Cube048_3"
           geometry={gltf.nodes.Cube048_3.geometry}
-          material={gltf.materials['Bag Holder']}
+          material={gltf.materials["Bag Holder"]}
         />
         <T.Mesh
           name="Cube048_4"
           geometry={gltf.nodes.Cube048_4.geometry}
-          material={gltf.materials['Bag Holder']}
+          material={gltf.materials["Bag Holder"]}
         />
       </T.Group>
     </T.Group>
-    <T.Group
-      name="Flag"
-      position={[4.04, -2.29, 2.77]}
-    >
+    <T.Group name="Flag" position={[4.04, -2.29, 2.77]}>
       <T.Mesh
         name="Cube012"
         geometry={gltf.nodes.Cube012.geometry}
-        material={gltf.materials['Table Sign']}
+        material={gltf.materials["Table Sign"]}
       />
       <T.Mesh
         name="Cube012_1"
         geometry={gltf.nodes.Cube012_1.geometry}
-        material={gltf.materials['Flag Holder']}
+        material={gltf.materials["Flag Holder"]}
       />
     </T.Group>
     <T.Mesh
       name="Tray"
       geometry={gltf.nodes.Tray.geometry}
-      material={gltf.materials['Serving Tray']}
+      material={gltf.materials["Serving Tray"]}
       position={[1.41, 0.1, -3.61]}
     />
   {:catch err}

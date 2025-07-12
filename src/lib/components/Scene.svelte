@@ -2,23 +2,25 @@
   import { changeFloor as changeFloorStore } from "$lib/stores/sceneControls";
   import { Spring } from "svelte/motion";
   import { T, useThrelte, useTask } from "@threlte/core";
-  import { OrbitControls } from "@threlte/extras";
+  import { OrbitControls, interactivity } from "@threlte/extras";
   import Cafe from "$lib/components/models/cafe.svelte";
-import { Vector3 } from 'three'
+  import { Vector3 } from "three";
 
   const { invalidate } = useThrelte();
+  interactivity();
 
-  let cameraRef = $state();
-  let cafeRef = $state();
-
-  const minPan = new Vector3(-2, -2, -2)
-  const maxPan = new Vector3(2, 2, 2)
-  let controlsRef = $state(null)
+  let cameraRef = $state(null);
+  let cafeRef = $state(null);
+  let controlsRef = $state(null);
 
   let cafeStats = new Spring({ y: 0 });
   let currentFloor = $state(0);
-  let cafeTop = $derived(cafeRef.children.find(child => child.name === 'Top'));
-  let cafeBot = $derived(cafeRef.children.find(child => child.name === 'Bottom'));
+  let cafeTop = $derived(
+    cafeRef.children.find((child) => child.name === "Top")
+  );
+  let cafeBot = $derived(
+    cafeRef.children.find((child) => child.name === "Bottom")
+  );
 
   const minPolarAngle = 1.23;
   const maxPolarAngle = minPolarAngle;
@@ -26,7 +28,7 @@ import { Vector3 } from 'three'
   const maxAzimuthAngle = Math.PI / 2 - minAzimuthAngle;
   const enableDamping = true;
   const enablePan = true;
-  const defaultZoom = 97;
+  const defaultZoom = 60;
 
   const defaultView = {
     enabled: true,
@@ -39,9 +41,11 @@ import { Vector3 } from 'three'
   };
 
   const changeFloor = (state) => {
-    const switchSingleFloor = !(currentFloor === 0 || state === 0);
-    const displacementY = 1
+    const displacementY = 2;
+    const cafeTopFull = 7.34;
+    const cafeTopHalf = 2.71;
 
+    cafeTop.position.set(cafeTop.position.x, cafeTopFull, cafeTop.position.z);
     cafeTop.visible = true;
     cafeBot.visible = true;
     cafeStats.target = { ...cafeStats.current, y: 0 };
@@ -49,26 +53,31 @@ import { Vector3 } from 'three'
     if (state === 1) {
       cafeBot.visible = false;
       cafeStats.target = { ...cafeStats.current, y: displacementY };
-      cafeTop.position.set(cafeTop.position.x, 2.71, cafeTop.position.z)
+      cafeTop.position.set(cafeTop.position.x, cafeTopHalf, cafeTop.position.z);
     } else if (state === 2) {
       cafeTop.visible = false;
       cafeStats.target = { ...cafeStats.current, y: displacementY };
     }
 
-    if (switchSingleFloor)
-    cafeStats.set({ ...cafeStats.current, y: displacementY }, { instant: true });
-
     invalidate();
     currentFloor = state;
   };
-
   changeFloorStore.set(changeFloor);
 
+  const minPanBase = new Vector3(-2, -2, -2);
+  const maxPanBase = new Vector3(2, 2, 2);
+
   useTask((_delta) => {
-    if (!controlsRef) return
-    const target = controlsRef.target
-    target.clamp(minPan, maxPan)
-  })
+    if (!controlsRef) return;
+
+    const scaleFactor = cameraRef.zoom / defaultZoom;
+    const target = controlsRef.target;
+
+    const minPan = minPanBase.clone().multiplyScalar(scaleFactor);
+    const maxPan = maxPanBase.clone().multiplyScalar(scaleFactor);
+
+    target.clamp(minPan, maxPan);
+  });
 </script>
 
 <T.OrthographicCamera
@@ -78,15 +87,15 @@ import { Vector3 } from 'three'
   view={{ ...defaultView }}
   bind:ref={cameraRef}
 >
-  <OrbitControls 
-  bind:ref={controlsRef}
+  <OrbitControls
+    bind:ref={controlsRef}
     {minPolarAngle}
     {maxPolarAngle}
     {minAzimuthAngle}
     {maxAzimuthAngle}
     {enableDamping}
     {enablePan}
-    minZoom={defaultZoom * 0.75}
+    minZoom={defaultZoom * 0.8}
     maxZoom={defaultZoom * 3}
   />
 </T.OrthographicCamera>
