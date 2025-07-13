@@ -14,6 +14,9 @@ const config = {
     prerender: {
       handleHttpError: "ignore",
     },
+    files: {
+      lib: "./src/lib/",
+    },
   },
   relative: true,
   preprocess: [vitePreprocess()],

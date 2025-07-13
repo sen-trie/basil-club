@@ -18,10 +18,15 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 
 <script>
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
+  import { showOverlay } from "$lib/stores/sceneControls";
   import { useCursor } from "@threlte/extras";
 
   const gltf = load();
   const { onPointerEnter, onPointerLeave } = useCursor();
+  let change = () => {};
+  showOverlay.subscribe((fn) => {
+    change = fn;
+  });
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>
@@ -244,7 +249,8 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         onpointerleave={onPointerLeave}
         onclick={(e) => {
           e.stopPropagation();
-          console.log("nigger");
+          console.log("123");
+          change();
         }}
       />
       <T.Group name="Six" position={[-0.68, -4.13, 1.12]}>

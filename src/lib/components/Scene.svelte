@@ -2,9 +2,9 @@
   import { changeFloor as changeFloorStore } from "$lib/stores/sceneControls";
   import { Spring } from "svelte/motion";
   import { T, useThrelte, useTask } from "@threlte/core";
-  import { OrbitControls, interactivity } from "@threlte/extras";
-  import Cafe from "$lib/components/models/cafe.svelte";
+  import { HUD, OrbitControls, interactivity } from "@threlte/extras";
   import { Vector3 } from "three";
+  import Cafe from "$lib/components/models/cafe.svelte";
 
   const { invalidate } = useThrelte();
   interactivity();
@@ -96,7 +96,7 @@
     {enableDamping}
     {enablePan}
     minZoom={defaultZoom * 0.8}
-    maxZoom={defaultZoom * 3}
+    maxZoom={defaultZoom * 4}
   />
 </T.OrthographicCamera>
 

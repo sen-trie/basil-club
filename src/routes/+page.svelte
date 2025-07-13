@@ -1,5 +1,5 @@
 <script>
-  import App from "$lib/components/App.svelte";
+  import App from "./App.svelte";
 </script>
 
 <div>
@@ -12,8 +12,10 @@
   }
 
   div {
+    position: relative;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
     background: rgb(13, 19, 32);
     background: linear-gradient(
       180deg,

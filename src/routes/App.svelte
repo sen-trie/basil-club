@@ -1,11 +1,11 @@
-<script lang="ts">
-  import Scene from "./Scene.svelte";
+<script>
+  import Scene from "$lib/components/Scene.svelte";
   import { Canvas } from "@threlte/core";
   import { Tween } from "svelte/motion";
   import { fade } from "svelte/transition";
   import { fromStore } from "svelte/store";
   import { useProgress } from "@threlte/extras";
-  import Overlay from "./Overlay.svelte";
+  import Overlay from "$lib/components/Overlay.svelte";
 
   const { progress } = useProgress();
   const p = fromStore(progress);
@@ -33,6 +33,7 @@
 
 <style>
   div.main {
+    position: relative;
     height: 100%;
   }
 

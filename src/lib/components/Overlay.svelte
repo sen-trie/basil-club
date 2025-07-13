@@ -1,5 +1,6 @@
 <script>
   import Pane from "./overlay/Pane.svelte";
+  import Closeup from "./Closeup.svelte";
   import Audio from "./overlay/Audio.svelte";
 
   let pageStarted = $state(false);
@@ -12,10 +13,11 @@
   });
 </script>
 
-<div class="abs overlay-screen">
+<div class="overlay-screen">
   <!-- <Audio bind:this={audioEl} /> -->
   <Pane />
 </div>
+<Closeup />
 
 <!-- {#if !pageStarted}
   <div class="abs intro-screen">
@@ -28,18 +30,10 @@
 {/if} -->
 
 <style>
-  .abs {
-    position: absolute;
-    z-index: 10;
-  }
-
-  .abs > * {
-    pointer-events: all;
-  }
-
   .overlay-screen {
-  }
-
-  .intro-screen {
+    position: absolute;
+    display: flex;
+    z-index: 10;
+    overflow: hidden;
   }
 </style>
