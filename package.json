@@ -28,6 +28,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@panzoom/panzoom": "^4.6.0",
     "@sveltejs/adapter-static": "^3.0.8",
     "@tailwindcss/vite": "^4.1.11",
     "@threlte/core": "^8.0.5",

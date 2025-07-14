@@ -4,6 +4,11 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [sveltekit()],
   ssr: {
-    noExternal: ["three", "@threlte/core", "@threlte/extras"],
+    noExternal: [
+      "three",
+      "@threlte/core",
+      "@threlte/extras",
+      "@panzoom/panzoom",
+    ],
   },
 });

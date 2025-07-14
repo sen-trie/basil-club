@@ -33,12 +33,159 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}
-    <T.Mesh
-      name="Wall"
-      geometry={gltf.nodes.Wall.geometry}
-      material={gltf.materials.Backdrop}
-      position={[4.25, 5.89, 11.56]}
-    />
+    <T.Group name="Bottom" position={[2.15, 1.47, -2.77]} scale={0.9}>
+      <T.Mesh
+        name="Cube013"
+        geometry={gltf.nodes.Cube013.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_1"
+        geometry={gltf.nodes.Cube013_1.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_2"
+        geometry={gltf.nodes.Cube013_2.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_3"
+        geometry={gltf.nodes.Cube013_3.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_4"
+        geometry={gltf.nodes.Cube013_4.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_5"
+        geometry={gltf.nodes.Cube013_5.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_6"
+        geometry={gltf.nodes.Cube013_6.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_7"
+        geometry={gltf.nodes.Cube013_7.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_8"
+        geometry={gltf.nodes.Cube013_8.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_9"
+        geometry={gltf.nodes.Cube013_9.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_10"
+        geometry={gltf.nodes.Cube013_10.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Mesh
+        name="Cube013_11"
+        geometry={gltf.nodes.Cube013_11.geometry}
+        material={gltf.materials["Condiment Station Top"]}
+      />
+      <T.Group
+        name="Four"
+        position={[0.55, -2.48, 3.75]}
+        rotation={[0, -1.57, 0]}
+        scale={1.12}
+      >
+        <T.Mesh
+          name="Cube041"
+          geometry={gltf.nodes.Cube041.geometry}
+          material={gltf.materials.SeatTop}
+        />
+        <T.Mesh
+          name="Cube041_1"
+          geometry={gltf.nodes.Cube041_1.geometry}
+          material={gltf.materials.SeatTop}
+        />
+        <T.Mesh
+          name="Cube041_2"
+          geometry={gltf.nodes.Cube041_2.geometry}
+          material={gltf.materials.SeatTop}
+        />
+        <T.Mesh
+          name="Cube041_3"
+          geometry={gltf.nodes.Cube041_3.geometry}
+          material={gltf.materials.SeatTop}
+        />
+        <T.Mesh
+          name="Cube041_4"
+          geometry={gltf.nodes.Cube041_4.geometry}
+          material={gltf.materials.SeatTop}
+        />
+        <T.Mesh
+          name="Cube041_5"
+          geometry={gltf.nodes.Cube041_5.geometry}
+          material={gltf.materials.SeatTop}
+        />
+      </T.Group>
+      <T.Group name="Seven" position={[-4.99, -0.71, 1.64]}>
+        <T.Mesh
+          name="Cube045"
+          geometry={gltf.nodes.Cube045.geometry}
+          material={gltf.materials["Lego Group"]}
+        />
+        <T.Mesh
+          name="Cube045_1"
+          geometry={gltf.nodes.Cube045_1.geometry}
+          material={gltf.materials["Stair Glass"]}
+        />
+        <T.Mesh
+          name="Cube045_2"
+          geometry={gltf.nodes.Cube045_2.geometry}
+          material={gltf.materials["Lego Group"]}
+        />
+        <T.Mesh
+          name="Cube045_3"
+          geometry={gltf.nodes.Cube045_3.geometry}
+          material={gltf.materials["Lego Group"]}
+        />
+        <T.Mesh
+          name="Earl_Street"
+          geometry={gltf.nodes.Earl_Street.geometry}
+          material={gltf.materials["Lego Group"]}
+        />
+      </T.Group>
+      <T.Group name="Two" position={[-3.35, -2.31, 3.86]} scale={1.12}>
+        <T.Mesh
+          name="Cube048"
+          geometry={gltf.nodes.Cube048.geometry}
+          material={gltf.materials["Bag Holder"]}
+        />
+        <T.Mesh
+          name="Cube048_1"
+          geometry={gltf.nodes.Cube048_1.geometry}
+          material={gltf.materials["Bag Holder"]}
+        />
+        <T.Mesh
+          name="Cube048_2"
+          geometry={gltf.nodes.Cube048_2.geometry}
+          material={gltf.materials["Bag Holder"]}
+        />
+        <T.Mesh
+          name="Cube048_3"
+          geometry={gltf.nodes.Cube048_3.geometry}
+          material={gltf.materials["Bag Holder"]}
+        />
+        <T.Mesh
+          name="Cube048_4"
+          geometry={gltf.nodes.Cube048_4.geometry}
+          material={gltf.materials["Bag Holder"]}
+        />
+      </T.Group>
+    </T.Group>
     <T.Group name="Top" position={[-1.58, 7.34, -1.92]}>
       <T.Mesh
         name="Cube011"
@@ -102,30 +249,62 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           material={gltf.materials["Photo Frame"]}
         />
         <T.Mesh
-          name="Photo_Frame_1"
-          geometry={gltf.nodes.Photo_Frame_1.geometry}
+          name="Photo_Grid"
+          geometry={gltf.nodes.Photo_Grid.geometry}
           material={gltf.materials["Photo Frame"]}
-        />
-        <T.Mesh
-          name="Photo_Frame_2"
-          geometry={gltf.nodes.Photo_Frame_2.geometry}
-          material={gltf.materials["Photo Frame"]}
-        />
-        <T.Mesh
-          name="Photo_Frame_3"
-          geometry={gltf.nodes.Photo_Frame_3.geometry}
-          material={gltf.materials["Photo Frame"]}
-        />
-        <T.Mesh
-          name="Photo_Frame_4"
-          geometry={gltf.nodes.Photo_Frame_4.geometry}
-          material={gltf.materials["Photo Frame"]}
-        />
-        <T.Mesh
-          name="Photo_Frame_5"
-          geometry={gltf.nodes.Photo_Frame_5.geometry}
-          material={gltf.materials["Photo Frame"]}
-        />
+          position={[-0.12, -0.12, -0.04]}
+          onpointerenter={onPointerEnter}
+          onpointerleave={onPointerLeave}
+          onclick={(e) => {
+            e.stopPropagation();
+            change("grid");
+          }}
+        >
+          <T.Mesh
+            name="Photo_Frame_1"
+            geometry={gltf.nodes.Photo_Frame_1.geometry}
+            material={gltf.materials["Photo Frame"]}
+            onpointerenter={onPointerEnter}
+            onpointerleave={onPointerLeave}
+            onclick={(e) => {
+              e.stopPropagation();
+              change("grid");
+            }}
+          />
+          <T.Mesh
+            name="Photo_Frame_2"
+            geometry={gltf.nodes.Photo_Frame_2.geometry}
+            material={gltf.materials["Photo Frame"]}
+            onpointerenter={onPointerEnter}
+            onpointerleave={onPointerLeave}
+            onclick={(e) => {
+              e.stopPropagation();
+              change("grid");
+            }}
+          />
+          <T.Mesh
+            name="Photo_Frame_3"
+            geometry={gltf.nodes.Photo_Frame_3.geometry}
+            material={gltf.materials["Photo Frame"]}
+            onpointerenter={onPointerEnter}
+            onpointerleave={onPointerLeave}
+            onclick={(e) => {
+              e.stopPropagation();
+              change("grid");
+            }}
+          />
+          <T.Mesh
+            name="Photo_Frame_4"
+            geometry={gltf.nodes.Photo_Frame_4.geometry}
+            material={gltf.materials["Photo Frame"]}
+            onpointerenter={onPointerEnter}
+            onpointerleave={onPointerLeave}
+            onclick={(e) => {
+              e.stopPropagation();
+              change("grid");
+            }}
+          />
+        </T.Mesh>
       </T.Group>
       <T.Group name="Eleven" position={[5.83, -2.86, -1.43]}>
         <T.Mesh
@@ -249,8 +428,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         onpointerleave={onPointerLeave}
         onclick={(e) => {
           e.stopPropagation();
-          console.log("123");
-          change();
+          change("photo");
         }}
       />
       <T.Group name="Six" position={[-0.68, -4.13, 1.12]}>
@@ -425,176 +603,11 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         />
       </T.Group>
     </T.Group>
-    <T.Group name="Bottom" position={[2.15, 1.47, -2.77]} scale={0.9}>
-      <T.Mesh
-        name="Cube013"
-        geometry={gltf.nodes.Cube013.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_1"
-        geometry={gltf.nodes.Cube013_1.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_2"
-        geometry={gltf.nodes.Cube013_2.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_3"
-        geometry={gltf.nodes.Cube013_3.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_4"
-        geometry={gltf.nodes.Cube013_4.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_5"
-        geometry={gltf.nodes.Cube013_5.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_6"
-        geometry={gltf.nodes.Cube013_6.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_7"
-        geometry={gltf.nodes.Cube013_7.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_8"
-        geometry={gltf.nodes.Cube013_8.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_9"
-        geometry={gltf.nodes.Cube013_9.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_10"
-        geometry={gltf.nodes.Cube013_10.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Mesh
-        name="Cube013_11"
-        geometry={gltf.nodes.Cube013_11.geometry}
-        material={gltf.materials["Condiment Station Top"]}
-      />
-      <T.Group
-        name="Four"
-        position={[0.55, -2.48, 3.75]}
-        rotation={[0, -1.57, 0]}
-        scale={1.12}
-      >
-        <T.Mesh
-          name="Cube041"
-          geometry={gltf.nodes.Cube041.geometry}
-          material={gltf.materials.SeatTop}
-        />
-        <T.Mesh
-          name="Cube041_1"
-          geometry={gltf.nodes.Cube041_1.geometry}
-          material={gltf.materials.SeatTop}
-        />
-        <T.Mesh
-          name="Cube041_2"
-          geometry={gltf.nodes.Cube041_2.geometry}
-          material={gltf.materials.SeatTop}
-        />
-        <T.Mesh
-          name="Cube041_3"
-          geometry={gltf.nodes.Cube041_3.geometry}
-          material={gltf.materials.SeatTop}
-        />
-        <T.Mesh
-          name="Cube041_4"
-          geometry={gltf.nodes.Cube041_4.geometry}
-          material={gltf.materials.SeatTop}
-        />
-        <T.Mesh
-          name="Cube041_5"
-          geometry={gltf.nodes.Cube041_5.geometry}
-          material={gltf.materials.SeatTop}
-        />
-      </T.Group>
-      <T.Group name="Seven" position={[-4.99, -0.71, 1.64]}>
-        <T.Mesh
-          name="Cube045"
-          geometry={gltf.nodes.Cube045.geometry}
-          material={gltf.materials["Lego Group"]}
-        />
-        <T.Mesh
-          name="Cube045_1"
-          geometry={gltf.nodes.Cube045_1.geometry}
-          material={gltf.materials["Stair Glass"]}
-        />
-        <T.Mesh
-          name="Cube045_2"
-          geometry={gltf.nodes.Cube045_2.geometry}
-          material={gltf.materials["Lego Group"]}
-        />
-        <T.Mesh
-          name="Cube045_3"
-          geometry={gltf.nodes.Cube045_3.geometry}
-          material={gltf.materials["Lego Group"]}
-        />
-        <T.Mesh
-          name="Earl_Street"
-          geometry={gltf.nodes.Earl_Street.geometry}
-          material={gltf.materials["Lego Group"]}
-        />
-      </T.Group>
-      <T.Group name="Two" position={[-3.35, -2.31, 3.86]} scale={1.12}>
-        <T.Mesh
-          name="Cube048"
-          geometry={gltf.nodes.Cube048.geometry}
-          material={gltf.materials["Bag Holder"]}
-        />
-        <T.Mesh
-          name="Cube048_1"
-          geometry={gltf.nodes.Cube048_1.geometry}
-          material={gltf.materials["Bag Holder"]}
-        />
-        <T.Mesh
-          name="Cube048_2"
-          geometry={gltf.nodes.Cube048_2.geometry}
-          material={gltf.materials["Bag Holder"]}
-        />
-        <T.Mesh
-          name="Cube048_3"
-          geometry={gltf.nodes.Cube048_3.geometry}
-          material={gltf.materials["Bag Holder"]}
-        />
-        <T.Mesh
-          name="Cube048_4"
-          geometry={gltf.nodes.Cube048_4.geometry}
-          material={gltf.materials["Bag Holder"]}
-        />
-      </T.Group>
-    </T.Group>
-    <T.Group name="Flag" position={[4.04, -2.29, 2.77]}>
-      <T.Mesh
-        name="Cube012"
-        geometry={gltf.nodes.Cube012.geometry}
-        material={gltf.materials["Table Sign"]}
-      />
-      <T.Mesh
-        name="Cube012_1"
-        geometry={gltf.nodes.Cube012_1.geometry}
-        material={gltf.materials["Flag Holder"]}
-      />
-    </T.Group>
     <T.Mesh
-      name="Tray"
-      geometry={gltf.nodes.Tray.geometry}
-      material={gltf.materials["Serving Tray"]}
-      position={[1.41, 0.1, -3.61]}
+      name="Wall"
+      geometry={gltf.nodes.Wall.geometry}
+      material={gltf.materials.Backdrop}
+      position={[4.25, 5.89, 11.56]}
     />
   {:catch err}
     {@render error?.({ error: err })}
