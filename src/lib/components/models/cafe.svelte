@@ -18,14 +18,17 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 
 <script>
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
-  import { showOverlay } from "$lib/stores/sceneControls";
-  import { useCursor } from "@threlte/extras";
+  import { showOverlay, showHud } from "$lib/stores/sceneControls";
 
   const gltf = load();
-  const { onPointerEnter, onPointerLeave } = useCursor();
-  let change = () => {};
+  let changeOverlay = () => {};
   showOverlay.subscribe((fn) => {
-    change = fn;
+    changeOverlay = fn;
+  });
+
+  let changeHud = () => {};
+  showHud.subscribe((fn) => {
+    changeHud = fn;
   });
 </script>
 
@@ -156,6 +159,10 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           name="Earl_Street"
           geometry={gltf.nodes.Earl_Street.geometry}
           material={gltf.materials["Lego Group"]}
+          onclick={(e) => {
+            e.stopPropagation();
+            changeHud("earl");
+          }}
         />
       </T.Group>
       <T.Group name="Two" position={[-3.35, -2.31, 3.86]} scale={1.12}>
@@ -253,56 +260,39 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           geometry={gltf.nodes.Photo_Grid.geometry}
           material={gltf.materials["Photo Frame"]}
           position={[-0.12, -0.12, -0.04]}
-          onpointerenter={onPointerEnter}
-          onpointerleave={onPointerLeave}
-          onclick={(e) => {
-            e.stopPropagation();
-            change("grid");
-          }}
         >
+          <T.Mesh
+            name="Photo_Hitbox"
+            geometry={gltf.nodes.Photo_Hitbox.geometry}
+            position={[0, -0.04, 0]}
+            rotation={[0, 0, Math.PI]}
+            scale={[-1.19, -0.9, -0.08]}
+            onclick={(e) => {
+              e.stopPropagation();
+              changeOverlay("grid");
+            }}
+          >
+            <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
+          </T.Mesh>
           <T.Mesh
             name="Photo_Frame_1"
             geometry={gltf.nodes.Photo_Frame_1.geometry}
             material={gltf.materials["Photo Frame"]}
-            onpointerenter={onPointerEnter}
-            onpointerleave={onPointerLeave}
-            onclick={(e) => {
-              e.stopPropagation();
-              change("grid");
-            }}
           />
           <T.Mesh
             name="Photo_Frame_2"
             geometry={gltf.nodes.Photo_Frame_2.geometry}
             material={gltf.materials["Photo Frame"]}
-            onpointerenter={onPointerEnter}
-            onpointerleave={onPointerLeave}
-            onclick={(e) => {
-              e.stopPropagation();
-              change("grid");
-            }}
           />
           <T.Mesh
             name="Photo_Frame_3"
             geometry={gltf.nodes.Photo_Frame_3.geometry}
             material={gltf.materials["Photo Frame"]}
-            onpointerenter={onPointerEnter}
-            onpointerleave={onPointerLeave}
-            onclick={(e) => {
-              e.stopPropagation();
-              change("grid");
-            }}
           />
           <T.Mesh
             name="Photo_Frame_4"
             geometry={gltf.nodes.Photo_Frame_4.geometry}
             material={gltf.materials["Photo Frame"]}
-            onpointerenter={onPointerEnter}
-            onpointerleave={onPointerLeave}
-            onclick={(e) => {
-              e.stopPropagation();
-              change("grid");
-            }}
           />
         </T.Mesh>
       </T.Group>
@@ -424,11 +414,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         name="Painting_Set"
         geometry={gltf.nodes.Painting_Set.geometry}
         material={gltf.materials["Painting Set"]}
-        onpointerenter={onPointerEnter}
-        onpointerleave={onPointerLeave}
         onclick={(e) => {
           e.stopPropagation();
-          change("photo");
+          changeOverlay("photo");
         }}
       />
       <T.Group name="Six" position={[-0.68, -4.13, 1.12]}>
@@ -436,6 +424,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           name="Cube033"
           geometry={gltf.nodes.Cube033.geometry}
           material={gltf.materials["Dark Floor"]}
+          onclick={(e) => {
+            e.stopPropagation();
+          }}
         />
         <T.Mesh
           name="Cube033_1"

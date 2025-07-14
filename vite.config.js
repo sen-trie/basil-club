@@ -9,6 +9,7 @@ export default defineConfig({
       "@threlte/core",
       "@threlte/extras",
       "@panzoom/panzoom",
+      "camera-controls",
     ],
   },
 });

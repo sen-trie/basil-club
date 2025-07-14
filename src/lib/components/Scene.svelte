@@ -1,10 +1,14 @@
 <script>
-  import { changeFloor as changeFloorStore } from "$lib/stores/sceneControls";
+  import {
+    changeFloor as changeFloorStore,
+    showHud as showHudStore,
+  } from "$lib/stores/sceneControls";
   import { Spring } from "svelte/motion";
   import { T, useThrelte, useTask } from "@threlte/core";
   import { HUD, OrbitControls, interactivity } from "@threlte/extras";
   import { Vector3 } from "three";
   import Cafe from "$lib/components/models/cafe.svelte";
+  import EarlStreet from "$lib/components/models/earl-street.svelte";
 
   const { invalidate } = useThrelte();
   interactivity();
@@ -44,6 +48,7 @@
     const displacementY = 2;
     const cafeTopFull = 7.34;
     const cafeTopHalf = 2.71;
+    const nullZone = -99;
 
     cafeTop.position.set(cafeTop.position.x, cafeTopFull, cafeTop.position.z);
     cafeTop.visible = true;
@@ -57,6 +62,7 @@
     } else if (state === 2) {
       cafeTop.visible = false;
       cafeStats.target = { ...cafeStats.current, y: displacementY };
+      cafeTop.position.set(cafeTop.position.x, nullZone, cafeTop.position.z);
     }
 
     invalidate();
@@ -66,7 +72,6 @@
 
   const minPanBase = new Vector3(-2, -2, -2);
   const maxPanBase = new Vector3(2, 2, 2);
-
   useTask((_delta) => {
     if (!controlsRef) return;
 
@@ -78,6 +83,13 @@
 
     target.clamp(minPan, maxPan);
   });
+
+  let hudControlsEnabled = $state(false);
+  const showHud = (_state) => {
+    hudControlsEnabled = !hudControlsEnabled;
+  };
+
+  showHudStore.set(showHud);
 </script>
 
 <T.OrthographicCamera
@@ -88,6 +100,7 @@
   bind:ref={cameraRef}
 >
   <OrbitControls
+    enabled={!hudControlsEnabled}
     bind:ref={controlsRef}
     {minPolarAngle}
     {maxPolarAngle}
@@ -100,4 +113,15 @@
   />
 </T.OrthographicCamera>
 
-<Cafe bind:ref={cafeRef} position.y={cafeStats.current.y} />
+<HUD visible={hudControlsEnabled}>
+  <T.OrthographicCamera makeDefault position={[12, 4, 10]} zoom={270}>
+    <OrbitControls
+      enabled={hudControlsEnabled}
+      minZoom={270 * 0.75}
+      maxZoom={270 * 1.25}
+      enablePan={false}
+    />
+  </T.OrthographicCamera>
+  <EarlStreet scale={1 / 0.9} rotation={[0, 0, 0]} />
+</HUD>
+<Cafe visible={true} bind:ref={cafeRef} position.y={cafeStats.current.y} />

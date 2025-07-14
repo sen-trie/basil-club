@@ -78,9 +78,10 @@
   $effect(() => {
     if (!imagePanZoom) return;
 
+    // TODO CENTER SPAWN
     const panzoom = Panzoom(imagePanZoom, {
       contain: "outside",
-      startScale: 1,
+      startScale: 2,
       minScale: 1,
       maxScale: 2.5,
     });

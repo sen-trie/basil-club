@@ -1,13 +1,17 @@
 <script>
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
-  import { showOverlay } from "$lib/stores/sceneControls";
-  import { useCursor } from "@threlte/extras";
+  import { showOverlay, showHud } from "$lib/stores/sceneControls";
 
   const gltf = load();
-  const { onPointerEnter, onPointerLeave } = useCursor();
-  let change = () => {};
+
+  let changeOverlay = () => {};
   showOverlay.subscribe((fn) => {
-    change = fn;
+    changeOverlay = fn;
+  });
+
+  let changeHud = () => {};
+  showHud.subscribe((fn) => {
+    changeHud = fn;
   });
 </script>
 
@@ -15,10 +19,32 @@
   name="Painting_Set"
   geometry={gltf.nodes.Painting_Set.geometry}
   material={gltf.materials["Painting Set"]}
-  onpointerenter={onPointerEnter}
-  onpointerleave={onPointerLeave}
   onclick={(e) => {
     e.stopPropagation();
-    change("photo");
+    changeOverlay("photo");
+  }}
+/>
+
+<T.Mesh
+  name="Photo_Hitbox"
+  geometry={gltf.nodes.Photo_Hitbox.geometry}
+  position={[0, -0.04, 0]}
+  rotation={[0, 0, Math.PI]}
+  scale={[-1.19, -0.9, -0.08]}
+  onclick={(e) => {
+    e.stopPropagation();
+    changeOverlay("grid");
+  }}
+>
+  <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
+</T.Mesh>
+
+<T.Mesh
+  name="Earl_Street"
+  geometry={gltf.nodes.Earl_Street.geometry}
+  material={gltf.materials["Lego Group"]}
+  onclick={(e) => {
+    e.stopPropagation();
+    changeHud("earl");
   }}
 />
