@@ -5,16 +5,23 @@
   } from "$lib/stores/sceneControls";
   import { Spring } from "svelte/motion";
   import { T, useThrelte, useTask } from "@threlte/core";
-  import { HUD, OrbitControls, interactivity } from "@threlte/extras";
+  import {
+    HUD,
+    OrbitControls,
+    CameraControls,
+    interactivity,
+  } from "@threlte/extras";
   import { Vector3 } from "three";
   import Cafe from "$lib/components/models/cafe.svelte";
   import EarlStreet from "$lib/components/models/earl-street.svelte";
+  import Cat from "$lib/components/models/cat.svelte";
 
   const { invalidate } = useThrelte();
   interactivity();
 
   let cameraRef = $state(null);
   let cafeRef = $state(null);
+  let catRef = $state(null);
   let controlsRef = $state(null);
 
   let cafeStats = new Spring({ y: 0 });
@@ -32,13 +39,13 @@
   const maxAzimuthAngle = Math.PI / 2 - minAzimuthAngle;
   const enableDamping = true;
   const enablePan = true;
-  const defaultZoom = 60;
+  const defaultZoom = 50;
 
   const defaultView = {
     enabled: true,
     fullWidth: 2000,
     fullHeight: 1000,
-    offsetX: 113,
+    offsetX: 100,
     offsetY: -150,
     width: 2000,
     height: 1000,
@@ -59,6 +66,8 @@
       cafeBot.visible = false;
       cafeStats.target = { ...cafeStats.current, y: displacementY };
       cafeTop.position.set(cafeTop.position.x, cafeTopHalf, cafeTop.position.z);
+
+      //hide cafeBottom
     } else if (state === 2) {
       cafeTop.visible = false;
       cafeStats.target = { ...cafeStats.current, y: displacementY };
@@ -113,6 +122,29 @@
   />
 </T.OrthographicCamera>
 
+<T.PerspectiveCamera
+  makeDefault={false}
+  fov={40}
+  position={[5.7, 0.4, -1.24]}
+  rotation={[-0.1, Math.PI / 2, 0.1]}
+>
+  <CameraControls
+    mouseButtons={{
+      left: 0, // disables rotate
+      wheel: 0, // disables zoom
+      middle: 0,
+      right: 0,
+    }}
+    touches={{
+      one: 0, // disables rotate
+      two: 0, // disables zoom
+    }}
+    oncreate={(ref) => {
+      ref.setTarget(0, -0.4, -1.2);
+    }}
+  />
+</T.PerspectiveCamera>
+
 <HUD visible={hudControlsEnabled}>
   <T.OrthographicCamera makeDefault position={[12, 4, 10]} zoom={270}>
     <OrbitControls
@@ -124,4 +156,11 @@
   </T.OrthographicCamera>
   <EarlStreet scale={1 / 0.9} rotation={[0, 0, 0]} />
 </HUD>
-<Cafe visible={true} bind:ref={cafeRef} position.y={cafeStats.current.y} />
+<Cafe visible={true} bind:ref={cafeRef} position.y={cafeStats.current.y}>
+  <Cat
+    scale={0.4}
+    position={[3.4, 0, -1.23]}
+    rotation={[0, Math.PI / 2 - 0.05, 0]}
+    bind:ref={catRef}
+  />
+</Cafe>
