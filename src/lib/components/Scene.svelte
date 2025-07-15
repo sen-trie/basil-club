@@ -2,6 +2,8 @@
   import {
     changeFloor as changeFloorStore,
     showHud as showHudStore,
+    hideHud as hideHudStore,
+    showOverlay,
   } from "$lib/stores/sceneControls";
   import { Spring } from "svelte/motion";
   import { T, useThrelte, useTask } from "@threlte/core";
@@ -23,6 +25,7 @@
   let cafeRef = $state(null);
   let catRef = $state(null);
   let controlsRef = $state(null);
+  let hudControlsEnabled = $state(false);
 
   let cafeStats = new Spring({ y: 0 });
   let currentFloor = $state(0);
@@ -52,12 +55,17 @@
   };
 
   const changeFloor = (state) => {
+    if (hudControlsEnabled) return;
+
     const displacementY = 2;
     const cafeTopFull = 7.34;
     const cafeTopHalf = 2.71;
+    const cafeBotFull = 1.47;
     const nullZone = -99;
 
     cafeTop.position.set(cafeTop.position.x, cafeTopFull, cafeTop.position.z);
+    cafeBot.position.set(cafeBot.position.x, cafeBotFull, cafeBot.position.z);
+
     cafeTop.visible = true;
     cafeBot.visible = true;
     cafeStats.target = { ...cafeStats.current, y: 0 };
@@ -66,8 +74,7 @@
       cafeBot.visible = false;
       cafeStats.target = { ...cafeStats.current, y: displacementY };
       cafeTop.position.set(cafeTop.position.x, cafeTopHalf, cafeTop.position.z);
-
-      //hide cafeBottom
+      cafeBot.position.set(cafeBot.position.x, nullZone, cafeBot.position.z);
     } else if (state === 2) {
       cafeTop.visible = false;
       cafeStats.target = { ...cafeStats.current, y: displacementY };
@@ -93,12 +100,20 @@
     target.clamp(minPan, maxPan);
   });
 
-  let hudControlsEnabled = $state(false);
+  let changeOverlay = () => {};
+  showOverlay.subscribe((fn) => {
+    changeOverlay = fn;
+  });
   const showHud = (_state) => {
     hudControlsEnabled = !hudControlsEnabled;
+    changeOverlay("none");
   };
-
   showHudStore.set(showHud);
+
+  const hideHud = () => {
+    hudControlsEnabled = false;
+  };
+  hideHudStore.set(hideHud);
 </script>
 
 <T.OrthographicCamera
@@ -156,7 +171,12 @@
   </T.OrthographicCamera>
   <EarlStreet scale={1 / 0.9} rotation={[0, 0, 0]} />
 </HUD>
-<Cafe visible={true} bind:ref={cafeRef} position.y={cafeStats.current.y}>
+<Cafe
+  visible={true}
+  {hudControlsEnabled}
+  bind:ref={cafeRef}
+  position.y={cafeStats.current.y}
+>
   <Cat
     scale={0.4}
     position={[3.4, 0, -1.23]}

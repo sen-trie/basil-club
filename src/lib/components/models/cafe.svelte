@@ -17,7 +17,14 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 </script>
 
 <script>
-  let { fallback, error, children, ref = $bindable(), ...props } = $props();
+  let {
+    fallback,
+    error,
+    children,
+    ref = $bindable(),
+    hudControlsEnabled,
+    ...props
+  } = $props();
   import { showOverlay, showHud } from "$lib/stores/sceneControls";
 
   const gltf = load();
@@ -269,6 +276,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
             scale={[-1.19, -0.9, -0.08]}
             onclick={(e) => {
               e.stopPropagation();
+              if (hudControlsEnabled) return;
               changeOverlay("grid");
             }}
           >
@@ -416,6 +424,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         material={gltf.materials["Painting Set"]}
         onclick={(e) => {
           e.stopPropagation();
+          if (hudControlsEnabled) return;
           changeOverlay("photo");
         }}
       />
