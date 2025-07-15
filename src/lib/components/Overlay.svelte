@@ -1,6 +1,6 @@
 <script>
   import Pane from "./overlay/Pane.svelte";
-  import Closeup from "./Closeup.svelte";
+  import Closeup from "./scenes/Closeup.svelte";
   import Audio from "./overlay/Audio.svelte";
 
   let pageStarted = $state(false);

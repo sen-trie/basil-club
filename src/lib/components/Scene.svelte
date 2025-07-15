@@ -5,17 +5,13 @@
     hideHud as hideHudStore,
     showOverlay,
   } from "$lib/stores/sceneControls";
+  import { Vector3 } from "three";
   import { Spring } from "svelte/motion";
   import { T, useThrelte, useTask } from "@threlte/core";
-  import {
-    HUD,
-    OrbitControls,
-    CameraControls,
-    interactivity,
-  } from "@threlte/extras";
-  import { Vector3 } from "three";
+  import { OrbitControls, interactivity } from "@threlte/extras";
+  import HudScene from "./scenes/HudScene.svelte";
+  import POVScene from "./scenes/POVScene.svelte";
   import Cafe from "$lib/components/models/cafe.svelte";
-  import EarlStreet from "$lib/components/models/earl-street.svelte";
   import Cat from "$lib/components/models/cat.svelte";
 
   const { invalidate } = useThrelte();
@@ -26,6 +22,7 @@
   let catRef = $state(null);
   let controlsRef = $state(null);
   let hudControlsEnabled = $state(false);
+  let povControlsEnabled = $state(false);
 
   let cafeStats = new Spring({ y: 0 });
   let currentFloor = $state(0);
@@ -104,9 +101,10 @@
   showOverlay.subscribe((fn) => {
     changeOverlay = fn;
   });
+
   const showHud = (_state) => {
     hudControlsEnabled = !hudControlsEnabled;
-    changeOverlay("none");
+    changeOverlay("hud");
   };
   showHudStore.set(showHud);
 
@@ -137,40 +135,8 @@
   />
 </T.OrthographicCamera>
 
-<T.PerspectiveCamera
-  makeDefault={false}
-  fov={40}
-  position={[5.7, 0.4, -1.24]}
-  rotation={[-0.1, Math.PI / 2, 0.1]}
->
-  <CameraControls
-    mouseButtons={{
-      left: 0, // disables rotate
-      wheel: 0, // disables zoom
-      middle: 0,
-      right: 0,
-    }}
-    touches={{
-      one: 0, // disables rotate
-      two: 0, // disables zoom
-    }}
-    oncreate={(ref) => {
-      ref.setTarget(0, -0.4, -1.2);
-    }}
-  />
-</T.PerspectiveCamera>
-
-<HUD visible={hudControlsEnabled}>
-  <T.OrthographicCamera makeDefault position={[12, 4, 10]} zoom={270}>
-    <OrbitControls
-      enabled={hudControlsEnabled}
-      minZoom={270 * 0.75}
-      maxZoom={270 * 1.25}
-      enablePan={false}
-    />
-  </T.OrthographicCamera>
-  <EarlStreet scale={1 / 0.9} rotation={[0, 0, 0]} />
-</HUD>
+<POVScene {povControlsEnabled} />
+<HudScene {hudControlsEnabled} />
 <Cafe
   visible={true}
   {hudControlsEnabled}

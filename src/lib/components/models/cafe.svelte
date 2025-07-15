@@ -43,6 +43,22 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}
+    <T.Group
+      name="Flag"
+      position={[4.24, 0.01, -1.27]}
+      rotation={[Math.PI, -0.41, Math.PI]}
+    >
+      <T.Mesh
+        name="Cube012"
+        geometry={gltf.nodes.Cube012.geometry}
+        material={gltf.materials["Table Sign"]}
+      />
+      <T.Mesh
+        name="Cube012_1"
+        geometry={gltf.nodes.Cube012_1.geometry}
+        material={gltf.materials["Flag Holder"]}
+      />
+    </T.Group>
     <T.Group name="Bottom" position={[2.15, 1.47, -2.77]} scale={0.9}>
       <T.Mesh
         name="Cube013"
@@ -166,6 +182,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           name="Earl_Street"
           geometry={gltf.nodes.Earl_Street.geometry}
           material={gltf.materials["Lego Group"]}
+          scale={1.12}
           onclick={(e) => {
             e.stopPropagation();
             changeHud("earl");
