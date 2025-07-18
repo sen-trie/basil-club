@@ -48,3 +48,17 @@
     changeHud("earl");
   }}
 />
+
+<T.Mesh
+  name="Flag_Hitbox"
+  geometry={gltf.nodes.Flag_Hitbox.geometry}
+  material={gltf.nodes.Flag_Hitbox.material}
+  rotation={[-Math.PI, 0.41, -Math.PI]}
+  scale={[0.12, 0.18, 0.12]}
+  onclick={(e) => {
+    e.stopPropagation();
+    changeOverlay("grid");
+  }}
+>
+  <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
+</T.Mesh>

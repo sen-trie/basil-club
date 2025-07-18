@@ -66,14 +66,14 @@
   };
   showOverlayStore.set(showOverlay);
 
-  let changeHud = () => {};
+  let closeHud = () => {};
   hideHud.subscribe((fn) => {
-    changeHud = fn;
+    closeHud = fn;
   });
   const closeOverlay = () => {
     overlayVisible = false;
     if (overlayType === "hud") {
-      changeHud();
+      closeHud();
     }
   };
 
@@ -85,10 +85,10 @@
     });
   });
 
-  $effect(() => {
+  $effect(async () => {
     if (!imagePanZoom) return;
 
-    // TODO CENTER SPAWN
+    console.log("panzoom");
     const panzoom = Panzoom(imagePanZoom, {
       contain: "outside",
       startScale: 2,
@@ -96,7 +96,9 @@
       maxScale: 3,
     });
     imagePanZoom.parentElement.addEventListener("wheel", panzoom.zoomWithWheel);
-    imagePanZoom.click();
+    setTimeout(() => {
+      panzoom.pan(0, 1);
+    }, 10);
   });
 </script>
 
@@ -104,7 +106,7 @@
 {#if overlayVisible}
   <div
     class:no-pointer={overlayType === "hud"}
-    class="close-up"
+    class="close-up flex"
     transition:fly={{ y: 150, duration: 300 }}
   >
     {#if overlayType === "photo"}
@@ -135,18 +137,26 @@
           class="photo-grid"
         />
       </div>
-    {/if}
+    {:else if overlayType === "checkout"}
+      <div class="checkout-div flex">
+        <div class="checkout-box">
+          <p>ORDERS RECEIVED: NONE</p>
+        </div>
+      </div>{/if}
     <button class="close-button" onclick={closeOverlay}>Close</button>
   </div>
 {/if}
 
 <style>
-  .close-up {
-    position: absolute;
+  .flex {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+  }
+
+  .close-up {
+    position: absolute;
     color: white;
     width: 100%;
     height: 100dvh;
@@ -184,5 +194,27 @@
     position: relative;
     height: 80%;
     object-fit: contain;
+  }
+
+  .checkout-div {
+    --border-size: 2rem;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 1.5%;
+    height: 85%;
+    width: auto;
+    max-width: 90%;
+    aspect-ratio: 12/16;
+    border-radius: var(--border-size);
+    background-color: grey;
+  }
+
+  .checkout-div .checkout-box {
+    width: calc(100% - var(--border-size) * 2);
+    height: calc(100% - var(--border-size) * 2);
+    background-color: black;
   }
 </style>

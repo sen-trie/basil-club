@@ -1,10 +1,11 @@
 <script>
   import Scene from "$lib/components/Scene.svelte";
   import { Canvas } from "@threlte/core";
+  import { useProgress } from "@threlte/extras";
+  import { Theatre } from "@threlte/theatre";
   import { Tween } from "svelte/motion";
   import { fade } from "svelte/transition";
   import { fromStore } from "svelte/store";
-  import { useProgress } from "@threlte/extras";
   import Overlay from "$lib/components/Overlay.svelte";
 
   const { progress } = useProgress();
@@ -27,7 +28,9 @@
 
 <div class="main">
   <Canvas>
-    <Scene />
+    <Theatre>
+      <Scene />
+    </Theatre>
   </Canvas>
 </div>
 

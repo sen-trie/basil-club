@@ -5,6 +5,8 @@
   let { povControlsEnabled } = $props();
 </script>
 
+<!-- 
+Consider bottom diff -->
 <T.PerspectiveCamera
   makeDefault={povControlsEnabled}
   fov={40}

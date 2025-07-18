@@ -12,14 +12,12 @@
   import HudScene from "./scenes/HudScene.svelte";
   import POVScene from "./scenes/POVScene.svelte";
   import Cafe from "$lib/components/models/cafe.svelte";
-  import Cat from "$lib/components/models/cat.svelte";
 
   const { invalidate } = useThrelte();
   interactivity();
 
   let cameraRef = $state(null);
   let cafeRef = $state(null);
-  let catRef = $state(null);
   let controlsRef = $state(null);
   let hudControlsEnabled = $state(false);
   let povControlsEnabled = $state(false);
@@ -137,16 +135,11 @@
 
 <POVScene {povControlsEnabled} />
 <HudScene {hudControlsEnabled} />
+
 <Cafe
   visible={true}
   {hudControlsEnabled}
+  bind:povControlsEnabled
   bind:ref={cafeRef}
   position.y={cafeStats.current.y}
->
-  <Cat
-    scale={0.4}
-    position={[3.4, 0, -1.23]}
-    rotation={[0, Math.PI / 2 - 0.05, 0]}
-    bind:ref={catRef}
-  />
-</Cafe>
+></Cafe>

@@ -31,8 +31,11 @@
     "@panzoom/panzoom": "^4.6.0",
     "@sveltejs/adapter-static": "^3.0.8",
     "@tailwindcss/vite": "^4.1.11",
+    "@theatre/core": "^0.7.2",
+    "@theatre/studio": "^0.7.2",
     "@threlte/core": "^8.0.5",
     "@threlte/extras": "^9.4.1",
+    "@threlte/theatre": "^3.0.4",
     "node-html-parser": "^7.0.1",
     "three": "^0.178.0"
   }

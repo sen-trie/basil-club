@@ -26,6 +26,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     ...props
   } = $props();
   import { showOverlay, showHud } from "$lib/stores/sceneControls";
+  import { SheetObject } from "@threlte/theatre";
 
   const gltf = load();
   let changeOverlay = () => {};
@@ -43,6 +44,12 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}
+    <T.Mesh
+      name="Wall"
+      geometry={gltf.nodes.Wall.geometry}
+      material={gltf.materials["TM-Backdrop"]}
+      position={[4.25, 5.89, 11.56]}
+    />
     <T.Group
       name="Flag"
       position={[4.24, 0.01, -1.27]}
@@ -58,68 +65,144 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         geometry={gltf.nodes.Cube012_1.geometry}
         material={gltf.materials["Flag Holder"]}
       />
+      <T.Mesh
+        name="Flag_Hitbox"
+        geometry={gltf.nodes.Flag_Hitbox.geometry}
+        material={gltf.nodes.Flag_Hitbox.material}
+        rotation={[-Math.PI, 0.41, -Math.PI]}
+        scale={[0.12, 0.18, 0.12]}
+        onclick={(e) => {
+          e.stopPropagation();
+          changeOverlay("grid");
+        }}
+      >
+        <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </T.Mesh>
     </T.Group>
+    <T.Mesh
+      name="Toilet-F"
+      geometry={gltf.nodes["Toilet-F"].geometry}
+      material={gltf.materials["Toilet Door.001"]}
+      position={[0.66, 0.1, -3.61]}
+      scale={0.9}
+    />
+    <T.Mesh
+      name="Toilet-M"
+      geometry={gltf.nodes["Toilet-M"].geometry}
+      material={gltf.materials["Toilet Door.001"]}
+      position={[2.18, 0.1, -3.61]}
+      scale={0.9}
+    />
     <T.Group name="Bottom" position={[2.15, 1.47, -2.77]} scale={0.9}>
       <T.Mesh
         name="Cube013"
         geometry={gltf.nodes.Cube013.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_1"
         geometry={gltf.nodes.Cube013_1.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_2"
         geometry={gltf.nodes.Cube013_2.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_3"
         geometry={gltf.nodes.Cube013_3.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_4"
         geometry={gltf.nodes.Cube013_4.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_5"
         geometry={gltf.nodes.Cube013_5.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_6"
         geometry={gltf.nodes.Cube013_6.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_7"
         geometry={gltf.nodes.Cube013_7.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_8"
         geometry={gltf.nodes.Cube013_8.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_9"
         geometry={gltf.nodes.Cube013_9.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_10"
         geometry={gltf.nodes.Cube013_10.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
       <T.Mesh
         name="Cube013_11"
         geometry={gltf.nodes.Cube013_11.geometry}
-        material={gltf.materials["Condiment Station Top"]}
+        material={gltf.materials["Toilet Door.001"]}
       />
+      <SheetObject key="Cat Base">
+        {#snippet children({ Transform })}
+          <Transform>
+            <T.Group
+              name="Cat_Base"
+              position={[0.72, -2.76, 6.89]}
+              scale={0.45}
+            >
+              <T.Mesh
+                name="Cylinder"
+                geometry={gltf.nodes.Cylinder.geometry}
+                material={gltf.materials["Robot Black"]}
+              />
+              <T.Mesh
+                name="Cylinder_1"
+                geometry={gltf.nodes.Cylinder_1.geometry}
+                material={gltf.materials["Robot Black"]}
+              />
+              <T.Mesh
+                name="Cylinder_2"
+                geometry={gltf.nodes.Cylinder_2.geometry}
+                material={gltf.materials["Robot Black"]}
+              />
+              <T.Group
+                name="Cat_Face"
+                position={[0, 2.98, 0.02]}
+                rotation={[0, 1.53, 0]}
+                scale={0.05}
+              >
+                <T.Mesh
+                  name="Sphere"
+                  geometry={gltf.nodes.Sphere.geometry}
+                  material={gltf.materials["Robot Black"]}
+                />
+                <T.Mesh
+                  name="Sphere_1"
+                  geometry={gltf.nodes.Sphere_1.geometry}
+                  material={gltf.materials["Robot Black"]}
+                />
+                <T.Mesh
+                  name="Sphere_2"
+                  geometry={gltf.nodes.Sphere_2.geometry}
+                  material={gltf.materials["Robot Face"]}
+                />
+              </T.Group>
+            </T.Group>
+          </Transform>
+        {/snippet}
+      </SheetObject>
       <T.Group
         name="Four"
         position={[0.55, -2.48, 3.75]}
@@ -268,6 +351,18 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         geometry={gltf.nodes.Cube011_9.geometry}
         material={gltf.materials["Painting Set"]}
       />
+      <T.Group name="Cashier_Screen" position={[4.12, -2.77, 0.75]}>
+        <T.Mesh
+          name="Cube098"
+          geometry={gltf.nodes.Cube098.geometry}
+          material={gltf.materials["Cashier Plastic"]}
+        />
+        <T.Mesh
+          name="Cube098_1"
+          geometry={gltf.nodes.Cube098_1.geometry}
+          material={gltf.materials["Cashier Plastic"]}
+        />
+      </T.Group>
       <T.Group name="Eight" position={[0.02, -1.99, -1.68]}>
         <T.Mesh
           name="Cube031"
@@ -288,12 +383,12 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           <T.Mesh
             name="Photo_Hitbox"
             geometry={gltf.nodes.Photo_Hitbox.geometry}
+            material={gltf.nodes.Photo_Hitbox.material}
             position={[0, -0.04, 0]}
             rotation={[0, 0, Math.PI]}
             scale={[-1.19, -0.9, -0.08]}
             onclick={(e) => {
               e.stopPropagation();
-              if (hudControlsEnabled) return;
               changeOverlay("grid");
             }}
           >
@@ -439,9 +534,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         name="Painting_Set"
         geometry={gltf.nodes.Painting_Set.geometry}
         material={gltf.materials["Painting Set"]}
+        position={[-1.73, -2.13, 0.39]}
         onclick={(e) => {
           e.stopPropagation();
-          if (hudControlsEnabled) return;
           changeOverlay("photo");
         }}
       />
@@ -450,9 +545,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           name="Cube033"
           geometry={gltf.nodes.Cube033.geometry}
           material={gltf.materials["Dark Floor"]}
-          onclick={(e) => {
-            e.stopPropagation();
-          }}
         />
         <T.Mesh
           name="Cube033_1"
@@ -489,57 +581,57 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         <T.Mesh
           name="Cube035"
           geometry={gltf.nodes.Cube035.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_1"
           geometry={gltf.nodes.Cube035_1.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_2"
           geometry={gltf.nodes.Cube035_2.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_3"
           geometry={gltf.nodes.Cube035_3.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_4"
           geometry={gltf.nodes.Cube035_4.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_5"
           geometry={gltf.nodes.Cube035_5.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_6"
           geometry={gltf.nodes.Cube035_6.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_7"
           geometry={gltf.nodes.Cube035_7.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_8"
           geometry={gltf.nodes.Cube035_8.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_9"
           geometry={gltf.nodes.Cube035_9.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_10"
           geometry={gltf.nodes.Cube035_10.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_11"
@@ -549,37 +641,37 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         <T.Mesh
           name="Cube035_12"
           geometry={gltf.nodes.Cube035_12.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_13"
           geometry={gltf.nodes.Cube035_13.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_14"
           geometry={gltf.nodes.Cube035_14.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_15"
           geometry={gltf.nodes.Cube035_15.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_16"
           geometry={gltf.nodes.Cube035_16.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_17"
           geometry={gltf.nodes.Cube035_17.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Cube035_18"
           geometry={gltf.nodes.Cube035_18.geometry}
-          material={gltf.materials["Material.002"]}
+          material={gltf.materials["Cashier Plastic"]}
         />
       </T.Group>
       <T.Group name="Twelve" position={[1.27, -2.64, 0.69]}>
@@ -620,12 +712,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         />
       </T.Group>
     </T.Group>
-    <T.Mesh
-      name="Wall"
-      geometry={gltf.nodes.Wall.geometry}
-      material={gltf.materials.Backdrop}
-      position={[4.25, 5.89, 11.56]}
-    />
   {:catch err}
     {@render error?.({ error: err })}
   {/await}
