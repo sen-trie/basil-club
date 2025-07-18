@@ -2,11 +2,12 @@
   import Scene from "$lib/components/Scene.svelte";
   import { Canvas } from "@threlte/core";
   import { useProgress } from "@threlte/extras";
-  import { Theatre } from "@threlte/theatre";
+  import { Theatre, Sequence } from "@threlte/theatre";
   import { Tween } from "svelte/motion";
   import { fade } from "svelte/transition";
   import { fromStore } from "svelte/store";
   import Overlay from "$lib/components/Overlay.svelte";
+  import state from "$lib/assets/state.json";
 
   const { progress } = useProgress();
   const p = fromStore(progress);
@@ -28,8 +29,9 @@
 
 <div class="main">
   <Canvas>
-    <Theatre>
+    <Theatre config={state}>
       <Scene />
+      <Sequence iterationCount={3} autoplay delay={1000} />
     </Theatre>
   </Canvas>
 </div>

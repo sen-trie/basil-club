@@ -47,7 +47,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     <T.Mesh
       name="Wall"
       geometry={gltf.nodes.Wall.geometry}
-      material={gltf.materials["TM-Backdrop"]}
+      material={gltf.materials.Backdrop}
       position={[4.25, 5.89, 11.56]}
     />
     <T.Group
@@ -84,16 +84,14 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       geometry={gltf.nodes["Toilet-F"].geometry}
       material={gltf.materials["Toilet Door.001"]}
       position={[0.66, 0.1, -3.61]}
-      scale={0.9}
     />
     <T.Mesh
       name="Toilet-M"
       geometry={gltf.nodes["Toilet-M"].geometry}
       material={gltf.materials["Toilet Door.001"]}
       position={[2.18, 0.1, -3.61]}
-      scale={0.9}
     />
-    <T.Group name="Bottom" position={[2.15, 1.47, -2.77]} scale={0.9}>
+    <T.Group name="Bottom" position={[2.15, 1.47, -2.77]}>
       <T.Mesh
         name="Cube013"
         geometry={gltf.nodes.Cube013.geometry}
@@ -157,11 +155,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       <SheetObject key="Cat Base">
         {#snippet children({ Transform })}
           <Transform>
-            <T.Group
-              name="Cat_Base"
-              position={[0.72, -2.76, 6.89]}
-              scale={0.45}
-            >
+            <T.Group name="Cat_Base" rotation={[0, 0, 0]}>
               <T.Mesh
                 name="Cylinder"
                 geometry={gltf.nodes.Cylinder.geometry}
@@ -177,37 +171,37 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                 geometry={gltf.nodes.Cylinder_2.geometry}
                 material={gltf.materials["Robot Black"]}
               />
-              <T.Group
-                name="Cat_Face"
-                position={[0, 2.98, 0.02]}
-                rotation={[0, 1.53, 0]}
-                scale={0.05}
-              >
-                <T.Mesh
-                  name="Sphere"
-                  geometry={gltf.nodes.Sphere.geometry}
-                  material={gltf.materials["Robot Black"]}
-                />
-                <T.Mesh
-                  name="Sphere_1"
-                  geometry={gltf.nodes.Sphere_1.geometry}
-                  material={gltf.materials["Robot Black"]}
-                />
-                <T.Mesh
-                  name="Sphere_2"
-                  geometry={gltf.nodes.Sphere_2.geometry}
-                  material={gltf.materials["Robot Face"]}
-                />
-              </T.Group>
+              <SheetObject key="Cat Face">
+                {#snippet children({ Transform })}
+                  <Transform>
+                    <T.Group name="Cat_Face" position={[0, 0.63, 0]}>
+                      <T.Mesh
+                        name="Sphere"
+                        geometry={gltf.nodes.Sphere.geometry}
+                        material={gltf.materials["Robot Black"]}
+                      />
+                      <T.Mesh
+                        name="Sphere_1"
+                        geometry={gltf.nodes.Sphere_1.geometry}
+                        material={gltf.materials["Robot Black"]}
+                      />
+                      <T.Mesh
+                        name="Sphere_2"
+                        geometry={gltf.nodes.Sphere_2.geometry}
+                        material={gltf.materials["Robot Face"]}
+                      />
+                    </T.Group>
+                  </Transform>
+                {/snippet}
+              </SheetObject>
             </T.Group>
           </Transform>
         {/snippet}
       </SheetObject>
       <T.Group
         name="Four"
-        position={[0.55, -2.48, 3.75]}
+        position={[0.49, -2.22, 3.36]}
         rotation={[0, -1.57, 0]}
-        scale={1.12}
       >
         <T.Mesh
           name="Cube041"
@@ -240,7 +234,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           material={gltf.materials.SeatTop}
         />
       </T.Group>
-      <T.Group name="Seven" position={[-4.99, -0.71, 1.64]}>
+      <T.Group name="Seven" position={[-4.48, -0.64, 1.47]}>
         <T.Mesh
           name="Cube045"
           geometry={gltf.nodes.Cube045.geometry}
@@ -265,14 +259,13 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           name="Earl_Street"
           geometry={gltf.nodes.Earl_Street.geometry}
           material={gltf.materials["Lego Group"]}
-          scale={1.12}
           onclick={(e) => {
             e.stopPropagation();
             changeHud("earl");
           }}
         />
       </T.Group>
-      <T.Group name="Two" position={[-3.35, -2.31, 3.86]} scale={1.12}>
+      <T.Group name="Two" position={[-3, -2.07, 3.46]}>
         <T.Mesh
           name="Cube048"
           geometry={gltf.nodes.Cube048.geometry}
