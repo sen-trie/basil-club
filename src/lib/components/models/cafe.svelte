@@ -25,8 +25,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     hudControlsEnabled,
     ...props
   } = $props();
+  import { CircleGeometry } from "three";
   import { showOverlay, showHud } from "$lib/stores/sceneControls";
-  import { SheetObject } from "@threlte/theatre";
+  import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
 
   const gltf = load();
   let changeOverlay = () => {};
@@ -152,52 +153,118 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         geometry={gltf.nodes.Cube013_11.geometry}
         material={gltf.materials["Toilet Door.001"]}
       />
-      <SheetObject key="Cat Base">
-        {#snippet children({ Transform })}
-          <Transform>
-            <T.Group name="Cat_Base" rotation={[0, 0, 0]}>
-              <T.Mesh
-                name="Cylinder"
-                geometry={gltf.nodes.Cylinder.geometry}
-                material={gltf.materials["Robot Black"]}
-              />
-              <T.Mesh
-                name="Cylinder_1"
-                geometry={gltf.nodes.Cylinder_1.geometry}
-                material={gltf.materials["Robot Black"]}
-              />
-              <T.Mesh
-                name="Cylinder_2"
-                geometry={gltf.nodes.Cylinder_2.geometry}
-                material={gltf.materials["Robot Black"]}
-              />
-              <SheetObject key="Cat Face">
-                {#snippet children({ Transform })}
-                  <Transform>
-                    <T.Group name="Cat_Face" position={[0, 0.63, 0]}>
-                      <T.Mesh
-                        name="Sphere"
-                        geometry={gltf.nodes.Sphere.geometry}
-                        material={gltf.materials["Robot Black"]}
-                      />
-                      <T.Mesh
-                        name="Sphere_1"
-                        geometry={gltf.nodes.Sphere_1.geometry}
-                        material={gltf.materials["Robot Black"]}
-                      />
-                      <T.Mesh
-                        name="Sphere_2"
-                        geometry={gltf.nodes.Sphere_2.geometry}
-                        material={gltf.materials["Robot Face"]}
-                      />
-                    </T.Group>
-                  </Transform>
-                {/snippet}
-              </SheetObject>
-            </T.Group>
-          </Transform>
-        {/snippet}
-      </SheetObject>
+      <Sheet>
+        <Sequence iterationCount={Infinity} autoplay delay={1000}>
+          <SheetObject key="Cat Base">
+            {#snippet children({ Transform })}
+              <Transform>
+                <T.Group name="Cat_Base" rotation={[0, 0, 0]} visible={true}>
+                  <T.Mesh
+                    name="Cylinder"
+                    geometry={gltf.nodes.Cylinder.geometry}
+                    material={gltf.materials["Robot Black"]}
+                  />
+                  <T.Mesh
+                    name="Cylinder_1"
+                    geometry={gltf.nodes.Cylinder_1.geometry}
+                    material={gltf.materials["Robot Black"]}
+                  />
+                  <T.Mesh
+                    name="Cylinder_2"
+                    geometry={gltf.nodes.Cylinder_2.geometry}
+                    material={gltf.materials["Robot Black"]}
+                  />
+                  <SheetObject key="Cat Face">
+                    {#snippet children({ Transform })}
+                      <Transform>
+                        <T.Group name="Cat_Face" position={[0, 0.63, 0]}>
+                          <T.Mesh
+                            name="Sphere"
+                            geometry={gltf.nodes.Sphere.geometry}
+                            material={gltf.materials["Robot Black"]}
+                          />
+                          <T.Mesh
+                            name="Sphere_1"
+                            geometry={gltf.nodes.Sphere_1.geometry}
+                            material={gltf.materials["Robot Black"]}
+                          />
+                          <T.Mesh
+                            name="Sphere_2"
+                            geometry={gltf.nodes.Sphere_2.geometry}
+                            material={gltf.materials["Robot Face"]}
+                          />
+                        </T.Group>
+                      </Transform>
+                    {/snippet}
+                  </SheetObject>
+                </T.Group>
+                <T.Mesh
+                  name="FakeShadow"
+                  geometry={new CircleGeometry(0.39, 32)}
+                  rotation={[-Math.PI / 2, 0, 0]}
+                  position={[0, -0.685, 0]}
+                >
+                  <T.MeshBasicMaterial
+                    transparent={true}
+                    opacity={0.25}
+                    color="black"
+                  />
+                </T.Mesh>
+              </Transform>
+            {/snippet}
+          </SheetObject>
+        </Sequence>
+      </Sheet>
+      <Sheet>
+        <Sequence iterationCount={Infinity} autoplay delay={1000}>
+          <SheetObject key="POV Base">
+            {#snippet children({ Transform })}
+              <Transform>
+                <T.Group name="Cat_Base" rotation={[0, 0, 0]}>
+                  <T.Mesh
+                    name="Cylinder"
+                    geometry={gltf.nodes.Cylinder.geometry}
+                    material={gltf.materials["Robot Black"]}
+                  />
+                  <T.Mesh
+                    name="Cylinder_1"
+                    geometry={gltf.nodes.Cylinder_1.geometry}
+                    material={gltf.materials["Robot Black"]}
+                  />
+                  <T.Mesh
+                    name="Cylinder_2"
+                    geometry={gltf.nodes.Cylinder_2.geometry}
+                    material={gltf.materials["Robot Black"]}
+                  />
+                  <SheetObject key="POV Face">
+                    {#snippet children({ Transform })}
+                      <Transform>
+                        <T.Group name="Cat_Face" position={[0, 0.63, 0]}>
+                          <T.Mesh
+                            name="Sphere"
+                            geometry={gltf.nodes.Sphere.geometry}
+                            material={gltf.materials["Robot Black"]}
+                          />
+                          <T.Mesh
+                            name="Sphere_1"
+                            geometry={gltf.nodes.Sphere_1.geometry}
+                            material={gltf.materials["Robot Black"]}
+                          />
+                          <T.Mesh
+                            name="Sphere_2"
+                            geometry={gltf.nodes.Sphere_2.geometry}
+                            material={gltf.materials["Robot Face"]}
+                          />
+                        </T.Group>
+                      </Transform>
+                    {/snippet}
+                  </SheetObject>
+                </T.Group>
+              </Transform>
+            {/snippet}
+          </SheetObject>
+        </Sequence>
+      </Sheet>
       <T.Group
         name="Four"
         position={[0.49, -2.22, 3.36]}

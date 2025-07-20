@@ -12,6 +12,8 @@
   import HudScene from "./scenes/HudScene.svelte";
   import POVScene from "./scenes/POVScene.svelte";
   import Cafe from "$lib/components/models/cafe.svelte";
+  import MToilet from "$lib/components/models/m-toilet.svelte";
+  import FToilet from "$lib/components/models/f-toilet.svelte";
 
   const { invalidate } = useThrelte();
   interactivity();
@@ -101,6 +103,7 @@
   });
 
   const showHud = (_state) => {
+    if (hudControlsEnabled) return;
     hudControlsEnabled = !hudControlsEnabled;
     changeOverlay("hud");
   };
@@ -133,11 +136,13 @@
   />
 </T.OrthographicCamera>
 
-<POVScene {povControlsEnabled} />
+<POVScene povControlsEnabled={false} />
 <HudScene {hudControlsEnabled} />
 
+<MToilet></MToilet>
+<FToilet></FToilet>
 <Cafe
-  visible={true}
+  visible={false}
   {hudControlsEnabled}
   bind:povControlsEnabled
   bind:ref={cafeRef}

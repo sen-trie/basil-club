@@ -2,7 +2,8 @@
   import Scene from "$lib/components/Scene.svelte";
   import { Canvas } from "@threlte/core";
   import { useProgress } from "@threlte/extras";
-  import { Theatre, Sequence } from "@threlte/theatre";
+  import { Studio, Sequence, Project } from "@threlte/theatre";
+  import { dev } from "$app/environment";
   import { Tween } from "svelte/motion";
   import { fade } from "svelte/transition";
   import { fromStore } from "svelte/store";
@@ -27,12 +28,13 @@
   <Overlay />
 {/if}
 
+<Studio enabled={dev} />
+
 <div class="main">
   <Canvas>
-    <Theatre config={state}>
+    <Project name="Basil Club" config={{ state }}>
       <Scene />
-      <Sequence iterationCount={3} autoplay delay={1000} />
-    </Theatre>
+    </Project>
   </Canvas>
 </div>
 

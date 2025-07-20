@@ -9,6 +9,7 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "model": "node scripts/model-pipeline.js",
+    "model:new": "node scripts/model-no-overwrite.js",
     "deploy": "npm run build && npx gh-pages -d build"
   },
   "devDependencies": {
