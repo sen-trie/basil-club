@@ -1,4 +1,5 @@
 <script>
+  import { getScene } from "$lib/stores/worldState.svelte.js";
   import Pane from "./overlay/Pane.svelte";
   import Closeup from "./scenes/Closeup.svelte";
   import Audio from "./overlay/Audio.svelte";
@@ -11,11 +12,22 @@
       audioEl.playBGM;
     }
   });
+
+  const scene = getScene();
 </script>
 
 <div class="overlay-screen">
   <!-- <Audio bind:this={audioEl} /> -->
-  <Pane />
+  <p>{scene.countInteractables}/{scene.maxInteractables}</p>
+  {#if scene.currentState.scene === "cafe"}
+    <Pane />
+  {:else if scene.currentState.scene}
+    <button
+      onclick={() => {
+        scene.setCafe();
+      }}>Back</button
+    >
+  {/if}
 </div>
 <Closeup />
 
@@ -44,5 +56,9 @@
     justify-content: center;
     width: 100%;
     height: 100%;
+  }
+
+  p {
+    color: white;
   }
 </style>

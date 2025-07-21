@@ -14,6 +14,7 @@
   import Cafe from "$lib/components/models/cafe.svelte";
   import MToilet from "$lib/components/models/m-toilet.svelte";
   import FToilet from "$lib/components/models/f-toilet.svelte";
+  import { getScene } from "$lib/stores/worldState.svelte.js";
   import {
     minPolarAngle,
     maxPolarAngle,
@@ -28,13 +29,8 @@
   const { invalidate } = useThrelte();
   interactivity();
 
-  const sceneState = Object.freeze({
-    cafe: "cafe",
-    mToilet: "mToilet",
-    fToilet: "fToilet",
-  });
+  const scene = getScene();
 
-  let sceneActor = $state(sceneState.cafe);
   let cameraRef = $state(null);
   let cafeRef = $state(null);
   let controlsRef = $state(null);
@@ -44,49 +40,41 @@
   let cafeStats = new Spring({ y: 0 });
   let currentFloor = $state(0);
   let cafeTop = $derived(
-    cafeRef.children.find((child) => child.name === "Top")
+    cafeRef.children.find((child) => child.name === "Top"),
   );
   let cafeBot = $derived(
-    cafeRef.children.find((child) => child.name === "Bottom")
+    cafeRef.children.find((child) => child.name === "Bottom"),
   );
 
   const changeFloor = (state) => {
     if (hudControlsEnabled) return;
 
+    const displacementY = 2;
+    const cafeTopFull = 7.34;
+    const cafeTopHalf = 2.71;
+    const cafeBotFull = 1.47;
+    const nullZone = -99;
+
+    cafeTop.position.set(cafeTop.position.x, cafeTopFull, cafeTop.position.z);
+    cafeBot.position.set(cafeBot.position.x, cafeBotFull, cafeBot.position.z);
+
+    cafeTop.visible = true;
+    cafeBot.visible = true;
+    cafeStats.target = { ...cafeStats.current, y: 0 };
+
     if (state === 1) {
-      sceneActor = sceneState.mToilet;
+      cafeBot.visible = false;
+      cafeStats.target = { ...cafeStats.current, y: displacementY };
+      cafeTop.position.set(cafeTop.position.x, cafeTopHalf, cafeTop.position.z);
+      cafeBot.position.set(cafeBot.position.x, nullZone, cafeBot.position.z);
     } else if (state === 2) {
-      sceneActor = sceneState.fToilet;
-    } else {
-      sceneActor = sceneState.cafe;
+      cafeTop.visible = false;
+      cafeStats.target = { ...cafeStats.current, y: displacementY };
+      cafeTop.position.set(cafeTop.position.x, nullZone, cafeTop.position.z);
     }
 
-    // const displacementY = 2;
-    // const cafeTopFull = 7.34;
-    // const cafeTopHalf = 2.71;
-    // const cafeBotFull = 1.47;
-    // const nullZone = -99;
-
-    // cafeTop.position.set(cafeTop.position.x, cafeTopFull, cafeTop.position.z);
-    // cafeBot.position.set(cafeBot.position.x, cafeBotFull, cafeBot.position.z);
-
-    // cafeTop.visible = true;
-    // cafeBot.visible = true;
-    // cafeStats.target = { ...cafeStats.current, y: 0 };
-
-    // if (state === 1) {
-    //   cafeBot.visible = false;
-    //   cafeStats.target = { ...cafeStats.current, y: displacementY };
-    //   cafeTop.position.set(cafeTop.position.x, cafeTopHalf, cafeTop.position.z);
-    //   cafeBot.position.set(cafeBot.position.x, nullZone, cafeBot.position.z);
-    // } else if (state === 2) {
-    //   cafeTop.visible = false;
-    //   cafeStats.target = { ...cafeStats.current, y: displacementY };
-    //   cafeTop.position.set(cafeTop.position.x, nullZone, cafeTop.position.z);
-    // }
-
-    // invalidate();
-    // currentFloor = state;
+    invalidate();
+    currentFloor = state;
   };
   changeFloorStore.set(changeFloor);
 
@@ -112,6 +100,7 @@
     if (hudControlsEnabled) return;
     hudControlsEnabled = !hudControlsEnabled;
     changeOverlay("hud");
+    scene.setInteractable("earl-street");
   };
   showHudStore.set(showHud);
 
@@ -137,15 +126,15 @@
     {maxAzimuthAngle}
     {enableDamping}
     {enablePan}
-    minZoom={defaultZoom * 0.8}
-    maxZoom={defaultZoom * 4}
+    minZoom={defaultZoom * 0.9}
+    maxZoom={defaultZoom * 5}
   />
 </T.OrthographicCamera>
 
 <POVScene povControlsEnabled={false} />
 <HudScene {hudControlsEnabled} />
 
-{#if sceneActor === sceneState.cafe}
+{#if scene.currentState.scene === "cafe"}
   <Cafe
     visible={true}
     {hudControlsEnabled}
@@ -153,8 +142,8 @@
     bind:ref={cafeRef}
     position.y={cafeStats.current.y}
   />
-{:else if sceneActor === sceneState.mToilet}
+{:else if scene.currentState.scene === "mToilet"}
   <MToilet />
-{:else if sceneActor === sceneState.fToilet}
+{:else if scene.currentState.scene === "fToilet"}
   <FToilet />
 {/if}

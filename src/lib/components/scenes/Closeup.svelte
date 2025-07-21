@@ -1,5 +1,6 @@
 <script>
   import { fly } from "svelte/transition";
+  import { getScene } from "$lib/stores/worldState.svelte.js";
   import {
     showOverlay as showOverlayStore,
     hideHud,
@@ -8,6 +9,7 @@
   import Panzoom from "@panzoom/panzoom";
 
   const image = getContext("images");
+  const scene = getScene();
 
   let overlayType = $state("");
   let currentImage = $state(1);
@@ -63,6 +65,10 @@
   const showOverlay = (nextOverlayType) => {
     overlayType = nextOverlayType;
     overlayVisible = !overlayVisible;
+
+    if (overlayType !== "hud") {
+      scene.setInteractable(overlayType);
+    }
   };
   showOverlayStore.set(showOverlay);
 
@@ -88,7 +94,6 @@
   $effect(async () => {
     if (!imagePanZoom) return;
 
-    console.log("panzoom");
     const panzoom = Panzoom(imagePanZoom, {
       contain: "outside",
       startScale: 2,
