@@ -2,13 +2,16 @@
   import Scene from "$lib/components/Scene.svelte";
   import { Canvas } from "@threlte/core";
   import { useProgress } from "@threlte/extras";
-  import { Studio, Sequence, Project } from "@threlte/theatre";
+  import { Studio, Project } from "@threlte/theatre";
   import { dev } from "$app/environment";
   import { Tween } from "svelte/motion";
   import { fade } from "svelte/transition";
   import { fromStore } from "svelte/store";
   import Overlay from "$lib/components/Overlay.svelte";
   import state from "$lib/assets/state.json";
+
+  import MToilet from "$lib/components/models/m-toilet.svelte";
+  import FToilet from "$lib/components/models/f-toilet.svelte";
 
   const { progress } = useProgress();
   const p = fromStore(progress);
@@ -34,6 +37,10 @@
   <Canvas>
     <Project name="Basil Club" config={{ state }}>
       <Scene />
+      <div class="preload">
+        <MToilet visible={false} position={[9999, 9999, 9999]} />
+        <FToilet visible={false} position={[9999, 9999, 9999]} />
+      </div>
     </Project>
   </Canvas>
 </div>
