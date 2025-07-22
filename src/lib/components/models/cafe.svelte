@@ -4,7 +4,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 -->
 
 <script context="module">
-  import { T } from "@threlte/core";
+  import { T, useThrelte } from "@threlte/core";
   import { useGltf, useDraco } from "@threlte/extras";
 
   const load = () => {
@@ -26,7 +26,11 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     ...props
   } = $props();
   import { CircleGeometry } from "three";
-  import { showOverlay, showHud } from "$lib/stores/sceneControls";
+  import {
+    showOverlay,
+    showHud,
+    changeFloor as changeFloorStore,
+  } from "$lib/stores/sceneControls";
   import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
   import { getScene } from "$lib/stores/worldState.svelte.js";
 
@@ -42,6 +46,35 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   });
 
   const scene = getScene();
+
+  const { invalidate } = useThrelte();
+
+  let currentFloor = $state(0);
+  let cafeTopY = $state(7.34);
+  let cafeBottomY = $state(1.47);
+
+  const changeFloor = (state) => {
+    if (hudControlsEnabled) return;
+
+    const cafeTopFull = 7.34;
+    const cafeTopHalf = 2.71;
+    const cafeBotFull = 1.47;
+    const nullZone = -99;
+
+    cafeTopY = cafeTopFull;
+    cafeBottomY = cafeBotFull;
+
+    if (state === 1) {
+      cafeTopY = cafeTopHalf;
+      cafeBottomY = nullZone;
+    } else if (state === 2) {
+      cafeTopY = nullZone;
+    }
+
+    invalidate();
+    currentFloor = state;
+  };
+  changeFloorStore.set(changeFloor);
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>
@@ -104,7 +137,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         scene.setMToilet();
       }}
     />
-    <T.Group name="Top" position={[-1.58, 7.34, -1.92]}>
+    <T.Group name="Top" position={[-1.58, cafeTopY, -1.92]}>
       <T.Mesh
         name="Cube011"
         geometry={gltf.nodes.Cube011.geometry}
@@ -519,7 +552,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         />
       </T.Group>
     </T.Group>
-    <T.Group name="Bottom" position={[2.15, 1.47, -2.77]}>
+    <T.Group name="Bottom" position={[2.15, cafeBottomY, -2.77]}>
       <T.Mesh
         name="Cube013"
         geometry={gltf.nodes.Cube013.geometry}

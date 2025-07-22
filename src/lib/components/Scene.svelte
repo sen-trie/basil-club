@@ -1,16 +1,15 @@
 <script>
   import {
-    changeFloor as changeFloorStore,
     showHud as showHudStore,
     hideHud as hideHudStore,
     showOverlay,
   } from "$lib/stores/sceneControls";
   import { Vector3 } from "three";
-  import { Spring } from "svelte/motion";
-  import { T, useThrelte, useTask } from "@threlte/core";
-  import { OrbitControls, interactivity } from "@threlte/extras";
+  import { T, useTask } from "@threlte/core";
+  import { OrbitControls, interactivity, transitions } from "@threlte/extras";
   import HudScene from "./scenes/HudScene.svelte";
   import POVScene from "./scenes/POVScene.svelte";
+  import { fly } from "$lib/components/transitions.js";
   import Cafe from "$lib/components/models/cafe.svelte";
   import MToilet from "$lib/components/models/m-toilet.svelte";
   import FToilet from "$lib/components/models/f-toilet.svelte";
@@ -26,8 +25,8 @@
     defaultView,
   } from "./SceneConfig.js";
 
-  const { invalidate } = useThrelte();
   interactivity();
+  transitions();
 
   const scene = getScene();
 
@@ -36,47 +35,6 @@
   let controlsRef = $state(null);
   let hudControlsEnabled = $state(false);
   let povControlsEnabled = $state(false);
-
-  let cafeStats = new Spring({ y: 0 });
-  let currentFloor = $state(0);
-  let cafeTop = $derived(
-    cafeRef.children.find((child) => child.name === "Top"),
-  );
-  let cafeBot = $derived(
-    cafeRef.children.find((child) => child.name === "Bottom"),
-  );
-
-  const changeFloor = (state) => {
-    if (hudControlsEnabled) return;
-
-    const displacementY = 2;
-    const cafeTopFull = 7.34;
-    const cafeTopHalf = 2.71;
-    const cafeBotFull = 1.47;
-    const nullZone = -99;
-
-    cafeTop.position.set(cafeTop.position.x, cafeTopFull, cafeTop.position.z);
-    cafeBot.position.set(cafeBot.position.x, cafeBotFull, cafeBot.position.z);
-
-    cafeTop.visible = true;
-    cafeBot.visible = true;
-    cafeStats.target = { ...cafeStats.current, y: 0 };
-
-    if (state === 1) {
-      cafeBot.visible = false;
-      cafeStats.target = { ...cafeStats.current, y: displacementY };
-      cafeTop.position.set(cafeTop.position.x, cafeTopHalf, cafeTop.position.z);
-      cafeBot.position.set(cafeBot.position.x, nullZone, cafeBot.position.z);
-    } else if (state === 2) {
-      cafeTop.visible = false;
-      cafeStats.target = { ...cafeStats.current, y: displacementY };
-      cafeTop.position.set(cafeTop.position.x, nullZone, cafeTop.position.z);
-    }
-
-    invalidate();
-    currentFloor = state;
-  };
-  changeFloorStore.set(changeFloor);
 
   const minPanBase = new Vector3(-2, -2, -2);
   const maxPanBase = new Vector3(2, 2, 2);
@@ -140,10 +98,10 @@
     {hudControlsEnabled}
     bind:povControlsEnabled
     bind:ref={cafeRef}
-    position.y={cafeStats.current.y}
+    transition={fly({ x: 0, y: 50, z: 0 })}
   />
 {:else if scene.currentState.scene === "mToilet"}
-  <MToilet />
+  <MToilet transition={fly({ x: 0, y: 50, z: 0 })} />
 {:else if scene.currentState.scene === "fToilet"}
-  <FToilet />
+  <FToilet transition={fly({ x: 0, y: 50, z: 0 })} />
 {/if}
