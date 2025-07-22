@@ -5,7 +5,7 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 const config = {
   kit: {
     paths: {
-      base: process.env.NODE_ENV === "production" ? "/basil-club" : "",
+      base: process.env.NODE_ENV === "production" ? "" : "",
     },
     prerender: {
       handleHttpError: "ignore",
