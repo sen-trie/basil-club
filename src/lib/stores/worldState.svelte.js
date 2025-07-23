@@ -16,6 +16,8 @@ let interactableCount = $derived(
 );
 
 let maxInteractables = $derived(Object.keys(currentState.interactables).length);
+let sceneCooldown = 0;
+const timeCooldown = 3000;
 
 export function getScene() {
   return {
@@ -39,15 +41,21 @@ export function getScene() {
     },
 
     setCafe() {
+      if (Date.now() < sceneCooldown) return;
+      sceneCooldown = Date.now() + timeCooldown;
       currentState = { ...currentState, scene: "cafe" };
     },
 
     setMToilet() {
+      if (Date.now() < sceneCooldown) return;
+      sceneCooldown = Date.now() + timeCooldown;
       this.setInteractable("mToilet");
       currentState = { ...currentState, scene: "mToilet" };
     },
 
     setFToilet() {
+      if (Date.now() < sceneCooldown) return;
+      sceneCooldown = Date.now() + timeCooldown;
       this.setInteractable("fToilet");
       currentState = { ...currentState, scene: "fToilet" };
     },

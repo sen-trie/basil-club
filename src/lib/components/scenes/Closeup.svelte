@@ -9,6 +9,7 @@
   import Panzoom from "@panzoom/panzoom";
 
   const image = getContext("images");
+  const video = getContext("videos");
   const scene = getScene();
 
   let overlayType = $state("");
@@ -16,6 +17,7 @@
   let imageHover = $state(null);
   let overlayVisible = $state(false);
   let imagePanZoom = $state(null);
+  let hideButton = $state(false);
 
   let animationFrame;
   const THRESHOLD = 15;
@@ -105,6 +107,14 @@
       panzoom.pan(0, 1);
     }, 10);
   });
+
+  $effect(() => {
+    if (overlayType === "bear") {
+      hideButton = true;
+    } else {
+      hideButton = false;
+    }
+  });
 </script>
 
 <!-- svelte-ignore a11y_mouse_events_have_key_events -->
@@ -142,13 +152,24 @@
           class="photo-grid"
         />
       </div>
+    {:else if overlayType === "bear"}
+      <div class="grid-div">
+        <!-- svelte-ignore a11y_media_has_caption -->
+        <video autoplay onended={closeOverlay}>
+          <source src={video["bear.mp4"]} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
     {:else if overlayType === "checkout"}
       <div class="checkout-div flex">
         <div class="checkout-box">
           <p>ORDERS RECEIVED: NONE</p>
         </div>
       </div>{/if}
-    <button class="close-button" onclick={closeOverlay}>Close</button>
+
+    {#if !hideButton}
+      <button class="close-button" onclick={closeOverlay}>Close</button>
+    {/if}
   </div>
 {/if}
 
@@ -193,6 +214,12 @@
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .photo-grid {
