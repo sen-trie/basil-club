@@ -31,8 +31,11 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     showHud,
     changeFloor as changeFloorStore,
   } from "$lib/stores/sceneControls";
+  import { Tween } from "svelte/motion";
+  import { cubicInOut } from "svelte/easing";
   import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
   import { getScene } from "$lib/stores/worldState.svelte.js";
+  const scene = getScene();
 
   const gltf = load();
   let changeOverlay = () => {};
@@ -45,21 +48,60 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     changeHud = fn;
   });
 
-  const scene = getScene();
-
   const { invalidate } = useThrelte();
 
+  const nullZone = -999;
+  const cafeTopFull = 7.34;
+  const cafeTopHalf = 2.71;
+  const cafeBotFull = 1.47;
+
+  let bearVisible = $state(true);
+  const bearKeyframe = 125;
+  let bearScale = new Tween([1, 1, 1], {
+    duration: bearKeyframe,
+    easing: cubicInOut,
+  });
+  let bearRotation = new Tween([0, 0, 0], {
+    duration: bearKeyframe,
+    easing: cubicInOut,
+  });
+  let bearYDelta = new Tween(0, {
+    duration: bearKeyframe,
+    easing: cubicInOut,
+  });
+
+  async function playTada() {
+    await Promise.all([
+      bearScale.set([0.9, 0.9, 0.9]),
+      bearRotation.set([0, 0, (-3 * Math.PI) / 180]),
+      bearYDelta.set(0.05),
+    ]);
+    await Promise.all([
+      bearScale.set([1.2, 1.2, 1.2]),
+      bearRotation.set([0, 0, (3 * Math.PI) / 180]),
+      bearYDelta.set(0.1),
+    ]);
+    await Promise.all([
+      bearScale.set([1.2, 1.2, 1.2]),
+      bearRotation.set([0, 0, (-3 * Math.PI) / 180]),
+    ]);
+    await Promise.all([
+      bearScale.set([1.2, 1.2, 1.2]),
+      bearRotation.set([0, 0, (3 * Math.PI) / 180]),
+    ]);
+    await Promise.all([
+      bearScale.set([1, 1, 1]),
+      bearRotation.set([0, 0, 0]),
+      bearYDelta.set(0),
+    ]);
+  }
+
   let currentFloor = $state(0);
-  let cafeTopY = $state(7.34);
-  let cafeBottomY = $state(1.47);
+  let cafeTopY = $state(cafeTopFull);
+  let cafeBottomY = $state(cafeBotFull);
 
   const changeFloor = (state) => {
     if (hudControlsEnabled) return;
-
-    const cafeTopFull = 7.34;
-    const cafeTopHalf = 2.71;
-    const cafeBotFull = 1.47;
-    const nullZone = -99;
 
     cafeTopY = cafeTopFull;
     cafeBottomY = cafeBotFull;
@@ -87,7 +129,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       material={gltf.materials.Backdrop}
       position={[4.25, 5.89, 11.56]}
     />
-    <T.Group name="Bottom" position={[2.15, 1.47, -2.77]}>
+    <T.Group name="Bottom" position={[2.15, cafeBottomY, -2.77]}>
       <T.Mesh
         name="Cube013"
         geometry={gltf.nodes.Cube013.geometry}
@@ -401,7 +443,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         />
       </T.Group>
     </T.Group>
-    <T.Group name="Top" position={[-1.58, 7.34, -1.92]}>
+    <T.Group name="Top" position={[-1.58, cafeTopY, -1.92]}>
       <T.Mesh
         name="Cube011"
         geometry={gltf.nodes.Cube011.geometry}
@@ -452,50 +494,73 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         geometry={gltf.nodes.Cube011_9.geometry}
         material={gltf.materials["Painting Set"]}
       />
-      <T.Group
-        name="Bear"
-        position={[4.98, -2.86, 3.78]}
-        onclick={(e) => {
-          e.stopPropagation();
-          changeOverlay("bear");
-        }}
-      >
+      {#if scene.currentState.interactables.bear}
+        <T.Group
+          name="Bear"
+          position={[
+            4.98,
+            bearVisible ? -2.86 + bearYDelta.current : nullZone,
+            3.78,
+          ]}
+          visible={bearVisible}
+          scale={bearScale.current}
+          rotation={bearRotation.current}
+          onclick={(e) => {
+            e.stopPropagation();
+            const res = scene.touchBear();
+            if (res === true) {
+              changeOverlay("bear");
+              setTimeout(() => {
+                bearVisible = false;
+              }, 2000);
+            } else if (res === false) {
+              playTada();
+            }
+          }}
+        >
+          <T.Mesh
+            name="Sphere002"
+            geometry={gltf.nodes.Sphere002.geometry}
+            material={gltf.materials.fabric_pink}
+          />
+          <T.Mesh
+            name="Sphere002_1"
+            geometry={gltf.nodes.Sphere002_1.geometry}
+            material={gltf.materials.fabric_pink}
+          />
+          <T.Mesh
+            name="Sphere002_2"
+            geometry={gltf.nodes.Sphere002_2.geometry}
+            material={gltf.materials.fabric_pink}
+          />
+          <T.Mesh
+            name="Sphere002_3"
+            geometry={gltf.nodes.Sphere002_3.geometry}
+            material={gltf.materials.fabric_pink}
+          />
+          <T.Mesh
+            name="Sphere002_4"
+            geometry={gltf.nodes.Sphere002_4.geometry}
+            material={gltf.materials.fabric_pink}
+          />
+          <T.Mesh
+            name="Sphere002_5"
+            geometry={gltf.nodes.Sphere002_5.geometry}
+            material={gltf.materials.fabric_pink}
+          />
+          <T.Mesh
+            name="Sphere002_6"
+            geometry={gltf.nodes.Sphere002_6.geometry}
+            material={gltf.materials.fabric_pink}
+          />
+        </T.Group>
         <T.Mesh
-          name="Sphere002"
-          geometry={gltf.nodes.Sphere002.geometry}
-          material={gltf.materials.fabric_pink}
+          name="Disturb"
+          geometry={gltf.nodes.Disturb.geometry}
+          material={gltf.materials.Disturb}
+          position={[5.4, -3.02, 3.42]}
         />
-        <T.Mesh
-          name="Sphere002_1"
-          geometry={gltf.nodes.Sphere002_1.geometry}
-          material={gltf.materials.fabric_pink}
-        />
-        <T.Mesh
-          name="Sphere002_2"
-          geometry={gltf.nodes.Sphere002_2.geometry}
-          material={gltf.materials.fabric_pink}
-        />
-        <T.Mesh
-          name="Sphere002_3"
-          geometry={gltf.nodes.Sphere002_3.geometry}
-          material={gltf.materials.fabric_pink}
-        />
-        <T.Mesh
-          name="Sphere002_4"
-          geometry={gltf.nodes.Sphere002_4.geometry}
-          material={gltf.materials.fabric_pink}
-        />
-        <T.Mesh
-          name="Sphere002_5"
-          geometry={gltf.nodes.Sphere002_5.geometry}
-          material={gltf.materials.fabric_pink}
-        />
-        <T.Mesh
-          name="Sphere002_6"
-          geometry={gltf.nodes.Sphere002_6.geometry}
-          material={gltf.materials.fabric_pink}
-        />
-      </T.Group>
+      {/if}
       <T.Group name="Cashier_Screen" position={[4.12, -2.77, 0.75]}>
         <T.Mesh
           name="Cube098"
@@ -508,12 +573,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           material={gltf.materials["Cashier Plastic"]}
         />
       </T.Group>
-      <T.Mesh
-        name="Disturb"
-        geometry={gltf.nodes.Disturb.geometry}
-        material={gltf.materials.Disturb}
-        position={[5.4, -3.02, 3.42]}
-      />
       <T.Group name="Eight" position={[0.02, -1.99, -1.68]}>
         <T.Mesh
           name="Cube031"
@@ -680,18 +739,20 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           geometry={gltf.nodes.Cube032_8.geometry}
           material={gltf.materials["Social Sign"]}
         />
-        <T.Group name="Social_Sign" position={[5.78, 1.18, 2.57]}>
-          <T.Mesh
-            name="Cube039"
-            geometry={gltf.nodes.Cube039.geometry}
-            material={gltf.materials["Social Sign"]}
-          />
-          <T.Mesh
-            name="Cube039_1"
-            geometry={gltf.nodes.Cube039_1.geometry}
-            material={gltf.materials["Social Sign"]}
-          />
-        </T.Group>
+        {#if !scene.currentState.interactables.bear}
+          <T.Group name="Social_Sign" position={[5.78, 1.18, 2.57]}>
+            <T.Mesh
+              name="Cube039"
+              geometry={gltf.nodes.Cube039.geometry}
+              material={gltf.materials["Social Sign"]}
+            />
+            <T.Mesh
+              name="Cube039_1"
+              geometry={gltf.nodes.Cube039_1.geometry}
+              material={gltf.materials["Social Sign"]}
+            />
+          </T.Group>
+        {/if}
       </T.Group>
       <T.Mesh
         name="Painting_Set"

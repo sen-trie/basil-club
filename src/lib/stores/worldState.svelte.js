@@ -1,5 +1,6 @@
 let currentState = $state({
   scene: "cafe",
+  bearTouches: 0,
   interactables: {
     "photo": false,
     "grid": false,
@@ -58,6 +59,17 @@ export function getScene() {
       sceneCooldown = Date.now() + timeCooldown;
       this.setInteractable("fToilet");
       currentState = { ...currentState, scene: "fToilet" };
+    },
+
+    touchBear() {
+      if (Date.now() < sceneCooldown) return null;
+      sceneCooldown = Date.now() + timeCooldown / 3;
+      currentState.bearTouches++;
+      if (currentState.bearTouches < 3) {
+        return false;
+      } else {
+        return true;
+      }
     },
   };
 }
