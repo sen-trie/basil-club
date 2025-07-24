@@ -189,6 +189,17 @@
     z-index: 10;
   }
 
+  /* .close-up:not(.no-pointer)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    pointer-events: all;
+  } */
+
   .no-pointer {
     pointer-events: none;
   }

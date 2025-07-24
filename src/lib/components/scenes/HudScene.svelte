@@ -1,6 +1,6 @@
 <script>
   import { T } from "@threlte/core";
-  import { HUD, OrbitControls } from "@threlte/extras";
+  import { HUD, OrbitControls, HTML } from "@threlte/extras";
   import EarlStreet from "$lib/components/models/earl-street.svelte";
 
   let { hudControlsEnabled } = $props();
@@ -16,4 +16,10 @@
     />
   </T.OrthographicCamera>
   <EarlStreet scale={1 / 0.9} rotation={[0, 0, 0]} />
+  <HTML autoRender={false} center>
+    <div class="hud-cover"></div>
+  </HTML>
 </HUD>
+
+<style>
+</style>
