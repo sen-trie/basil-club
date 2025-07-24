@@ -20,6 +20,8 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\m-toilet.glb --ro
 
 <script>
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
+  import { getScene } from "$lib/stores/worldState.svelte.js";
+  const scene = getScene();
 
   const gltf = load();
 </script>
@@ -60,6 +62,10 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\m-toilet.glb --ro
         name="Cube099"
         geometry={gltf.nodes.Cube099.geometry}
         material={gltf.materials["Bear Sign"]}
+        onclick={(e) => {
+          e.stopPropagation();
+          scene.setInteractable("bear");
+        }}
       />
       <T.Mesh
         name="Cube099_1"

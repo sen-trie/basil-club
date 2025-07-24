@@ -128,6 +128,59 @@
   }}
 />
 
+{#if scene.currentState.interactables.bear}
+  <T.Group
+    name="Bear"
+    position={[4.98, -2.86, 3.78]}
+    onclick={(e) => {
+      e.stopPropagation();
+      changeOverlay("bear");
+    }}
+  >
+    <T.Mesh
+      name="Sphere002"
+      geometry={gltf.nodes.Sphere002.geometry}
+      material={gltf.materials.fabric_pink}
+    />
+    <T.Mesh
+      name="Sphere002_1"
+      geometry={gltf.nodes.Sphere002_1.geometry}
+      material={gltf.materials.fabric_pink}
+    />
+    <T.Mesh
+      name="Sphere002_2"
+      geometry={gltf.nodes.Sphere002_2.geometry}
+      material={gltf.materials.fabric_pink}
+    />
+    <T.Mesh
+      name="Sphere002_3"
+      geometry={gltf.nodes.Sphere002_3.geometry}
+      material={gltf.materials.fabric_pink}
+    />
+    <T.Mesh
+      name="Sphere002_4"
+      geometry={gltf.nodes.Sphere002_4.geometry}
+      material={gltf.materials.fabric_pink}
+    />
+    <T.Mesh
+      name="Sphere002_5"
+      geometry={gltf.nodes.Sphere002_5.geometry}
+      material={gltf.materials.fabric_pink}
+    />
+    <T.Mesh
+      name="Sphere002_6"
+      geometry={gltf.nodes.Sphere002_6.geometry}
+      material={gltf.materials.fabric_pink}
+    />
+  </T.Group>
+  <T.Mesh
+    name="Disturb"
+    geometry={gltf.nodes.Disturb.geometry}
+    material={gltf.materials.Disturb}
+    position={[5.4, -3.02, 3.42]}
+  />
+{/if}
+
 <Sheet>
   <Sequence iterationCount={Infinity} autoplay delay={1000}>
     <SheetObject key="Cat Base">
