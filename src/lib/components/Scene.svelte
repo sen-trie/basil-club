@@ -55,7 +55,7 @@
   });
 
   const showHud = (_state) => {
-    if (hudControlsEnabled) return;
+    if (hudControlsEnabled || scene.currentState.povCamera) return;
     hudControlsEnabled = !hudControlsEnabled;
     changeOverlay("hud");
     scene.setInteractable("earl-street");

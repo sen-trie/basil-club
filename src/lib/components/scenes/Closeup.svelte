@@ -119,10 +119,9 @@
 
   const showBlocker = () => {
     blocker = true;
-    console.log(blocker);
     setTimeout(() => {
       blocker = false;
-    }, 1000);
+    }, 600);
   };
   showBlockerStore.set(showBlocker);
 </script>
