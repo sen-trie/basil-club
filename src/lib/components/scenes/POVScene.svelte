@@ -1,14 +1,12 @@
 <script>
   import { T } from "@threlte/core";
   import { CameraControls } from "@threlte/extras";
-
-  let { povControlsEnabled } = $props();
+  import { getScene } from "$lib/stores/worldState.svelte.js";
+  const scene = getScene();
 </script>
 
-<!-- 
-Consider bottom diff -->
 <T.PerspectiveCamera
-  makeDefault={povControlsEnabled}
+  makeDefault={scene.currentState.povCamera}
   fov={40}
   position={[5.7, 0.4, 0.9]}
 >

@@ -1,7 +1,8 @@
 <script>
-  import { fly } from "svelte/transition";
+  import { fly, fade } from "svelte/transition";
   import { getScene } from "$lib/stores/worldState.svelte.js";
   import {
+    showBlocker as showBlockerStore,
     showOverlay as showOverlayStore,
     hideHud,
   } from "$lib/stores/sceneControls";
@@ -12,6 +13,7 @@
   const video = getContext("videos");
   const scene = getScene();
 
+  let blocker = $state(false);
   let overlayType = $state("");
   let currentImage = $state(1);
   let imageHover = $state(null);
@@ -78,11 +80,14 @@
   hideHud.subscribe((fn) => {
     closeHud = fn;
   });
+
   const closeOverlay = () => {
-    overlayVisible = false;
     if (overlayType === "hud") {
       closeHud();
     }
+
+    overlayType = "";
+    overlayVisible = false;
   };
 
   onMount(() => {
@@ -109,12 +114,17 @@
   });
 
   $effect(() => {
-    if (overlayType === "bear") {
-      hideButton = true;
-    } else {
-      hideButton = false;
-    }
+    hideButton = overlayType === "bear";
   });
+
+  const showBlocker = () => {
+    blocker = true;
+    console.log(blocker);
+    setTimeout(() => {
+      blocker = false;
+    }, 1000);
+  };
+  showBlockerStore.set(showBlocker);
 </script>
 
 <!-- svelte-ignore a11y_mouse_events_have_key_events -->
@@ -165,12 +175,17 @@
         <div class="checkout-box">
           <p>ORDERS RECEIVED: NONE</p>
         </div>
-      </div>{/if}
+      </div>
+    {/if}
 
     {#if !hideButton}
       <button class="close-button" onclick={closeOverlay}>Close</button>
     {/if}
   </div>
+{/if}
+
+{#if blocker}
+  <div class="blocker" transition:fade={{ duration: 250, delay: 0 }}></div>
 {/if}
 
 <style>
@@ -184,21 +199,19 @@
   .close-up {
     position: absolute;
     color: white;
-    width: 100%;
+    width: 100dvw;
     height: 100dvh;
     z-index: 10;
   }
 
-  /* .close-up:not(.no-pointer)::before {
-    content: "";
+  .blocker {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 1);
     pointer-events: all;
-  } */
+    z-index: 99;
+  }
 
   .no-pointer {
     pointer-events: none;

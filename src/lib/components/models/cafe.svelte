@@ -190,13 +190,16 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         geometry={gltf.nodes.Cube013_11.geometry}
         material={gltf.materials["Toilet Door.001"]}
       />
-
       <Sheet>
         <Sequence iterationCount={Infinity} autoplay delay={1000}>
           <SheetObject key="Cat Base">
             {#snippet children({ Transform })}
               <Transform>
-                <T.Group name="Cat_Base" rotation={[0, 0, 0]} visible={true}>
+                <T.Group
+                  name="Cat_Base"
+                  rotation={[0, 0, 0]}
+                  visible={!scene.currentState.povCamera}
+                >
                   <T.Mesh
                     name="Cylinder"
                     geometry={gltf.nodes.Cylinder.geometry}
@@ -235,19 +238,19 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                       </Transform>
                     {/snippet}
                   </SheetObject>
+                  <T.Mesh
+                    name="FakeShadow"
+                    geometry={new CircleGeometry(0.39, 32)}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    position={[0, -0.685, 0]}
+                  >
+                    <T.MeshBasicMaterial
+                      transparent={true}
+                      opacity={0.25}
+                      color="black"
+                    />
+                  </T.Mesh>
                 </T.Group>
-                <T.Mesh
-                  name="FakeShadow"
-                  geometry={new CircleGeometry(0.39, 32)}
-                  rotation={[-Math.PI / 2, 0, 0]}
-                  position={[0, -0.685, 0]}
-                >
-                  <T.MeshBasicMaterial
-                    transparent={true}
-                    opacity={0.25}
-                    color="black"
-                  />
-                </T.Mesh>
               </Transform>
             {/snippet}
           </SheetObject>
@@ -258,7 +261,11 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           <SheetObject key="POV Base">
             {#snippet children({ Transform })}
               <Transform>
-                <T.Group name="Cat_Base" rotation={[0, 0, 0]}>
+                <T.Group
+                  name="Cat_Base"
+                  rotation={[0, 0, 0]}
+                  visible={scene.currentState.povCamera}
+                >
                   <T.Mesh
                     name="Cylinder"
                     geometry={gltf.nodes.Cylinder.geometry}
@@ -320,7 +327,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           </SheetObject>
         </Sequence>
       </Sheet>
-      <T.Group name="Flag" position={[2.09, -1.46, 1.5]}>
+      <T.Group name="Flag" position={[2.09, -1.46, 3.44]}>
         <T.Mesh
           name="Cube012"
           geometry={gltf.nodes.Cube012.geometry}
@@ -331,6 +338,17 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           geometry={gltf.nodes.Cube012_1.geometry}
           material={gltf.materials["Flag Holder"]}
         />
+        <T.Mesh
+          name="Flag_Hitbox"
+          geometry={gltf.nodes.Flag_Hitbox.geometry}
+          material={gltf.nodes.Flag_Hitbox.material}
+          onclick={(e) => {
+            e.stopPropagation();
+            scene.togglePOVCamera();
+          }}
+        >
+          <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
+        </T.Mesh>
       </T.Group>
       <T.Group name="Four" position={[0.49, -2.22, 3.36]}>
         <T.Mesh
@@ -593,7 +611,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           <T.Mesh
             name="Photo_Hitbox"
             geometry={gltf.nodes.Photo_Hitbox.geometry}
-            material={gltf.nodes.Photo_Hitbox.material}
             position={[0, -0.04, 0]}
             rotation={[0, 0, Math.PI]}
             scale={[-1.19, -0.9, -0.08]}

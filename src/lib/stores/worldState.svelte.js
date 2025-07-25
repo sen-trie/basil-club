@@ -1,5 +1,13 @@
+import { showBlocker } from "./sceneControls";
+
+let changeBlocker = () => {};
+showBlocker.subscribe((fn) => {
+  changeBlocker = fn;
+});
+
 let currentState = $state({
   scene: "cafe",
+  povCamera: false,
   bearTouches: 0,
   interactables: {
     "photo": false,
@@ -39,6 +47,17 @@ export function getScene() {
         ...currentState,
         interactables: { ...currentState.interactables, [name]: true },
       };
+    },
+
+    togglePOVCamera() {
+      const camCooldown = 500;
+
+      if (Date.now() < sceneCooldown) return;
+      sceneCooldown = Date.now() + camCooldown;
+      changeBlocker();
+      setTimeout(() => {
+        currentState = { ...currentState, povCamera: !currentState.povCamera };
+      }, camCooldown);
     },
 
     setCafe() {

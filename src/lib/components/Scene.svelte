@@ -69,7 +69,7 @@
 </script>
 
 <T.OrthographicCamera
-  makeDefault
+  makeDefault={!scene.currentState.povCamera}
   position={[20, 0, 20]}
   zoom={defaultZoom}
   view={{ ...defaultView }}
@@ -89,14 +89,13 @@
   />
 </T.OrthographicCamera>
 
-<POVScene povControlsEnabled={false} />
+<POVScene />
 <HudScene {hudControlsEnabled} />
 
 {#if scene.currentState.scene === "cafe"}
   <Cafe
     visible={true}
     {hudControlsEnabled}
-    bind:povControlsEnabled
     bind:ref={cafeRef}
     transition={fly({ x: 0, y: 50, z: 0 })}
   />

@@ -19,14 +19,20 @@
 <div class="overlay-screen">
   <!-- <Audio bind:this={audioEl} /> -->
   <p>{scene.countInteractables}/{scene.maxInteractables}</p>
-  {#if scene.currentState.scene === "cafe"}
-    <Pane />
-  {:else if scene.currentState.scene}
+  {#if scene.currentState.povCamera}
+    <button
+      onclick={() => {
+        scene.togglePOVCamera();
+      }}>Back</button
+    >
+  {:else if scene.currentState.scene !== "cafe"}
     <button
       onclick={() => {
         scene.setCafe();
       }}>Back</button
     >
+  {:else if scene.currentState.scene === "cafe"}
+    <Pane />
   {/if}
 </div>
 <Closeup />
