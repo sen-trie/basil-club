@@ -3,6 +3,7 @@
   import Pane from "./overlay/Pane.svelte";
   import Closeup from "./scenes/Closeup.svelte";
   import Audio from "./overlay/Audio.svelte";
+  import ArrowBack from "$lib/assets/ui/arrow-back.svelte";
 
   let pageStarted = $state(false);
   let audioEl = $state(null);
@@ -16,21 +17,30 @@
   const scene = getScene();
 </script>
 
+<!-- TODO Disable when hud -->
 <div class="overlay-screen">
   <!-- <Audio bind:this={audioEl} /> -->
-  <p>{scene.countInteractables}/{scene.maxInteractables}</p>
+  <p class="interactable-count">
+    {scene.countInteractables} / {scene.maxInteractables}
+  </p>
   {#if scene.currentState.povCamera}
     <button
+      class="overlay-element"
       onclick={() => {
         scene.togglePOVCamera();
-      }}>Back</button
+      }}
     >
+      <ArrowBack />
+    </button>
   {:else if scene.currentState.scene !== "cafe"}
     <button
+      class="overlay-element"
       onclick={() => {
         scene.setCafe();
-      }}>Back</button
+      }}
     >
+      <ArrowBack />
+    </button>
   {:else if scene.currentState.scene === "cafe"}
     <Pane />
   {/if}
@@ -50,9 +60,30 @@
 <style>
   .overlay-screen {
     position: absolute;
+    right: 0;
     display: flex;
+    flex-direction: column;
+    align-items: end;
     z-index: 10;
     overflow: hidden;
+    padding: 1rem 2rem;
+    gap: 1.5rem;
+  }
+
+  .interactable-count {
+    position: relative;
+    right: -2rem;
+    padding: 0.5rem 2rem;
+    padding-left: 6rem;
+    font-size: 2.5rem;
+    text-align: right;
+    background: #000000;
+    background: linear-gradient(
+      -90deg,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 75%,
+      rgba(0, 0, 0, 0) 100%
+    );
   }
 
   .intro-screen {

@@ -12,6 +12,7 @@ let currentState = $state({
   hudControls: false,
   bearTouches: 0,
   currentFloor: 0,
+  earlstreetClicked: false,
   interactables: {
     "photo": false,
     "grid": false,
@@ -53,6 +54,7 @@ export function getScene() {
     },
 
     setOverlay(nextOverlayType) {
+      if (currentState.scene !== "cafe") return;
       if (this.currentState.hudControls) return;
       if (nextOverlayType !== "hud") {
         this.setInteractable(nextOverlayType);
@@ -77,17 +79,19 @@ export function getScene() {
     },
 
     toggleHud() {
+      if (currentState.scene !== "cafe") return;
       if (currentState.povCamera) return;
       this.setOverlay("hud");
       this.setInteractable("earl-street");
 
       currentState = {
         ...currentState,
-        hudControls: !currentState.hudControls,
+        hudControls: true,
       };
     },
 
     togglePOVCamera() {
+      if (currentState.scene !== "cafe") return;
       if (currentState.hudControls) return;
       const camCooldown = 500;
 
@@ -128,6 +132,10 @@ export function getScene() {
       } else {
         return true;
       }
+    },
+
+    clickEarlStreet() {
+      currentState = { ...currentState, earlstreetClicked: true };
     },
   };
 }

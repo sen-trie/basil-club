@@ -31,7 +31,7 @@
   <Overlay />
 {/if}
 
-<Studio enabled={dev} />
+<Studio enabled={false && dev} />
 
 <div class="main">
   <Canvas>

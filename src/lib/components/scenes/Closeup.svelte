@@ -4,6 +4,9 @@
   import { showBlocker as showBlockerStore } from "$lib/stores/sceneControls";
   import { getContext, onMount } from "svelte";
   import Panzoom from "@panzoom/panzoom";
+  import ArrowDown from "$lib/assets/ui/arrow-down.svelte";
+  import ArrowLeft from "$lib/assets/ui/arrow-left.svelte";
+  import ArrowRight from "$lib/assets/ui/arrow-right.svelte";
 
   const image = getContext("images");
   const video = getContext("videos");
@@ -106,23 +109,27 @@
   >
     {#if scene.currentState.overlayType === "photo"}
       <button
+        class="drop-shadow left-arrow"
         onclick={() => {
           nextImage(true);
-        }}>PREVIOUS</button
-      >
+        }}
+        ><ArrowLeft />
+      </button>
       <img
         bind:this={imageHover}
         src={image[`spread/${currentImage}.webp`]}
-        alt="F from context"
+        alt="Spread"
         class="photo-spread"
         onmousemove={handleMove}
         onmouseleave={resetMove}
       />
       <button
+        class="drop-shadow right-arrow"
         onclick={() => {
           nextImage(false);
-        }}>NEXT</button
-      >
+        }}
+        ><ArrowRight />
+      </button>
     {:else if scene.currentState.overlayType === "grid"}
       <div class="grid-div">
         <img
@@ -149,7 +156,9 @@
     {/if}
 
     {#if !hideButton}
-      <button class="close-button" onclick={scene.closeOverlay}>Close</button>
+      <button class="close-button drop-shadow" onclick={scene.closeOverlay}>
+        <ArrowDown />
+      </button>
     {/if}
   </div>
 {/if}
@@ -172,6 +181,7 @@
     width: 100dvw;
     height: 100dvh;
     z-index: 10;
+    fill: white;
   }
 
   .blocker {
@@ -187,20 +197,44 @@
     pointer-events: none;
   }
 
-  .close-button {
-    position: absolute;
-    bottom: 1rem;
-    pointer-events: all;
+  .drop-shadow {
+    filter: drop-shadow(0 0 0.2rem black);
   }
 
   .photo-spread {
+    min-height: 70%;
     height: 70%;
     max-width: 80%;
     object-fit: contain;
+    margin: 0 1rem;
     transition: transform 0.1s ease;
     transform-style: preserve-3d;
     will-change: transform;
-    /* transition: transform 0.1s; */
+  }
+
+  .left-arrow,
+  .right-arrow,
+  .close-button {
+    will-change: transform;
+    transition: transform 0.2s ease;
+  }
+
+  .left-arrow:hover {
+    transform: translateX(-5px);
+  }
+
+  .right-arrow:hover {
+    transform: translateX(5px);
+  }
+
+  .close-button {
+    position: absolute;
+    bottom: 0;
+    pointer-events: all;
+  }
+
+  .close-button:hover {
+    transform: translateY(10px);
   }
 
   .grid-div {

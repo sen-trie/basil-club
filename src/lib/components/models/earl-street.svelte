@@ -4,36 +4,34 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\earl-street.glb -
 -->
 
 <script context="module">
-  import { T } from '@threlte/core'
-  import { useGltf, useDraco } from '@threlte/extras'
+  import { T } from "@threlte/core";
+  import { useGltf, useDraco } from "@threlte/extras";
 
   const load = () => {
-    return useGltf('/models/earl-street-transformed.glb', { dracoLoader: useDraco() })
-  }
+    return useGltf("/models/earl-street-transformed.glb", {
+      dracoLoader: useDraco(),
+    });
+  };
 
   export const preload = async () => {
-    await load()
-  }
+    await load();
+  };
 </script>
 
 <script>
-  let { fallback, error, children, ref = $bindable(), ...props } = $props()
+  let { fallback, error, children, ref = $bindable(), ...props } = $props();
 
-  const gltf = load()
+  const gltf = load();
 </script>
 
-<T.Group
-  bind:ref
-  dispose={false}
-  {...props}
->
+<T.Group bind:ref dispose={false} {...props}>
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}
     <T.Mesh
       name="Earl_Street"
       geometry={gltf.nodes.Earl_Street.geometry}
-      material={gltf.materials['Lego Group']}
+      material={gltf.materials["Lego Group"]}
     />
   {:catch err}
     {@render error?.({ error: err })}

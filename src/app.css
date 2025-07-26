@@ -1,12 +1,42 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: none;
+  border: none;
 }
 
 .flexbox {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.overlay-element {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+
+  width: 70px;
+  height: 70px;
+  border: 6px solid rgba(224, 224, 224, 0.9);
+  border-radius: 15%;
+  background-color: rgba(37, 37, 37);
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+}
+
+button.overlay-element {
+  font-size: 1.4rem;
+  transition: transform 0.2s ease;
+}
+
+button.overlay-element:hover {
+  transform: scale(1.1);
 }
