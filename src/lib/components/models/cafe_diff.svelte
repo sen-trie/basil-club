@@ -33,6 +33,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   } from "$lib/stores/sceneControls";
   import { Tween } from "svelte/motion";
   import { cubicInOut } from "svelte/easing";
+  import { FakeGlowMaterial } from "@threlte/extras";
   import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
   import { getScene } from "$lib/stores/worldState.svelte.js";
   const scene = getScene();
@@ -117,6 +118,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     currentFloor = state;
   };
   changeFloorStore.set(changeFloor);
+
+  let playPOVAnim = $state(null);
+  let robotPOVController = $state(null);
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>
@@ -190,13 +194,16 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         geometry={gltf.nodes.Cube013_11.geometry}
         material={gltf.materials["Toilet Door.001"]}
       />
-
-      <Sheet>
+      <Sheet name="Robot-Roam">
         <Sequence iterationCount={Infinity} autoplay delay={1000}>
           <SheetObject key="Cat Base">
             {#snippet children({ Transform })}
               <Transform>
-                <T.Group name="Cat_Base" rotation={[0, 0, 0]} visible={true}>
+                <T.Group
+                  name="Cat_Base_Roam"
+                  rotation={[0, 0, 0]}
+                  visible={false && scene.currentState.povCamera}
+                >
                   <T.Mesh
                     name="Cylinder"
                     geometry={gltf.nodes.Cylinder.geometry}
@@ -212,10 +219,10 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                     geometry={gltf.nodes.Cylinder_2.geometry}
                     material={gltf.materials["Robot Black"]}
                   />
-                  <SheetObject key="Cat Face">
+                  <SheetObject key="Cat Face Roam">
                     {#snippet children({ Transform })}
                       <Transform>
-                        <T.Group name="Cat_Face" position={[0, 0.63, 0]}>
+                        <T.Group name="Cat_Face_Roam" position={[0, 0.63, 0]}>
                           <T.Mesh
                             name="Sphere"
                             geometry={gltf.nodes.Sphere.geometry}
@@ -235,30 +242,34 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                       </Transform>
                     {/snippet}
                   </SheetObject>
+                  <T.Mesh
+                    name="FakeShadow"
+                    geometry={new CircleGeometry(0.39, 32)}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    position={[0, -0.685, 0]}
+                  >
+                    <T.MeshBasicMaterial
+                      transparent={true}
+                      opacity={0.25}
+                      color="black"
+                    />
+                  </T.Mesh>
                 </T.Group>
-                <T.Mesh
-                  name="FakeShadow"
-                  geometry={new CircleGeometry(0.39, 32)}
-                  rotation={[-Math.PI / 2, 0, 0]}
-                  position={[0, -0.685, 0]}
-                >
-                  <T.MeshBasicMaterial
-                    transparent={true}
-                    opacity={0.25}
-                    color="black"
-                  />
-                </T.Mesh>
               </Transform>
             {/snippet}
           </SheetObject>
         </Sequence>
       </Sheet>
-      <Sheet>
-        <Sequence iterationCount={Infinity} autoplay delay={1000}>
+      <Sheet name="Robot-POV">
+        <Sequence autoplay={false} bind:this={robotPOVController}>
           <SheetObject key="POV Base">
             {#snippet children({ Transform })}
               <Transform>
-                <T.Group name="Cat_Base" rotation={[0, 0, 0]}>
+                <T.Group
+                  name="Cat_Base_POV"
+                  rotation={[0, 0, 0]}
+                  visible={true || scene.currentState.povCamera}
+                >
                   <T.Mesh
                     name="Cylinder"
                     geometry={gltf.nodes.Cylinder.geometry}
@@ -274,7 +285,8 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                     geometry={gltf.nodes.Cylinder_2.geometry}
                     material={gltf.materials["Robot Black"]}
                   />
-                  <T.Group name="Tablet" position={[0, 0.37, -0.02]}>
+
+                  <T.Group name="Tablet" position={[0, 0.34, 0.01]}>
                     <T.Mesh
                       name="Cube096"
                       geometry={gltf.nodes.Cube096.geometry}
@@ -283,18 +295,19 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                     <T.Mesh
                       name="Cube096_1"
                       geometry={gltf.nodes.Cube096_1.geometry}
-                      material={gltf.materials["Tablet Bezel"]}
+                      material={gltf.materials["Tablet Screen"]}
                     />
                     <T.Mesh
                       name="Cube096_2"
                       geometry={gltf.nodes.Cube096_2.geometry}
-                      material={gltf.materials["Tablet Button"]}
+                      material={gltf.materials["Tablet Screen"]}
                     />
                   </T.Group>
+
                   <SheetObject key="POV Face">
                     {#snippet children({ Transform })}
                       <Transform>
-                        <T.Group name="Cat_Face" position={[0, 0.63, 0]}>
+                        <T.Group name="Cat_Face_POV" position={[0, 0.63, 0]}>
                           <T.Mesh
                             name="Sphere"
                             geometry={gltf.nodes.Sphere.geometry}
@@ -320,7 +333,11 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           </SheetObject>
         </Sequence>
       </Sheet>
-      <T.Group name="Flag" position={[2.09, -1.46, 3.44]}>
+      <T.Group
+        name="Flag"
+        position={[2.09, -1.46, 3.44]}
+        visible={!scene.currentState.povCamera}
+      >
         <T.Mesh
           name="Cube012"
           geometry={gltf.nodes.Cube012.geometry}
@@ -335,7 +352,17 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           name="Flag_Hitbox"
           geometry={gltf.nodes.Flag_Hitbox.geometry}
           material={gltf.nodes.Flag_Hitbox.material}
-        />
+          onclick={(e) => {
+            e.stopPropagation();
+            scene.togglePOVCamera();
+            if (!scene.currentState.interactables.flag) {
+              robotPOVController.position = 0;
+              robotPOVController.play();
+            }
+          }}
+        >
+          <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
+        </T.Mesh>
       </T.Group>
       <T.Group name="Four" position={[0.49, -2.22, 3.36]}>
         <T.Mesh
@@ -598,7 +625,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           <T.Mesh
             name="Photo_Hitbox"
             geometry={gltf.nodes.Photo_Hitbox.geometry}
-            material={gltf.nodes.Photo_Hitbox.material}
             position={[0, -0.04, 0]}
             rotation={[0, 0, Math.PI]}
             scale={[-1.19, -0.9, -0.08]}

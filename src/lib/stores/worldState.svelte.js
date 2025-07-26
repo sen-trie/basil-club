@@ -17,7 +17,6 @@ let currentState = $state({
     "mToilet": false,
     "bear": false,
     "flag": false,
-    "robot": false,
   },
 });
 

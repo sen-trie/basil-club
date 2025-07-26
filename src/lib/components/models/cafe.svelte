@@ -32,8 +32,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     changeFloor as changeFloorStore,
   } from "$lib/stores/sceneControls";
   import { Tween } from "svelte/motion";
-  import { cubicInOut } from "svelte/easing";
-  import { FakeGlowMaterial } from "@threlte/extras";
+  import { cubicInOut, linear } from "svelte/easing";
   import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
   import { getScene } from "$lib/stores/worldState.svelte.js";
   const scene = getScene();
@@ -52,6 +51,10 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   const { invalidate } = useThrelte();
 
   const nullZone = -999;
+  const hideZone = (t, condition) => {
+    return condition ? nullZone : t;
+  };
+
   const cafeTopFull = 7.34;
   const cafeTopHalf = 2.71;
   const cafeBotFull = 1.47;
@@ -119,8 +122,18 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   };
   changeFloorStore.set(changeFloor);
 
-  let playPOVAnim = $state(null);
   let robotPOVController = $state(null);
+  const rotationTween = new Tween(0, {
+    duration: 2000,
+    easing: linear,
+  });
+
+  function loopRotation() {
+    const nextRotation = rotationTween.current + Math.PI * 2;
+    rotationTween.set(nextRotation).then(loopRotation);
+  }
+
+  loopRotation();
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>
@@ -202,7 +215,8 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                 <T.Group
                   name="Cat_Base_Roam"
                   rotation={[0, 0, 0]}
-                  visible={false && scene.currentState.povCamera}
+                  visible={scene.currentState.interactables.flag &&
+                    !scene.currentState.povCamera}
                 >
                   <T.Mesh
                     name="Cylinder"
@@ -267,8 +281,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
               <Transform>
                 <T.Group
                   name="Cat_Base_POV"
+                  position={[0, hideZone(0, !scene.currentState.povCamera), 0]}
                   rotation={[0, 0, 0]}
-                  visible={true || scene.currentState.povCamera}
+                  visible={scene.currentState.povCamera}
                 >
                   <T.Mesh
                     name="Cylinder"
@@ -285,11 +300,14 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                     geometry={gltf.nodes.Cylinder_2.geometry}
                     material={gltf.materials["Robot Black"]}
                   />
-
                   <T.Group
                     name="Tablet"
-                    position={[0, 0.37 + 0.05, -0.02]}
-                    rotation={[0, 0, -0.2]}
+                    position={[0, 0.34 + 0.1, 0.01]}
+                    rotation={[0, rotationTween.current, -0.5]}
+                    onclick={(e) => {
+                      e.stopPropagation();
+                      changeOverlay("flag");
+                    }}
                   >
                     <T.Mesh
                       name="Cube096"
@@ -299,15 +317,14 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                     <T.Mesh
                       name="Cube096_1"
                       geometry={gltf.nodes.Cube096_1.geometry}
-                      material={gltf.materials["Tablet Bezel"]}
-                    ></T.Mesh>
+                      material={gltf.materials["Tablet Screen"]}
+                    />
                     <T.Mesh
                       name="Cube096_2"
                       geometry={gltf.nodes.Cube096_2.geometry}
-                      material={gltf.materials["Tablet Button"]}
+                      material={gltf.materials["Tablet Screen"]}
                     />
                   </T.Group>
-
                   <SheetObject key="POV Face">
                     {#snippet children({ Transform })}
                       <Transform>
@@ -339,7 +356,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       </Sheet>
       <T.Group
         name="Flag"
-        position={[2.09, scene.currentState.povCamera ? nullZone : -1.46, 3.44]}
+        position={[2.09, hideZone(-1.46, scene.currentState.povCamera), 3.44]}
         visible={!scene.currentState.povCamera}
       >
         <T.Mesh
@@ -359,7 +376,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           onclick={(e) => {
             e.stopPropagation();
             scene.togglePOVCamera();
-            if (!scene.currentState.interactables.robot) {
+            if (!scene.currentState.interactables.flag) {
               robotPOVController.position = 0;
               robotPOVController.play();
             }

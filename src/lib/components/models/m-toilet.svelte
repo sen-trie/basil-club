@@ -38,7 +38,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\m-toilet.glb --ro
   const gltf = load();
 </script>
 
-<T.Group bind:ref dispose={false} {...props}>
+<T.Group bind:ref dispose={false} scale={1.2} {...props}>
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}
