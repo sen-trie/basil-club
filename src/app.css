@@ -4,6 +4,11 @@
   box-sizing: border-box;
   background: none;
   border: none;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari and Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none;
 }
 
 .flexbox {
@@ -18,13 +23,12 @@
   align-items: center;
   flex-direction: row;
   justify-content: center;
-
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(224, 224, 224, 0.9);
+  border: 6px solid #442214;
   border-radius: 15%;
-  background-color: rgba(37, 37, 37);
-  color: #ffffff;
+  background-color: #2d1810;
+  color: #e8d5b7;
   box-sizing: border-box;
 }
 

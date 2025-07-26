@@ -445,7 +445,11 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         position={[0.03, -1.37, -0.83]}
         onclick={(e) => {
           e.stopPropagation();
-          scene.setMToilet();
+          if (scene.currentState.interactables.fToilet) {
+            scene.setMToilet();
+          } else {
+            scene.openDialog("men");
+          }
         }}
       />
       <T.Group name="Two" position={[-3, -2.07, 3.46]}>

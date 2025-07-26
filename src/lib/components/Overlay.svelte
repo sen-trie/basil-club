@@ -2,6 +2,7 @@
   import { getScene } from "$lib/stores/worldState.svelte.js";
   import Pane from "./overlay/Pane.svelte";
   import Closeup from "./scenes/Closeup.svelte";
+  import Dialog from "./scenes/Dialog.svelte";
   import Audio from "./overlay/Audio.svelte";
   import ArrowBack from "$lib/assets/ui/arrow-back.svelte";
 
@@ -46,6 +47,7 @@
   {/if}
 </div>
 <Closeup />
+<Dialog />
 
 <!-- {#if !pageStarted}
   <div class="overlay-screen intro-screen">
@@ -77,11 +79,11 @@
     padding-left: 6rem;
     font-size: 2.5rem;
     text-align: right;
-    background: #000000;
+    background: rgb(68, 34, 20, 1);
     background: linear-gradient(
       -90deg,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 1) 75%,
+      rgb(53, 29, 19) 0%,
+      rgb(68, 34, 20, 1) 75%,
       rgba(0, 0, 0, 0) 100%
     );
   }

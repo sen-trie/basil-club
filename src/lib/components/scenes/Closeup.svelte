@@ -168,13 +168,6 @@
 {/if}
 
 <style>
-  .flex {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-
   .close-up {
     position: absolute;
     color: white;
@@ -182,6 +175,13 @@
     height: 100dvh;
     z-index: 10;
     fill: white;
+  }
+
+  .flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 
   .blocker {

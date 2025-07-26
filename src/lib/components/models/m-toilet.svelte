@@ -77,7 +77,10 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\m-toilet.glb --ro
         scale={signScale.current}
         onclick={(e) => {
           e.stopPropagation();
-          if (!scene.currentState.interactables.bear) playTada();
+          if (!scene.currentState.interactables.bear) {
+            playTada();
+            scene.openDialog("bear");
+          }
           scene.setInteractable("bear");
         }}
       />

@@ -8,6 +8,7 @@ showBlocker.subscribe((fn) => {
 let currentState = $state({
   scene: "cafe",
   overlayType: "",
+  showDialog: null,
   povCamera: false,
   hudControls: false,
   bearTouches: 0,
@@ -71,6 +72,14 @@ export function getScene() {
         };
       }
       currentState.overlayType = "";
+    },
+
+    openDialog(dialogBox) {
+      currentState = { ...currentState, showDialog: dialogBox };
+    },
+
+    closeDialog() {
+      currentState = { ...currentState, showDialog: null };
     },
 
     setFloor(newFloor) {
