@@ -2,14 +2,15 @@
   import { T } from "@threlte/core";
   import { HUD, OrbitControls, HTML } from "@threlte/extras";
   import EarlStreet from "$lib/components/models/earl-street.svelte";
+  import { getScene } from "$lib/stores/worldState.svelte.js";
 
-  let { hudControlsEnabled } = $props();
+  const scene = getScene();
 </script>
 
-<HUD visible={hudControlsEnabled}>
+<HUD visible={scene.currentState.hudControls}>
   <T.OrthographicCamera makeDefault position={[12, 4, 10]} zoom={270}>
     <OrbitControls
-      enabled={hudControlsEnabled}
+      enabled={scene.currentState.hudControls}
       minZoom={270 * 0.75}
       maxZoom={270 * 1.25}
       enablePan={false}

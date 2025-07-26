@@ -7,8 +7,11 @@ showBlocker.subscribe((fn) => {
 
 let currentState = $state({
   scene: "cafe",
+  overlayType: "",
   povCamera: false,
+  hudControls: false,
   bearTouches: 0,
+  currentFloor: 0,
   interactables: {
     "photo": false,
     "grid": false,
@@ -49,7 +52,43 @@ export function getScene() {
       };
     },
 
+    setOverlay(nextOverlayType) {
+      if (this.currentState.hudControls) return;
+      if (nextOverlayType !== "hud") {
+        this.setInteractable(nextOverlayType);
+      }
+
+      currentState.overlayType = nextOverlayType;
+    },
+
+    closeOverlay() {
+      if (currentState.overlayType === "hud") {
+        currentState = {
+          ...currentState,
+          hudControls: false,
+        };
+      }
+      currentState.overlayType = "";
+    },
+
+    setFloor(newFloor) {
+      if (currentState.hudControls) return;
+      currentState = { ...currentState, currentFloor: newFloor };
+    },
+
+    toggleHud() {
+      if (currentState.povCamera) return;
+      this.setOverlay("hud");
+      this.setInteractable("earl-street");
+
+      currentState = {
+        ...currentState,
+        hudControls: !currentState.hudControls,
+      };
+    },
+
     togglePOVCamera() {
+      if (currentState.hudControls) return;
       const camCooldown = 500;
 
       if (Date.now() < sceneCooldown) return;

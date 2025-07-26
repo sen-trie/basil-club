@@ -1,11 +1,7 @@
 <script>
   import { fly, fade } from "svelte/transition";
   import { getScene } from "$lib/stores/worldState.svelte.js";
-  import {
-    showBlocker as showBlockerStore,
-    showOverlay as showOverlayStore,
-    hideHud,
-  } from "$lib/stores/sceneControls";
+  import { showBlocker as showBlockerStore } from "$lib/stores/sceneControls";
   import { getContext, onMount } from "svelte";
   import Panzoom from "@panzoom/panzoom";
 
@@ -14,10 +10,9 @@
   const scene = getScene();
 
   let blocker = $state(false);
-  let overlayType = $state("");
   let currentImage = $state(1);
   let imageHover = $state(null);
-  let overlayVisible = $state(false);
+  let overlayVisible = $derived(scene.currentState.overlayType !== "");
   let imagePanZoom = $state(null);
   let hideButton = $state(false);
 
@@ -66,30 +61,6 @@
     currentImage = currentImage < maxImage ? currentImage + 1 : 1;
   }
 
-  const showOverlay = (nextOverlayType) => {
-    overlayType = nextOverlayType;
-    overlayVisible = !overlayVisible;
-
-    if (overlayType !== "hud") {
-      scene.setInteractable(overlayType);
-    }
-  };
-  showOverlayStore.set(showOverlay);
-
-  let closeHud = () => {};
-  hideHud.subscribe((fn) => {
-    closeHud = fn;
-  });
-
-  const closeOverlay = () => {
-    if (overlayType === "hud") {
-      closeHud();
-    }
-
-    overlayType = "";
-    overlayVisible = false;
-  };
-
   onMount(() => {
     const preloadImages = ["spread/1.webp", "grid.webp"];
     preloadImages.forEach((imgPath) => {
@@ -114,7 +85,7 @@
   });
 
   $effect(() => {
-    hideButton = overlayType === "bear";
+    hideButton = scene.currentState.overlayType === "bear";
   });
 
   const showBlocker = () => {
@@ -129,11 +100,11 @@
 <!-- svelte-ignore a11y_mouse_events_have_key_events -->
 {#if overlayVisible}
   <div
-    class:no-pointer={overlayType === "hud"}
+    class:no-pointer={scene.currentState.overlayType === "hud"}
     class="close-up flex"
     transition:fly={{ y: 150, duration: 300 }}
   >
-    {#if overlayType === "photo"}
+    {#if scene.currentState.overlayType === "photo"}
       <button
         onclick={() => {
           nextImage(true);
@@ -152,7 +123,7 @@
           nextImage(false);
         }}>NEXT</button
       >
-    {:else if overlayType === "grid"}
+    {:else if scene.currentState.overlayType === "grid"}
       <div class="grid-div">
         <img
           bind:this={imagePanZoom}
@@ -161,15 +132,15 @@
           class="photo-grid"
         />
       </div>
-    {:else if overlayType === "bear"}
+    {:else if scene.currentState.overlayType === "bear"}
       <div class="grid-div">
         <!-- svelte-ignore a11y_media_has_caption -->
-        <video autoplay onended={closeOverlay}>
+        <video autoplay onended={scene.closeOverlay}>
           <source src={video["bear.mp4"]} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
-    {:else if overlayType === "checkout"}
+    {:else if scene.currentState.overlayType === "checkout"}
       <div class="checkout-div flex">
         <div class="checkout-box">
           <p>ORDERS RECEIVED: NONE</p>
@@ -178,7 +149,7 @@
     {/if}
 
     {#if !hideButton}
-      <button class="close-button" onclick={closeOverlay}>Close</button>
+      <button class="close-button" onclick={scene.closeOverlay}>Close</button>
     {/if}
   </div>
 {/if}

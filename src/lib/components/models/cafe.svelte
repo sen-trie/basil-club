@@ -17,20 +17,8 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 </script>
 
 <script>
-  let {
-    fallback,
-    error,
-    children,
-    ref = $bindable(),
-    hudControlsEnabled,
-    ...props
-  } = $props();
+  let { fallback, error, children, ref = $bindable(), ...props } = $props();
   import { CircleGeometry } from "three";
-  import {
-    showOverlay,
-    showHud,
-    changeFloor as changeFloorStore,
-  } from "$lib/stores/sceneControls";
   import { Tween } from "svelte/motion";
   import { cubicInOut, linear } from "svelte/easing";
   import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
@@ -38,17 +26,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   const scene = getScene();
 
   const gltf = load();
-  let changeOverlay = () => {};
-  showOverlay.subscribe((fn) => {
-    changeOverlay = fn;
-  });
-
-  let changeHud = () => {};
-  showHud.subscribe((fn) => {
-    changeHud = fn;
-  });
-
-  const { invalidate } = useThrelte();
 
   const nullZone = -999;
   const hideZone = (t, condition) => {
@@ -100,27 +77,27 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     ]);
   }
 
-  let currentFloor = $state(0);
-  let cafeTopY = $state(cafeTopFull);
-  let cafeBottomY = $state(cafeBotFull);
-
-  const changeFloor = (state) => {
-    if (hudControlsEnabled) return;
-
-    cafeTopY = cafeTopFull;
-    cafeBottomY = cafeBotFull;
-
-    if (state === 1) {
-      cafeTopY = cafeTopHalf;
-      cafeBottomY = nullZone;
-    } else if (state === 2) {
-      cafeTopY = nullZone;
+  let cafeTopY = $derived.by(() => {
+    if (scene.currentState.currentFloor === 0) {
+      return cafeTopFull;
+    } else if (scene.currentState.currentFloor === 1) {
+      return cafeTopHalf;
+    } else {
+      return nullZone;
     }
+  });
 
-    invalidate();
-    currentFloor = state;
-  };
-  changeFloorStore.set(changeFloor);
+  let cafeBottomY = $derived.by(() => {
+    if (scene.currentState.currentFloor === 0) {
+      return cafeBotFull;
+    } else if (scene.currentState.currentFloor === 1) {
+      return nullZone;
+    } else {
+      return cafeBotFull;
+    }
+  });
+
+  // invalidate();
 
   let robotPOVController = $state(null);
   const rotationTween = new Tween(0, {
@@ -281,7 +258,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
               <Transform>
                 <T.Group
                   name="Cat_Base_POV"
-                  position={[0, hideZone(0, !scene.currentState.povCamera), 0]}
                   rotation={[0, 0, 0]}
                   visible={scene.currentState.povCamera}
                 >
@@ -302,11 +278,15 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                   />
                   <T.Group
                     name="Tablet"
-                    position={[0, 0.34 + 0.1, 0.01]}
+                    position={[
+                      0,
+                      hideZone(0.34 + 0.1, !scene.currentState.povCamera),
+                      0.01,
+                    ]}
                     rotation={[0, rotationTween.current, -0.5]}
                     onclick={(e) => {
                       e.stopPropagation();
-                      changeOverlay("flag");
+                      scene.setOverlay("flag");
                     }}
                   >
                     <T.Mesh
@@ -444,7 +424,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           material={gltf.materials["Lego Group"]}
           onclick={(e) => {
             e.stopPropagation();
-            changeHud("earl");
+            scene.toggleHud();
           }}
         />
       </T.Group>
@@ -562,7 +542,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
             e.stopPropagation();
             const res = scene.touchBear();
             if (res === true) {
-              changeOverlay("bear");
+              scene.setOverlay("bear");
               setTimeout(() => {
                 bearVisible = false;
               }, 2000);
@@ -651,7 +631,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
             scale={[-1.19, -0.9, -0.08]}
             onclick={(e) => {
               e.stopPropagation();
-              changeOverlay("grid");
+              scene.setOverlay("grid");
             }}
           >
             <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -813,7 +793,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         position={[-1.73, -2.13, 0.39]}
         onclick={(e) => {
           e.stopPropagation();
-          changeOverlay("photo");
+          scene.setOverlay("photo");
         }}
       />
       <T.Group name="Six" position={[-0.68, -4.13, 1.12]}>
