@@ -110,6 +110,7 @@ export function getScene() {
     },
 
     setMToilet() {
+      if (currentState.hudControls) return;
       if (Date.now() < sceneCooldown) return;
       sceneCooldown = Date.now() + timeCooldown;
       this.setInteractable("mToilet");
@@ -117,6 +118,7 @@ export function getScene() {
     },
 
     setFToilet() {
+      if (currentState.hudControls) return;
       if (Date.now() < sceneCooldown) return;
       sceneCooldown = Date.now() + timeCooldown;
       this.setInteractable("fToilet");

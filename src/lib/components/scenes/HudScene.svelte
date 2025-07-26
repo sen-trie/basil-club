@@ -7,6 +7,8 @@
   import { Tween } from "svelte/motion";
   import { cubicInOut } from "svelte/easing";
 
+  let { browserZoomLevel } = $props();
+
   const scene = getScene();
   const offset = -0.2;
 
@@ -30,11 +32,15 @@
 </script>
 
 <HUD visible={scene.currentState.hudControls}>
-  <T.OrthographicCamera makeDefault position={[12, 4, 10]} zoom={270}>
+  <T.OrthographicCamera
+    makeDefault
+    position={[12, 4, 10]}
+    zoom={270 / browserZoomLevel}
+  >
     <OrbitControls
       enabled={scene.currentState.hudControls}
-      minZoom={270 * 0.75}
-      maxZoom={270 * 1.25}
+      minZoom={(270 * 0.75) / browserZoomLevel}
+      maxZoom={(270 * 1.25) / browserZoomLevel}
       enablePan={false}
     />
   </T.OrthographicCamera>

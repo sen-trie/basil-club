@@ -10,7 +10,7 @@ export const defaultView = {
   enabled: true,
   fullWidth: 2000,
   fullHeight: 1000,
-  offsetX: 100,
+  offsetX: 50,
   offsetY: -150,
   width: 2000,
   height: 1000,

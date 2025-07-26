@@ -1,6 +1,7 @@
 <script>
   import { getScene } from "$lib/stores/worldState.svelte.js";
   import { Vector3 } from "three";
+  import { onMount } from "svelte";
   import { T, useTask } from "@threlte/core";
   import { OrbitControls, interactivity, transitions } from "@threlte/extras";
   import HudScene from "./scenes/HudScene.svelte";
@@ -41,13 +42,46 @@
 
     target.clamp(minPan, maxPan);
   });
+
+  let browserZoomLevel = $state(1); // Initialize with a default value (100% zoom)
+
+  function updateZoomLevel() {
+    browserZoomLevel = window.devicePixelRatio;
+    console.log(browserZoomLevel);
+  }
+
+  onMount(() => {
+    updateZoomLevel();
+    window.addEventListener("resize", updateZoomLevel);
+
+    return () => window.removeEventListener("resize", updateZoomLevel);
+  });
 </script>
 
 <T.OrthographicCamera
   makeDefault={!scene.currentState.povCamera}
   position={[20, 0, 20]}
-  zoom={defaultZoom}
+  zoom={defaultZoom / browserZoomLevel}
   view={{ ...defaultView }}
+  bind:ref={cameraRef}
+>
+  <OrbitControls
+    enabled={!scene.currentState.hudControls}
+    bind:ref={controlsRef}
+    {minPolarAngle}
+    {maxPolarAngle}
+    {minAzimuthAngle}
+    {maxAzimuthAngle}
+    {enableDamping}
+    {enablePan}
+    minZoom={(defaultZoom * 0.9) / browserZoomLevel}
+    maxZoom={(defaultZoom * 5) / browserZoomLevel}
+  />
+</T.OrthographicCamera>
+
+<!-- <T.PerspectiveCamera
+  makeDefault={!scene.currentState.povCamera}
+  position={[20, 0, 20]}
   bind:ref={cameraRef}
 >
   <OrbitControls
@@ -62,10 +96,10 @@
     minZoom={defaultZoom * 0.9}
     maxZoom={defaultZoom * 5}
   />
-</T.OrthographicCamera>
+</T.PerspectiveCamera> -->
 
 <POVScene />
-<HudScene />
+<HudScene {browserZoomLevel} />
 
 {#if scene.currentState.scene === "cafe"}
   <Cafe
