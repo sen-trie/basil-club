@@ -4,56 +4,49 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cat.glb --root /m
 -->
 
 <script context="module">
-  import { T } from '@threlte/core'
-  import { useGltf, useDraco } from '@threlte/extras'
+  import { T } from "@threlte/core";
+  import { useGltf, useDraco } from "@threlte/extras";
 
   const load = () => {
-    return useGltf('/models/cat-transformed.glb', { dracoLoader: useDraco() })
-  }
+    return useGltf("/models/cat-transformed.glb", { dracoLoader: useDraco() });
+  };
 
   export const preload = async () => {
-    await load()
-  }
+    await load();
+  };
 </script>
 
 <script>
-  let { fallback, error, children, ref = $bindable(), ...props } = $props()
+  let { fallback, error, children, ref = $bindable(), ...props } = $props();
 
-  const gltf = load()
+  const gltf = load();
 </script>
 
-<T.Group
-  bind:ref
-  dispose={false}
-  {...props}
->
+<T.Group bind:ref dispose={false} {...props}>
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}
     <T.Mesh
       name="Cat_Base"
       geometry={gltf.nodes.Cat_Base.geometry}
-      material={gltf.materials['Cashier Plastic']}
+      material={gltf.materials["Cashier Plastic"]}
       position={[0, 0.3, 0]}
     >
-      <T.Group
-        name="Cat_Cylinder"
-        position={[-0.02, 1.7, 0]}
-      >
+      <T.Group name="Cat_Cylinder" position={[-0.02, 1.7, 0]}>
         <T.Mesh
           name="Reference002"
           geometry={gltf.nodes.Reference002.geometry}
-          material={gltf.materials['Hard Plastic']}
+          material={gltf.materials["Hard Plastic"]}
         />
         <T.Mesh
           name="Reference002_1"
           geometry={gltf.nodes.Reference002_1.geometry}
-          material={gltf.materials['Cashier Plastic']}
+          material={gltf.materials["Cashier Plastic"]}
         />
         <T.Mesh
           name="Reference002_2"
           geometry={gltf.nodes.Reference002_2.geometry}
-          material={gltf.materials['White Metal']}
+          material={gltf.materials["var(--colour-light) Metal"]}
         />
         <T.Group
           name="Face"
@@ -64,12 +57,12 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cat.glb --root /m
           <T.Mesh
             name="Sphere"
             geometry={gltf.nodes.Sphere.geometry}
-            material={gltf.materials['Hard Plastic']}
+            material={gltf.materials["Hard Plastic"]}
           />
           <T.Mesh
             name="Sphere_1"
             geometry={gltf.nodes.Sphere_1.geometry}
-            material={gltf.materials['Light Plastic']}
+            material={gltf.materials["Light Plastic"]}
           />
           <T.Mesh
             name="Sphere_2"

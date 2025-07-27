@@ -31,9 +31,9 @@
     padding: 1rem 1.5rem;
     font-size: 1.6rem;
     line-height: 2rem;
-    background: #2d1810;
-    color: #e8d5b7;
-    border: 2px solid #442214;
+    background: var(--colour-black);
+    color: var(--colour-light);
+    border: 2px solid var(--colour-dark);
     border-radius: 20px;
     z-index: 3;
   }

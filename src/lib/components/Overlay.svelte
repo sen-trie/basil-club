@@ -67,6 +67,7 @@
     padding: 0.5rem 2rem;
     padding-left: 6rem;
     font-size: 2.5rem;
+    font-weight: 700;
     text-align: right;
     background: rgb(68, 34, 20, 1);
     background: linear-gradient(
@@ -79,6 +80,6 @@
 
   p,
   button {
-    color: white;
+    color: var(--colour-light);
   }
 </style>

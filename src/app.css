@@ -1,3 +1,9 @@
+:root {
+  --colour-light: #e8d5b7;
+  --colour-dark: #442214;
+  --colour-black: #2d1810;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +15,24 @@
   -webkit-user-select: none; /* Safari and Chrome */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none;
+
+  font-family: "Nunito", sans-serif;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 1000;
+  font-style: italic;
+  font-display: swap;
 }
 
 canvas {
@@ -29,10 +53,10 @@ canvas {
   justify-content: center;
   width: 70px;
   height: 70px;
-  border: 6px solid #442214;
+  border: 6px solid var(--colour-dark);
   border-radius: 15%;
-  background-color: #2d1810;
-  color: #e8d5b7;
+  background-color: var(--colour-black);
+  color: var(--colour-light);
   box-sizing: border-box;
 }
 
@@ -42,6 +66,7 @@ button {
 
 button.overlay-element {
   font-size: 1.4rem;
+  font-weight: 600;
   transition: transform 0.2s ease;
 }
 

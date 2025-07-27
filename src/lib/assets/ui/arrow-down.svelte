@@ -10,7 +10,7 @@
     stroke-linejoin:round;
     stroke-miterlimit:1.5;
     fill:none;
-    stroke:white;
+    stroke:var(--colour-light);
     stroke-width:25px;"
 >
   <path d="M40.073,92.357l501.594,166.827l501.593,-166.827" />

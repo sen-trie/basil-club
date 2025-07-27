@@ -170,11 +170,11 @@
 <style>
   .close-up {
     position: absolute;
-    color: white;
+    color: var(--colour-light);
     width: 100dvw;
     height: 100dvh;
     z-index: 10;
-    fill: white;
+    fill: var(--colour-light);
   }
 
   .flex {
