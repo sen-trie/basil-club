@@ -116,31 +116,39 @@
     }
   };
 
+  export const pauseBGM = () => {
+    if (bgmSource && bgmBuffer) {
+      try {
+        const elapsed = audioCtx.currentTime - bgmStartTime;
+        bgmOffset += elapsed % bgmBuffer.duration;
+        stopBGM();
+      } catch (error) {
+        console.warn("Error handling visibility change:", error);
+      }
+    }
+  };
+
+  export const resumeBGM = async () => {
+    if (audioCtx && audioCtx.state === "suspended") {
+      await initAudioContext();
+    }
+
+    if (gameStarted && bgmBuffer && isAudioContextReady) {
+      const clampedOffset = bgmOffset % bgmBuffer.duration;
+      bgmSource = await playBuffer(bgmBuffer, true, clampedOffset);
+      if (bgmSource) {
+        bgmStartTime = audioCtx.currentTime;
+      }
+    }
+  };
+
   const handleVisibility = async () => {
     if (!browser) return;
 
     if (document.hidden) {
-      if (bgmSource && bgmBuffer) {
-        try {
-          const elapsed = audioCtx.currentTime - bgmStartTime;
-          bgmOffset += elapsed % bgmBuffer.duration;
-          stopBGM();
-        } catch (error) {
-          console.warn("Error handling visibility change:", error);
-        }
-      }
+      pauseBGM();
     } else {
-      if (audioCtx && audioCtx.state === "suspended") {
-        await initAudioContext();
-      }
-
-      if (gameStarted && bgmBuffer && isAudioContextReady) {
-        const clampedOffset = bgmOffset % bgmBuffer.duration;
-        bgmSource = await playBuffer(bgmBuffer, true, clampedOffset);
-        if (bgmSource) {
-          bgmStartTime = audioCtx.currentTime;
-        }
-      }
+      resumeBGM();
     }
   };
 

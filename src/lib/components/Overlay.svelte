@@ -5,6 +5,8 @@
   import Closeup from "./scenes/Closeup.svelte";
   import Dialog from "./scenes/Dialog.svelte";
   import ArrowBack from "$lib/assets/ui/arrow-back.svelte";
+  import VolOn from "$lib/assets/ui/vol-on.svelte";
+  import VolMute from "$lib/assets/ui/vol-mute.svelte";
 
   const scene = getScene();
 </script>
@@ -35,6 +37,18 @@
   {:else if scene.currentState.scene === "cafe"}
     <Pane />
   {/if}
+  <button
+    class="overlay-element"
+    onclick={() => {
+      scene.toggleAudio();
+    }}
+  >
+    {#if scene.currentState.muted}
+      <VolMute />
+    {:else}
+      <VolOn />
+    {/if}
+  </button>
 </div>
 <Closeup />
 <Dialog />

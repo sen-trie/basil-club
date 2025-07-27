@@ -3,16 +3,17 @@
   import { Canvas } from "@threlte/core";
   import { useProgress } from "@threlte/extras";
   import { Studio, Project } from "@threlte/theatre";
+  import { getContext, onMount, onDestroy } from "svelte";
   import { dev } from "$app/environment";
   import { Tween } from "svelte/motion";
   import { fromStore } from "svelte/store";
-  import { getContext } from "svelte";
   import Loading from "$lib/components/loading/LoadingBar.svelte";
   import Overlay from "$lib/components/Overlay.svelte";
   import Audio from "$lib/components/Audio.svelte";
   import projectState from "$lib/assets/configState.json";
   import MToilet from "$lib/components/models/m-toilet.svelte";
   import FToilet from "$lib/components/models/f-toilet.svelte";
+  import { audioRef } from "$lib/stores/sceneControls.js";
 
   const image = getContext("images");
 
@@ -47,6 +48,14 @@
     if (pageStarted) {
       audioEl.playBGM();
     }
+  });
+
+  onMount(() => {
+    audioRef.set(audioEl);
+  });
+
+  onDestroy(() => {
+    audioRef.set(null);
   });
 </script>
 
