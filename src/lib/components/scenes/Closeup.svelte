@@ -147,6 +147,13 @@
           Your browser does not support the video tag.
         </video>
       </div>
+    {:else if scene.currentState.overlayType === "flag"}
+      <div class="flag-wrapper flexbox">
+        <div class="flag-tablet">
+          <p>123</p>
+          <button>123</button>
+        </div>
+      </div>
     {:else if scene.currentState.overlayType === "checkout"}
       <div class="checkout-div flex">
         <div class="checkout-box">
@@ -175,6 +182,7 @@
     height: 100dvh;
     z-index: 10;
     fill: var(--colour-light);
+    background-color: rgba(0, 0, 0, 0.7);
   }
 
   .flex {
@@ -195,6 +203,7 @@
 
   .no-pointer {
     pointer-events: none;
+    background: none;
   }
 
   .drop-shadow {
@@ -254,6 +263,47 @@
     position: relative;
     height: 80%;
     object-fit: contain;
+  }
+
+  .flag-wrapper {
+    position: relative;
+    bottom: 5%;
+    width: 95%;
+    height: 85%;
+  }
+
+  .flag-tablet {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 2 / 3;
+    border: 3px solid #949494;
+    border-radius: 35px;
+    background-color: wheat;
+    padding: 50px 35px;
+    overflow: hidden;
+  }
+
+  .flag-tablet::before {
+    background: none;
+    border: 35px solid #0e0d0d;
+    border-top-width: 50px;
+    border-bottom-width: 50px;
+    border-radius: 32px;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    pointer-events: none;
+  }
+
+  p {
+    color: blue;
   }
 
   .checkout-div {

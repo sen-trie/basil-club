@@ -16,6 +16,18 @@
   <p class="interactable-count">
     {scene.countInteractables} / {scene.maxInteractables}
   </p>
+  <button
+    class="overlay-element"
+    onclick={() => {
+      scene.toggleAudio();
+    }}
+  >
+    {#if scene.currentState.muted}
+      <VolMute />
+    {:else}
+      <VolOn />
+    {/if}
+  </button>
   {#if scene.currentState.povCamera}
     <button
       class="overlay-element"
@@ -37,18 +49,6 @@
   {:else if scene.currentState.scene === "cafe"}
     <Pane />
   {/if}
-  <button
-    class="overlay-element"
-    onclick={() => {
-      scene.toggleAudio();
-    }}
-  >
-    {#if scene.currentState.muted}
-      <VolMute />
-    {:else}
-      <VolOn />
-    {/if}
-  </button>
 </div>
 <Closeup />
 <Dialog />
