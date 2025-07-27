@@ -47,7 +47,6 @@
 
   function updateZoomLevel() {
     browserZoomLevel = window.devicePixelRatio;
-    console.log(browserZoomLevel);
   }
 
   onMount(() => {

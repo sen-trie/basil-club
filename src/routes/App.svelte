@@ -9,6 +9,7 @@
   import { getContext } from "svelte";
   import Loading from "$lib/components/loading/LoadingBar.svelte";
   import Overlay from "$lib/components/Overlay.svelte";
+  import Audio from "$lib/components/Audio.svelte";
   import projectState from "$lib/assets/configState.json";
   import MToilet from "$lib/components/models/m-toilet.svelte";
   import FToilet from "$lib/components/models/f-toilet.svelte";
@@ -39,6 +40,14 @@
       },
     };
   }
+
+  let audioEl = $state(null);
+
+  $effect(() => {
+    if (pageStarted) {
+      audioEl.playBGM();
+    }
+  });
 </script>
 
 {#if !pageStarted}
@@ -53,6 +62,7 @@
   <Overlay />
 {/if}
 
+<Audio bind:this={audioEl} isMuted={false} gameStarted={true} />
 <Studio enabled={false && dev} />
 
 <div class="main">

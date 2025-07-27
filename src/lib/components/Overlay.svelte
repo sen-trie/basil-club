@@ -1,25 +1,16 @@
 <script>
-  import { onMount } from "svelte";
   import { getScene } from "$lib/stores/worldState.svelte.js";
   import { fade } from "svelte/transition";
   import Pane from "./overlay/Pane.svelte";
   import Closeup from "./scenes/Closeup.svelte";
   import Dialog from "./scenes/Dialog.svelte";
-  import Audio from "./overlay/Audio.svelte";
   import ArrowBack from "$lib/assets/ui/arrow-back.svelte";
-
-  let audioEl = $state(null);
-
-  onMount(() => {
-    console.log("page start");
-  });
 
   const scene = getScene();
 </script>
 
 <!-- TODO Disable when hud -->
 <div transition:fade={{ duration: 400, delay: 500 }} class="overlay-screen">
-  <!-- <Audio bind:this={audioEl} /> -->
   <p class="interactable-count">
     {scene.countInteractables} / {scene.maxInteractables}
   </p>
@@ -80,6 +71,6 @@
 
   p,
   button {
-    color: var(--colour-light);
+    color: white;
   }
 </style>

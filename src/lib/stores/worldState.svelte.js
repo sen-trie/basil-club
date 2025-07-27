@@ -6,6 +6,7 @@ showBlocker.subscribe((fn) => {
 });
 
 let currentState = $state({
+  muted: false,
   scene: "cafe",
   overlayType: "",
   showDialog: null,
@@ -61,6 +62,15 @@ export function getScene() {
         this.setInteractable(nextOverlayType);
       }
 
+      if (nextOverlayType === "bear") {
+        this.toggleAudio();
+        setTimeout(() => {
+          if (this.currentState.muted) {
+            this.toggleAudio();
+          }
+        }, 8000);
+      }
+
       currentState.overlayType = nextOverlayType;
     },
 
@@ -85,6 +95,10 @@ export function getScene() {
     setFloor(newFloor) {
       if (currentState.hudControls) return;
       currentState = { ...currentState, currentFloor: newFloor };
+    },
+
+    toggleAudio() {
+      currentState = { ...currentState, muted: !currentState.muted };
     },
 
     toggleHud() {

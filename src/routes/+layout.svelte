@@ -22,8 +22,14 @@
     import: "default",
   });
 
+  const audios = import.meta.glob("$lib/assets/audio/**/*.{mp3,}", {
+    eager: true,
+    import: "default",
+  });
+
   setContext("images", simplify(images, "/assets/images/"));
   setContext("videos", simplify(videos, "/assets/videos/"));
+  setContext("audios", simplify(audios, "/assets/audio/"));
 </script>
 
 {@render children()}
