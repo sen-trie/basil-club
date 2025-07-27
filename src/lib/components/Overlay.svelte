@@ -1,25 +1,24 @@
 <script>
+  import { onMount } from "svelte";
   import { getScene } from "$lib/stores/worldState.svelte.js";
+  import { fade } from "svelte/transition";
   import Pane from "./overlay/Pane.svelte";
   import Closeup from "./scenes/Closeup.svelte";
   import Dialog from "./scenes/Dialog.svelte";
   import Audio from "./overlay/Audio.svelte";
   import ArrowBack from "$lib/assets/ui/arrow-back.svelte";
 
-  let pageStarted = $state(false);
   let audioEl = $state(null);
 
-  $effect(() => {
-    if (pageStarted) {
-      audioEl.playBGM;
-    }
+  onMount(() => {
+    console.log("page start");
   });
 
   const scene = getScene();
 </script>
 
 <!-- TODO Disable when hud -->
-<div class="overlay-screen">
+<div transition:fade={{ duration: 400, delay: 500 }} class="overlay-screen">
   <!-- <Audio bind:this={audioEl} /> -->
   <p class="interactable-count">
     {scene.countInteractables} / {scene.maxInteractables}
@@ -48,16 +47,6 @@
 </div>
 <Closeup />
 <Dialog />
-
-<!-- {#if !pageStarted}
-  <div class="overlay-screen intro-screen">
-    <button
-      onclick={() => {
-        pageStarted = true;
-      }}>START</button
-    >
-  </div>
-{/if} -->
 
 <style>
   .overlay-screen {
@@ -88,16 +77,8 @@
     );
   }
 
-  .intro-screen {
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
-
-  p {
+  p,
+  button {
     color: white;
   }
 </style>

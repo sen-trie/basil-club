@@ -35,6 +35,6 @@
     color: #e8d5b7;
     border: 2px solid #442214;
     border-radius: 20px;
-    z-index: 1;
+    z-index: 3;
   }
 </style>

@@ -11,6 +11,10 @@
   -ms-user-select: none;
 }
 
+canvas {
+  z-index: 2;
+}
+
 .flexbox {
   display: flex;
   align-items: center;

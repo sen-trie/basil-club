@@ -5,27 +5,49 @@
   import { Studio, Project } from "@threlte/theatre";
   import { dev } from "$app/environment";
   import { Tween } from "svelte/motion";
-  import { fade } from "svelte/transition";
   import { fromStore } from "svelte/store";
+  import { getContext } from "svelte";
+  import Loading from "$lib/components/loading/LoadingBar.svelte";
   import Overlay from "$lib/components/Overlay.svelte";
-  import state from "$lib/assets/state.json";
-
+  import projectState from "$lib/assets/configState.json";
   import MToilet from "$lib/components/models/m-toilet.svelte";
   import FToilet from "$lib/components/models/f-toilet.svelte";
 
+  const image = getContext("images");
+
   const { progress } = useProgress();
   const p = fromStore(progress);
-  const tweenedProgress = Tween.of(() => p.current, { duration: 150 });
+  const tweenedProgress = Tween.of(() => p.current, { duration: 100 });
   const progressWidth = $derived(100 * tweenedProgress.current);
   const progressLessThanOne = $derived(tweenedProgress.current < 1);
+
+  let pageStarted = $state(false);
+
+  import { cubicInOut } from "svelte/easing";
+  function clipReverse(_node, { duration = 1000 } = {}) {
+    return {
+      duration,
+      easing: cubicInOut,
+      css: (_t, u) => {
+        const clip = `inset(${u * 50}% ${u * 50}% calc(${u}*(50% + 4rem)) ${u * 50}% round ${u * 50}%)`;
+        // const clip = `circle(${t * 100}% at 50% calc(50% - 4rem));`;
+        const scale = 1 - 0.1 * u;
+        return `
+          clip-path: ${clip};
+          transform: scale(${scale});
+        `;
+      },
+    };
+  }
 </script>
 
-{#if progressLessThanOne}
-  <div transition:fade={{ duration: 200 }} class="wrapper">
-    <p class="loading">Loading</p>
-    <div class="bar-wrapper">
-      <div class="bar" style="width: {progressWidth}%"></div>
-    </div>
+{#if !pageStarted}
+  <div out:clipReverse={{ duration: 1200 }} class="wrapper">
+    <Loading
+      {progressLessThanOne}
+      {progressWidth}
+      startPage={() => (pageStarted = true)}
+    />
   </div>
 {:else}
   <Overlay />
@@ -35,7 +57,7 @@
 
 <div class="main">
   <Canvas>
-    <Project name="Basil Club" config={{ state }}>
+    <Project name="Basil Club" config={{ state: projectState }}>
       <Scene />
       <div class="preload">
         <MToilet visible={false} position={[9999, 9999, 9999]} />
@@ -43,43 +65,40 @@
       </div>
     </Project>
   </Canvas>
+  <img class="loading-img" src={image["loading.webp"]} alt="" />
 </div>
 
 <style>
   div.main {
     position: relative;
     height: 100%;
+    background-color: #1f100a;
+  }
+
+  .loading-img {
+    position: absolute;
+    object-fit: contain;
+    width: min(300px, 80%);
+    height: auto;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: 1;
+    pointer-events: none;
   }
 
   .wrapper {
     position: absolute;
     width: 100%;
     height: 100%;
+    z-index: 10;
     top: 0;
     left: 0;
-    background-color: white;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
     align-items: center;
     justify-content: center;
-    color: black;
-  }
-
-  .loading {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-
-  .bar-wrapper {
-    width: 33.333333%;
-    height: 10px;
-    border: 1px solid black;
-    position: relative;
-  }
-
-  .bar {
-    height: 100%;
-    background-color: black;
+    background: #ebded9;
+    padding-bottom: 4rem;
   }
 </style>
