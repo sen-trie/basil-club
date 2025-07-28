@@ -1,7 +1,11 @@
 :root {
+  --colour-white: #f1e6d5;
   --colour-light: #e8d5b7;
+  --colour-grey: #949494;
   --colour-dark: #442214;
   --colour-black: #2d1810;
+  --colour-green: #7a9d54;
+  --colour-dark-green: rgb(71, 99, 41);
 }
 
 * {
@@ -46,6 +50,13 @@ canvas {
   justify-content: space-between;
 }
 
+.flex-v {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .overlay-element {
   display: flex;
   align-items: center;
@@ -53,8 +64,8 @@ canvas {
   justify-content: center;
   width: 70px;
   height: 70px;
-  border: 6px solid var(--colour-dark);
   border-radius: 15%;
+  border: 6px solid var(--colour-dark);
   background-color: var(--colour-black);
   color: var(--colour-light);
   box-sizing: border-box;

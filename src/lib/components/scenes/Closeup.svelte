@@ -17,7 +17,9 @@
   let hideButton = $state(false);
 
   $effect(() => {
-    hideButton = scene.currentState.overlayType === "bear";
+    hideButton =
+      scene.currentState.overlayType === "bear" ||
+      scene.currentState.overlayType === "flag";
   });
 
   const showBlocker = () => {
