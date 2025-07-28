@@ -1,5 +1,5 @@
-import { showBlocker, audioRef } from "./sceneControls";
-import { get } from "svelte/store";
+import { showBlocker } from "./sceneControls";
+// import { get } from "svelte/store";
 
 let changeBlocker = () => {};
 showBlocker.subscribe((fn) => {
@@ -63,13 +63,13 @@ export function getScene() {
         this.setInteractable(nextOverlayType);
       }
 
-      if (nextOverlayType === "bear") {
-        const audioEl = get(audioRef);
-        audioEl.pauseBGM();
-        setTimeout(() => {
-          audioEl.resumeBGM();
-        }, 10000);
-      }
+      // if (nextOverlayType === "bear") {
+      //   const audioEl = get(audioRef);
+      //   audioEl.pauseBGM();
+      //   setTimeout(() => {
+      //     audioEl.resumeBGM();
+      //   }, 10000);
+      // }
 
       currentState.overlayType = nextOverlayType;
     },

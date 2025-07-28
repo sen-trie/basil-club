@@ -42,21 +42,21 @@
     };
   }
 
-  let audioEl = $state(null);
+  // let audioEl = $state(null);
 
-  $effect(() => {
-    if (pageStarted) {
-      audioEl.playBGM();
-    }
-  });
+  // $effect(() => {
+  //   if (pageStarted) {
+  //     audioEl.playBGM();
+  //   }
+  // });
 
-  onMount(() => {
-    audioRef.set(audioEl);
-  });
+  // onMount(() => {
+  //   audioRef.set(audioEl);
+  // });
 
-  onDestroy(() => {
-    audioRef.set(null);
-  });
+  // onDestroy(() => {
+  //   audioRef.set(null);
+  // });
 </script>
 
 {#if !pageStarted}
@@ -71,7 +71,7 @@
   <Overlay />
 {/if}
 
-<Audio bind:this={audioEl} isMuted={false} gameStarted={true} />
+<!-- <Audio bind:this={audioEl} isMuted={false} gameStarted={true} /> -->
 <Studio enabled={false && dev} />
 
 <div class="main">
