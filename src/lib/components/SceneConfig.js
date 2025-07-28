@@ -4,7 +4,7 @@ export const minAzimuthAngle = 0.2;
 export const maxAzimuthAngle = Math.PI / 2 - minAzimuthAngle;
 export const enableDamping = true;
 export const enablePan = true;
-export const defaultZoom = 50;
+export const defaultZoom = 60;
 
 export const defaultView = {
   enabled: true,

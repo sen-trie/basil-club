@@ -91,6 +91,8 @@
     }
   }
 
+  // TODO FIX REPLAY WHEN DOUBLE PAUSING
+
   export const playBGM = async () => {
     if (!bgmBuffer) {
       return;

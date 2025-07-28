@@ -2,13 +2,23 @@
   import { onMount } from "svelte";
 
   const categories = [
-    { name: "Drinks", items: ["Water", "Tea", "Coffee"] },
     {
-      name: "Appetizers",
-      items: ["Wings", "Nachos", "Fries", "Nachos", "Fries"],
+      name: "Pastries",
+      items: ["Financier", "Yuzu Financier", "Melonpan", "Matcha Muffin"],
     },
-    { name: "Mains", items: ["Burger", "Pasta", "Steak", "Pasta", "Steak"] },
-    { name: "Desserts", items: ["Cake", "Ice Cream", "Pie"] },
+    {
+      name: "Cakes",
+      items: [
+        "Lava Cake",
+        "Lemon Molten Cake",
+        "Matcha Molten Cake",
+        "Cheesecake",
+        "Lemon Basque Cheesecake",
+        "Brownie Basque Cheesecake",
+        "Earl Grey Basque Cheesecake",
+      ],
+    },
+    { name: "Custards", items: ["Crème Brûlée", "Chocolate Crème Brûlée"] },
   ];
 
   let refs = $state({});
@@ -57,8 +67,8 @@
     </div>
     <div class="order-box" bind:this={orderBox}>
       {#each categories as cat}
-        <section bind:this={refs[cat.name]} data-name={cat.name}>
-          <h2>{cat.name}</h2>
+        <section>
+          <h2 bind:this={refs[cat.name]} data-name={cat.name}>{cat.name}</h2>
           {#each cat.items as item}
             <div class="food-box">{item}</div>
           {/each}
@@ -69,6 +79,8 @@
 </div>
 
 <style>
+  /* TODO: Move top padding of box to first element  */
+
   :root {
     --padding-v: 70px;
     --padding-h: 35px;
@@ -90,7 +102,7 @@
     aspect-ratio: 2 / 3;
     border: 3px solid #949494;
     border-radius: var(--padding-h);
-    background-color: wheat;
+    background-color: var(--colour-light);
     padding: var(--padding-v) var(--padding-h);
     overflow: hidden;
   }
@@ -115,35 +127,48 @@
   }
 
   .order-header {
-    background-color: black;
-    padding: 1rem;
-    color: white;
+    background-color: var(--colour-black);
+    padding: 1rem 1rem 5px;
+    color: var(--colour-light);
+    font-size: 1.8rem;
   }
 
   .navbar button {
-    color: white;
+    color: var(--colour-light);
     margin-right: 1rem;
+    font-size: 1.4rem;
   }
 
   .navbar button.selected {
-    color: white;
+    color: var(--colour-light);
     font-weight: bold;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid var(--colour-light);
+  }
+
+  h2,
+  div {
+    color: var(--colour-black);
   }
 
   .order-box {
     flex-grow: 1;
     overflow-y: auto;
+    padding: 0 1rem 1rem;
+  }
+
+  section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  section h2 {
+    grid-column: span 2;
+    margin-top: 1rem;
   }
 
   .food-box {
-    padding: 42px;
-    border: 1px solid #ccc;
-    margin-bottom: 8px;
-  }
-
-  h2,
-  div {
-    color: black;
+    padding: 142px 0;
+    border: 2px solid var(--colour-black);
   }
 </style>
