@@ -78,25 +78,6 @@
   />
 </T.OrthographicCamera>
 
-<!-- <T.PerspectiveCamera
-  makeDefault={!scene.currentState.povCamera}
-  position={[20, 0, 20]}
-  bind:ref={cameraRef}
->
-  <OrbitControls
-    enabled={!scene.currentState.hudControls}
-    bind:ref={controlsRef}
-    {minPolarAngle}
-    {maxPolarAngle}
-    {minAzimuthAngle}
-    {maxAzimuthAngle}
-    {enableDamping}
-    {enablePan}
-    minZoom={defaultZoom * 0.9}
-    maxZoom={defaultZoom * 5}
-  />
-</T.PerspectiveCamera> -->
-
 <POVScene />
 <HudScene {browserZoomLevel} />
 

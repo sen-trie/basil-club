@@ -133,7 +133,7 @@ export function getScene() {
     },
 
     setMToilet() {
-      if (currentState.hudControls) return;
+      if (currentState.hudControls || currentState.povCamera) return;
       if (Date.now() < sceneCooldown) return;
       sceneCooldown = Date.now() + timeCooldown;
       this.setInteractable("mToilet");
@@ -141,7 +141,7 @@ export function getScene() {
     },
 
     setFToilet() {
-      if (currentState.hudControls) return;
+      if (currentState.hudControls || currentState.povCamera) return;
       if (Date.now() < sceneCooldown) return;
       sceneCooldown = Date.now() + timeCooldown;
       this.setInteractable("fToilet");
@@ -152,7 +152,7 @@ export function getScene() {
       if (Date.now() < sceneCooldown) return null;
       sceneCooldown = Date.now() + timeCooldown / 3;
       currentState.bearTouches++;
-      if (currentState.bearTouches < 3) {
+      if (currentState.bearTouches < 5) {
         return false;
       } else {
         return true;
