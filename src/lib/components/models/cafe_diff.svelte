@@ -4,8 +4,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 -->
 
 <script module>
-  import { T, useThrelte } from "@threlte/core";
+  import { T } from "@threlte/core";
   import { useGltf, useDraco } from "@threlte/extras";
+  import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
 
   const load = () => {
     return useGltf("/models/cafe-transformed.glb", { dracoLoader: useDraco() });
@@ -17,41 +18,22 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 </script>
 
 <script>
-  let {
-    fallback,
-    error,
-    children,
-    ref = $bindable(),
-    hudControlsEnabled,
-    ...props
-  } = $props();
+  let { fallback, error, children, ref = $bindable(), ...props } = $props();
+  import Plate from "./plate.svelte";
   import { CircleGeometry } from "three";
-  import {
-    showOverlay,
-    showHud,
-    changeFloor as changeFloorStore,
-  } from "$lib/stores/sceneControls";
   import { Tween } from "svelte/motion";
-  import { cubicInOut } from "svelte/easing";
-  import { FakeGlowMaterial } from "@threlte/extras";
-  import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
+  import { cubicInOut, linear } from "svelte/easing";
+
   import { getScene } from "$lib/stores/worldState.svelte.js";
   const scene = getScene();
 
   const gltf = load();
-  let changeOverlay = () => {};
-  showOverlay.subscribe((fn) => {
-    changeOverlay = fn;
-  });
-
-  let changeHud = () => {};
-  showHud.subscribe((fn) => {
-    changeHud = fn;
-  });
-
-  const { invalidate } = useThrelte();
 
   const nullZone = -999;
+  const hideZone = (t, condition) => {
+    return condition ? nullZone : t;
+  };
+
   const cafeTopFull = 7.34;
   const cafeTopHalf = 2.71;
   const cafeBotFull = 1.47;
@@ -97,30 +79,40 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     ]);
   }
 
-  let currentFloor = $state(0);
-  let cafeTopY = $state(cafeTopFull);
-  let cafeBottomY = $state(cafeBotFull);
-
-  const changeFloor = (state) => {
-    if (hudControlsEnabled) return;
-
-    cafeTopY = cafeTopFull;
-    cafeBottomY = cafeBotFull;
-
-    if (state === 1) {
-      cafeTopY = cafeTopHalf;
-      cafeBottomY = nullZone;
-    } else if (state === 2) {
-      cafeTopY = nullZone;
+  let cafeTopY = $derived.by(() => {
+    if (scene.currentState.currentFloor === 0) {
+      return cafeTopFull;
+    } else if (scene.currentState.currentFloor === 1) {
+      return cafeTopHalf;
+    } else {
+      return nullZone;
     }
+  });
 
-    invalidate();
-    currentFloor = state;
-  };
-  changeFloorStore.set(changeFloor);
+  let cafeBottomY = $derived.by(() => {
+    if (scene.currentState.currentFloor === 0) {
+      return cafeBotFull;
+    } else if (scene.currentState.currentFloor === 1) {
+      return nullZone;
+    } else {
+      return cafeBotFull;
+    }
+  });
 
-  let playPOVAnim = $state(null);
+  // invalidate();
+
   let robotPOVController = $state(null);
+  const rotationTween = new Tween(0, {
+    duration: 2000,
+    easing: linear,
+  });
+
+  function loopRotation() {
+    const nextRotation = rotationTween.current + Math.PI * 2;
+    rotationTween.set(nextRotation).then(loopRotation);
+  }
+
+  loopRotation();
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>
@@ -202,8 +194,10 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                 <T.Group
                   name="Cat_Base_Roam"
                   rotation={[0, 0, 0]}
-                  visible={false && scene.currentState.povCamera}
+                  visible={scene.currentState.interactables.flag &&
+                    !scene.currentState.povCamera}
                 >
+                  <Plate position={[0, 0.36, 0]} />
                   <T.Mesh
                     name="Cylinder"
                     geometry={gltf.nodes.Cylinder.geometry}
@@ -268,7 +262,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                 <T.Group
                   name="Cat_Base_POV"
                   rotation={[0, 0, 0]}
-                  visible={true || scene.currentState.povCamera}
+                  visible={scene.currentState.povCamera}
                 >
                   <T.Mesh
                     name="Cylinder"
@@ -285,8 +279,19 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                     geometry={gltf.nodes.Cylinder_2.geometry}
                     material={gltf.materials["Robot Black"]}
                   />
-
-                  <T.Group name="Tablet" position={[0, 0.34, 0.01]}>
+                  <T.Group
+                    name="Tablet"
+                    position={[
+                      0,
+                      hideZone(0.34 + 0.1, !scene.currentState.povCamera),
+                      0.01,
+                    ]}
+                    rotation={[0, rotationTween.current, -0.5]}
+                    onclick={(e) => {
+                      e.stopPropagation();
+                      scene.setOverlay("flag");
+                    }}
+                  >
                     <T.Mesh
                       name="Cube096"
                       geometry={gltf.nodes.Cube096.geometry}
@@ -303,7 +308,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                       material={gltf.materials["Tablet Screen"]}
                     />
                   </T.Group>
-
                   <SheetObject key="POV Face">
                     {#snippet children({ Transform })}
                       <Transform>
@@ -335,7 +339,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       </Sheet>
       <T.Group
         name="Flag"
-        position={[2.09, -1.46, 3.44]}
+        position={[2.09, hideZone(-1.46, scene.currentState.povCamera), 3.44]}
         visible={!scene.currentState.povCamera}
       >
         <T.Mesh
@@ -348,6 +352,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           geometry={gltf.nodes.Cube012_1.geometry}
           material={gltf.materials["Flag Holder"]}
         />
+
         <T.Mesh
           name="Flag_Hitbox"
           geometry={gltf.nodes.Flag_Hitbox.geometry}
@@ -423,7 +428,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           material={gltf.materials["Lego Group"]}
           onclick={(e) => {
             e.stopPropagation();
-            changeHud("earl");
+            scene.toggleHud();
           }}
         />
       </T.Group>
@@ -444,7 +449,11 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         position={[0.03, -1.37, -0.83]}
         onclick={(e) => {
           e.stopPropagation();
-          scene.setMToilet();
+          if (scene.currentState.interactables.fToilet) {
+            scene.setMToilet();
+          } else {
+            scene.openDialog("men");
+          }
         }}
       />
       <T.Group name="Two" position={[-3, -2.07, 3.46]}>
@@ -541,7 +550,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
             e.stopPropagation();
             const res = scene.touchBear();
             if (res === true) {
-              changeOverlay("bear");
+              scene.setOverlay("bear");
               setTimeout(() => {
                 bearVisible = false;
               }, 2000);
@@ -630,7 +639,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
             scale={[-1.19, -0.9, -0.08]}
             onclick={(e) => {
               e.stopPropagation();
-              changeOverlay("grid");
+              scene.setOverlay("grid");
             }}
           >
             <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -792,7 +801,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         position={[-1.73, -2.13, 0.39]}
         onclick={(e) => {
           e.stopPropagation();
-          changeOverlay("photo");
+          scene.setOverlay("photo");
         }}
       />
       <T.Group name="Six" position={[-0.68, -4.13, 1.12]}>

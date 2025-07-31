@@ -4,8 +4,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 -->
 
 <script module>
-  import { T, useThrelte } from "@threlte/core";
-  import { useGltf, useDraco } from "@threlte/extras";
+  import { T } from "@threlte/core";
+  import { useGltf, useDraco, Instance, InstancedMesh } from "@threlte/extras";
+  import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
 
   const load = () => {
     return useGltf("/models/cafe-transformed.glb", { dracoLoader: useDraco() });
@@ -21,7 +22,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   import { CircleGeometry } from "three";
   import { Tween } from "svelte/motion";
   import { cubicInOut, linear } from "svelte/easing";
-  import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
   import { getScene } from "$lib/stores/worldState.svelte.js";
   const scene = getScene();
 
@@ -125,6 +125,18 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     />
     <T.Group name="Bottom" position={[2.15, cafeBottomY, -2.77]}>
       <T.Mesh
+        name="Order_Plate"
+        geometry={gltf.nodes.Order_Plate.geometry}
+        material={gltf.materials["Showcase Plate.001"]}
+        position={[2.3, -1.64, 3.48]}
+      />
+      <T.Mesh
+        name="Chesecake"
+        geometry={gltf.nodes.Chesecake.geometry}
+        material={gltf.materials["Cheesecake Main"]}
+        position={[2.33, -1.57, 3.47]}
+      />
+      <T.Mesh
         name="Cube013"
         geometry={gltf.nodes.Cube013.geometry}
         material={gltf.materials["Toilet Door.001"]}
@@ -185,16 +197,32 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
         material={gltf.materials["Toilet Door.001"]}
       />
       <Sheet name="Robot-Roam">
-        <Sequence iterationCount={Infinity} autoplay delay={1000}>
+        <Sequence
+          iterationCount={Infinity}
+          autoplay
+          delay={1000}
+          rate={Math.max(0.25, 1 - scene.currentState.plateCount * 0.04)}
+        >
           <SheetObject key="Cat Base">
             {#snippet children({ Transform })}
               <Transform>
                 <T.Group
                   name="Cat_Base_Roam"
                   rotation={[0, 0, 0]}
-                  visible={scene.currentState.interactables.flag &&
-                    !scene.currentState.povCamera}
+                  visible={true ||
+                    (scene.currentState.interactables.flag &&
+                      !scene.currentState.povCamera)}
                 >
+                  <InstancedMesh id="plate" position={[0, 0.35, 0]}>
+                    <T.BufferGeometry is={gltf.nodes.Order_Plate.geometry} />
+                    <T.MeshStandardMaterial
+                      is={gltf.materials["Showcase Plate.001"]}
+                    />
+
+                    {#each Array(scene.currentState.plateCount) as _, i}
+                      <Instance id="plate" position={[0, i * 0.04, 0]} />
+                    {/each}
+                  </InstancedMesh>
                   <T.Mesh
                     name="Cylinder"
                     geometry={gltf.nodes.Cylinder.geometry}
@@ -349,6 +377,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           geometry={gltf.nodes.Cube012_1.geometry}
           material={gltf.materials["Flag Holder"]}
         />
+
         <T.Mesh
           name="Flag_Hitbox"
           geometry={gltf.nodes.Flag_Hitbox.geometry}

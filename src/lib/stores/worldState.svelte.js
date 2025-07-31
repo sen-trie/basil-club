@@ -15,6 +15,7 @@ let currentState = $state({
   hudControls: false,
   bearTouches: 0,
   currentFloor: 0,
+  plateCount: 10,
   earlstreetClicked: false,
   interactables: {
     "photo": false,
