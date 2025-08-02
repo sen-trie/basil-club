@@ -4,7 +4,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 -->
 
 <script module>
-  import { T } from "@threlte/core";
+  import { T, useTask } from "@threlte/core";
   import { useGltf, useDraco, Instance, InstancedMesh } from "@threlte/extras";
   import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
 
@@ -19,7 +19,8 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 
 <script>
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
-  import { CircleGeometry } from "three";
+  import { CircleGeometry, TextureLoader, ClampToEdgeWrapping, LinearFilter } from "three";
+  import { onMount } from "svelte";
   import { Tween } from "svelte/motion";
   import { cubicInOut, linear } from "svelte/easing";
   import { getScene } from "$lib/stores/worldState.svelte.js";
@@ -70,11 +71,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       bearScale.set([1.2, 1.2, 1.2]),
       bearRotation.set([0, 0, (3 * Math.PI) / 180]),
     ]);
-    await Promise.all([
-      bearScale.set([1, 1, 1]),
-      bearRotation.set([0, 0, 0]),
-      bearYDelta.set(0),
-    ]);
+    await Promise.all([bearScale.set([1, 1, 1]), bearRotation.set([0, 0, 0]), bearYDelta.set(0)]);
   }
 
   let cafeTopY = $derived.by(() => {
@@ -111,6 +108,80 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   }
 
   loopRotation();
+
+  let faceTextures = $state([]);
+
+  let currentFaceRoam = $state(4);
+  let nextFaceRoam = $state(4);
+  let roamingAlpha = new Tween(1, {
+    duration: 450,
+    easing: linear,
+  });
+
+  function changeRoam(index) {
+    if (index === currentFaceRoam) return;
+
+    nextFaceRoam = index;
+    roamingAlpha.set(0).then(() => {
+      currentFaceRoam = index;
+      roamingAlpha.set(1, { duration: 0 });
+    });
+  }
+
+  let currentFacePOV = $state(0);
+  let nextFacePOV = $state(0);
+  let transitionAlpha = new Tween(1, {
+    duration: 300,
+    easing: linear,
+  });
+
+  function changeFace(index) {
+    nextFacePOV = index;
+    transitionAlpha.set(0).then(() => {
+      currentFacePOV = index;
+      transitionAlpha.set(1, { duration: 0 });
+    });
+  }
+
+  onMount(() => {
+    const loader = new TextureLoader();
+    faceTextures = Array.from({ length: 10 }, (_, i) => {
+      const tex = loader.load(`/textures/cat-face/face-${i}.webp`);
+      tex.colorSpace = "srgb";
+      tex.flipY = false;
+      tex.wrapS = tex.wrapT = ClampToEdgeWrapping;
+      tex.minFilter = LinearFilter;
+      tex.magFilter = LinearFilter;
+
+      return tex;
+    });
+  });
+
+  let cooldownActive = $state(false);
+  let faceResetTimeout = $state(null);
+  let timer = 0;
+
+  const faceWeights = [40, 15, 15, 10, 10, 2, 25, 15, 25, 15];
+  function weightedRandom(weights) {
+    const total = weights.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < weights.length; i++) {
+      if (r < weights[i]) return i;
+      r -= weights[i];
+    }
+    return weights.length - 1;
+  }
+
+  useTask((delta) => {
+    timer += delta;
+    if (timer >= 8) {
+      const weight = scene.currentState.plateCount > 6 ? faceWeights : faceWeights.slice(0, 6);
+      let newFaceRoam = weightedRandom(weight);
+
+      changeRoam(newFaceRoam);
+      timer = 0;
+    }
+  });
 </script>
 
 <T.Group bind:ref dispose={false} {...props}>
@@ -201,7 +272,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           iterationCount={Infinity}
           autoplay
           delay={1000}
-          rate={Math.max(0.25, 1 - scene.currentState.plateCount * 0.04)}
+          rate={Math.max(0.25, 1 - scene.currentState.plateCount * 0.04) * 1.25}
         >
           <SheetObject key="Cat Base">
             {#snippet children({ Transform })}
@@ -210,14 +281,11 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                   name="Cat_Base_Roam"
                   rotation={[0, 0, 0]}
                   visible={true ||
-                    (scene.currentState.interactables.flag &&
-                      !scene.currentState.povCamera)}
+                    (scene.currentState.interactables.flag && !scene.currentState.povCamera)}
                 >
                   <InstancedMesh id="plate" position={[0, 0.35, 0]}>
                     <T.BufferGeometry is={gltf.nodes.Order_Plate.geometry} />
-                    <T.MeshStandardMaterial
-                      is={gltf.materials["Showcase Plate.001"]}
-                    />
+                    <T.MeshStandardMaterial is={gltf.materials["Showcase Plate.001"]} />
 
                     {#each Array(scene.currentState.plateCount) as _, i}
                       <Instance id="plate" position={[0, i * 0.04, 0]} />
@@ -252,11 +320,20 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                             geometry={gltf.nodes.Sphere_1.geometry}
                             material={gltf.materials["Robot Black"]}
                           />
-                          <T.Mesh
-                            name="Sphere_2"
-                            geometry={gltf.nodes.Sphere_2.geometry}
-                            material={gltf.materials["Robot Face"]}
-                          />
+                          <T.Mesh name="Sphere_2_Front" geometry={gltf.nodes.Sphere_2.geometry}>
+                            <T.MeshBasicMaterial
+                              transparent={true}
+                              opacity={1 - roamingAlpha.current}
+                              map={faceTextures[nextFaceRoam]}
+                            />
+                          </T.Mesh>
+                          <T.Mesh name="Sphere_2_Back" geometry={gltf.nodes.Sphere_2.geometry}>
+                            <T.MeshBasicMaterial
+                              transparent={true}
+                              opacity={roamingAlpha.current}
+                              map={faceTextures[currentFaceRoam]}
+                            />
+                          </T.Mesh>
                         </T.Group>
                       </Transform>
                     {/snippet}
@@ -267,11 +344,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                     rotation={[-Math.PI / 2, 0, 0]}
                     position={[0, -0.685, 0]}
                   >
-                    <T.MeshBasicMaterial
-                      transparent={true}
-                      opacity={0.25}
-                      color="black"
-                    />
+                    <T.MeshBasicMaterial transparent={true} opacity={0.25} color="black" />
                   </T.Mesh>
                 </T.Group>
               </Transform>
@@ -306,11 +379,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                   />
                   <T.Group
                     name="Tablet"
-                    position={[
-                      0,
-                      hideZone(0.34 + 0.1, !scene.currentState.povCamera),
-                      0.01,
-                    ]}
+                    position={[0, hideZone(0.34 + 0.1, !scene.currentState.povCamera), 0.01]}
                     rotation={[0, rotationTween.current, -0.5]}
                     onclick={(e) => {
                       e.stopPropagation();
@@ -336,7 +405,31 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                   <SheetObject key="POV Face">
                     {#snippet children({ Transform })}
                       <Transform>
-                        <T.Group name="Cat_Face_POV" position={[0, 0.63, 0]}>
+                        <T.Group
+                          name="Cat_Face_POV"
+                          position={[0, 0.63, 0]}
+                          onclick={(e) => {
+                            e.stopPropagation();
+                            if (cooldownActive) return;
+
+                            let newFace = Math.floor(Math.random() * 5);
+                            while (newFace === currentFacePOV) {
+                              newFace = Math.floor(Math.random() * 5);
+                            }
+
+                            changeFace(newFace);
+
+                            clearTimeout(faceResetTimeout);
+                            faceResetTimeout = setTimeout(
+                              () => {
+                                changeFace(0);
+                                cooldownActive = false;
+                              },
+                              1500 + Math.floor(Math.random() * 2000),
+                            );
+                            cooldownActive = true;
+                          }}
+                        >
                           <T.Mesh
                             name="Sphere"
                             geometry={gltf.nodes.Sphere.geometry}
@@ -347,11 +440,20 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                             geometry={gltf.nodes.Sphere_1.geometry}
                             material={gltf.materials["Robot Black"]}
                           />
-                          <T.Mesh
-                            name="Sphere_2"
-                            geometry={gltf.nodes.Sphere_2.geometry}
-                            material={gltf.materials["Robot Face"]}
-                          />
+                          <T.Mesh name="Sphere_2_Front" geometry={gltf.nodes.Sphere_2.geometry}>
+                            <T.MeshBasicMaterial
+                              transparent={true}
+                              opacity={1 - transitionAlpha.current}
+                              map={faceTextures[nextFacePOV]}
+                            />
+                          </T.Mesh>
+                          <T.Mesh name="Sphere_2_Back" geometry={gltf.nodes.Sphere_2.geometry}>
+                            <T.MeshBasicMaterial
+                              transparent={true}
+                              opacity={transitionAlpha.current}
+                              map={faceTextures[currentFacePOV]}
+                            />
+                          </T.Mesh>
                         </T.Group>
                       </Transform>
                     {/snippet}
@@ -563,11 +665,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       {#if scene.currentState.interactables.bear}
         <T.Group
           name="Bear"
-          position={[
-            4.98,
-            bearVisible ? -2.86 + bearYDelta.current : nullZone,
-            3.78,
-          ]}
+          position={[4.98, bearVisible ? -2.86 + bearYDelta.current : nullZone, 3.78]}
           visible={bearVisible}
           scale={bearScale.current}
           rotation={bearRotation.current}
