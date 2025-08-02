@@ -14,6 +14,7 @@
   import MToilet from "$lib/components/models/m-toilet.svelte";
   import FToilet from "$lib/components/models/f-toilet.svelte";
   import { audioRef } from "$lib/stores/sceneControls.js";
+  import * as THREE from "three";
 
   const image = getContext("images");
 
@@ -61,11 +62,7 @@
 
 {#if !pageStarted}
   <div out:clipReverse={{ duration: 1200 }} class="wrapper">
-    <Loading
-      {progressLessThanOne}
-      {progressWidth}
-      startPage={() => (pageStarted = true)}
-    />
+    <Loading {progressLessThanOne} {progressWidth} startPage={() => (pageStarted = true)} />
   </div>
 {:else}
   <Overlay />
@@ -75,13 +72,12 @@
 <Studio enabled={false && dev} />
 
 <div class="main">
-  <Canvas>
+  <Canvas
+    renderMode="on-demand"
+    createRenderer={(canvas) => new THREE.WebGLRenderer({ canvas, antialias: false })}
+  >
     <Project name="Basil Club" config={{ state: projectState }}>
       <Scene />
-      <div class="preload">
-        <MToilet visible={false} position={[9999, 9999, 9999]} />
-        <FToilet visible={false} position={[9999, 9999, 9999]} />
-      </div>
     </Project>
   </Canvas>
   <img class="loading-img" src={image["loading.webp"]} alt="" />
