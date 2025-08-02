@@ -8,7 +8,7 @@
 <T.PerspectiveCamera
   makeDefault={scene.currentState.povCamera}
   fov={40}
-  position={[5.7, 0.4, 0.9]}
+  position={[5.7, 0.35, 0.9]}
 >
   <CameraControls
     mouseButtons={{
@@ -22,7 +22,7 @@
       two: 0, // disables zoom
     }}
     oncreate={(ref) => {
-      ref.setTarget(0, -0.6, 0.1);
+      ref.setTarget(0, -0.8, 0.1);
     }}
   />
 </T.PerspectiveCamera>

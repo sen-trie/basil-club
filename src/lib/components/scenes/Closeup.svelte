@@ -18,8 +18,7 @@
 
   $effect(() => {
     hideButton =
-      scene.currentState.overlayType === "bear" ||
-      scene.currentState.overlayType === "flag";
+      scene.currentState.overlayType === "bear" || scene.currentState.overlayType === "flag";
   });
 
   const showBlocker = () => {
@@ -46,7 +45,12 @@
     transition:fly={{ y: 150, duration: 300 }}
   >
     {#if scene.currentState.overlayType === "photo"}
-      <Photo />
+      <video autoplay loop>
+        <source src={video["eat_ios.mov"]} type="video/quicktime" />
+        <track kind="captions" />
+        Your browser does not support the video tag.
+      </video>
+      <!-- <Photo /> -->
     {:else if scene.currentState.overlayType === "grid"}
       <Grid />
     {:else if scene.currentState.overlayType === "bear"}

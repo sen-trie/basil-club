@@ -9,15 +9,12 @@
     );
   }
 
-  const images = import.meta.glob(
-    "$lib/assets/images/**/*.{jpg,jpeg,png,webp}",
-    {
-      eager: true,
-      import: "default",
-    },
-  );
+  const images = import.meta.glob("$lib/assets/images/**/*.{jpg,jpeg,png,webp}", {
+    eager: true,
+    import: "default",
+  });
 
-  const videos = import.meta.glob("$lib/assets/videos/**/*.{mp4,webm}", {
+  const videos = import.meta.glob("$lib/assets/videos/**/*.{mp4,webm,mov}", {
     eager: true,
     import: "default",
   });

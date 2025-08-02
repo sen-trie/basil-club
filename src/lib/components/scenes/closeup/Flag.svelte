@@ -62,10 +62,13 @@
   $effect(() => {
     if (currentOrder !== null) {
       waitTimer = setTimeout(() => {
+        scene.setPlate("cheesecake");
         waitFinished = true;
       }, 3000);
     }
   });
+
+  // TODO: RETEXTURE TABLE BLACK
 </script>
 
 <div class="flag-wrapper flexbox">
@@ -84,11 +87,7 @@
           {/each}
         </nav>
       </div>
-      <img
-        class="header-logo"
-        alt="Cafe logo"
-        src={image[`tablet/logo.webp`]}
-      />
+      <img class="header-logo" alt="Cafe logo" src={image[`tablet/logo.webp`]} />
     </div>
     <div class="order-box" bind:this={orderBox}>
       {#each categories as cat}
@@ -125,21 +124,14 @@
             </button>
           {:else}
             <p>Your order is confirmed!</p>
-            <button
-              class="exit-button"
-              onclick={scene.closeOverlay}
-              aria-label="Put down tablet"
-            >
+            <button class="exit-button" onclick={scene.closeOverlay} aria-label="Put down tablet">
               Return
             </button>
           {/if}
         </div>
       </div>
     {/if}
-    <button
-      class="tablet-button"
-      onclick={scene.closeOverlay}
-      aria-label="Put down tablet"
+    <button class="tablet-button" onclick={scene.closeOverlay} aria-label="Put down tablet"
     ></button>
   </div>
 </div>

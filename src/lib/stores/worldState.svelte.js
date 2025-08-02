@@ -15,7 +15,8 @@ let currentState = $state({
   hudControls: false,
   bearTouches: 0,
   currentFloor: 0,
-  plateCount: 10,
+  currentPlate: "",
+  plateCount: 0,
   earlstreetClicked: false,
   interactables: {
     "photo": false,
@@ -28,9 +29,7 @@ let currentState = $state({
   },
 });
 
-let interactableCount = $derived(
-  Object.values(currentState.interactables).filter(Boolean).length,
-);
+let interactableCount = $derived(Object.values(currentState.interactables).filter(Boolean).length);
 
 let maxInteractables = $derived(Object.keys(currentState.interactables).length);
 let sceneCooldown = 0;
@@ -125,6 +124,15 @@ export function getScene() {
       setTimeout(() => {
         currentState = { ...currentState, povCamera: !currentState.povCamera };
       }, camCooldown);
+    },
+
+    setPlate(newDish) {
+      const oldPlateCount = currentState.plateCount;
+      currentState = {
+        ...currentState,
+        currentPlate: newDish,
+        plateCount: oldPlateCount + 1,
+      };
     },
 
     setCafe() {

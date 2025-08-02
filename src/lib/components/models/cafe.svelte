@@ -175,7 +175,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
   useTask((delta) => {
     timer += delta;
     if (timer >= 8) {
-      const weight = scene.currentState.plateCount > 6 ? faceWeights : faceWeights.slice(0, 6);
+      const weight = scene.currentState.plateCount > 4 ? faceWeights : faceWeights.slice(0, 6);
       let newFaceRoam = weightedRandom(weight);
 
       changeRoam(newFaceRoam);
@@ -195,18 +195,24 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       position={[4.25, 5.89, 11.56]}
     />
     <T.Group name="Bottom" position={[2.15, cafeBottomY, -2.77]}>
-      <T.Mesh
-        name="Order_Plate"
-        geometry={gltf.nodes.Order_Plate.geometry}
-        material={gltf.materials["Showcase Plate.001"]}
-        position={[2.3, -1.64, 3.48]}
-      />
-      <T.Mesh
-        name="Chesecake"
-        geometry={gltf.nodes.Chesecake.geometry}
-        material={gltf.materials["Cheesecake Main"]}
-        position={[2.33, -1.57, 3.47]}
-      />
+      <T.Group name="Dish">
+        {#if scene.currentState.currentPlate != ""}
+          <T.Mesh
+            name="Order_Plate"
+            geometry={gltf.nodes.Order_Plate.geometry}
+            material={gltf.materials["Showcase Plate.001"]}
+            position={[2.3, -1.64, 3.48]}
+          />
+        {/if}
+        {#if scene.currentState.currentPlate === "cheesecake"}
+          <T.Mesh
+            name="Chesecake"
+            geometry={gltf.nodes.Chesecake.geometry}
+            material={gltf.materials["Cheesecake Main"]}
+            position={[2.33, -1.57, 3.47]}
+          />
+        {/if}
+      </T.Group>
       <T.Mesh
         name="Cube013"
         geometry={gltf.nodes.Cube013.geometry}
@@ -425,7 +431,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                                 changeFace(0);
                                 cooldownActive = false;
                               },
-                              1500 + Math.floor(Math.random() * 2000),
+                              1000 + Math.floor(Math.random() * 2000),
                             );
                             cooldownActive = true;
                           }}
