@@ -68,7 +68,7 @@
     }
   });
 
-  // TODO: RETEXTURE TABLE BLACK
+  // TODO: RETEXTURE TABLET BLACK
 </script>
 
 <div class="flag-wrapper flexbox">

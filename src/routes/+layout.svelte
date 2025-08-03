@@ -9,7 +9,7 @@
     );
   }
 
-  const images = import.meta.glob("$lib/assets/images/**/*.{jpg,jpeg,png,webp}", {
+  const images = import.meta.glob("$lib/assets/images/**/*.{jpg,jpeg,png,webp,apng}", {
     eager: true,
     import: "default",
   });

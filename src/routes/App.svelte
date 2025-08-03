@@ -9,10 +9,8 @@
   import { fromStore } from "svelte/store";
   import Loading from "$lib/components/loading/LoadingBar.svelte";
   import Overlay from "$lib/components/Overlay.svelte";
-  import Audio from "$lib/components/Audio.svelte";
   import projectState from "$lib/assets/configState.json";
-  import MToilet from "$lib/components/models/m-toilet.svelte";
-  import FToilet from "$lib/components/models/f-toilet.svelte";
+  import Audio from "$lib/components/Audio.svelte";
   import { audioRef } from "$lib/stores/sceneControls.js";
   import * as THREE from "three";
 
@@ -60,7 +58,7 @@
   // });
 </script>
 
-{#if !pageStarted}
+{#if !dev && !pageStarted}
   <div out:clipReverse={{ duration: 1200 }} class="wrapper">
     <Loading {progressLessThanOne} {progressWidth} startPage={() => (pageStarted = true)} />
   </div>

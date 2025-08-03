@@ -26,6 +26,7 @@ let currentState = $state({
     "mToilet": false,
     "bear": false,
     "flag": false,
+    "eat": false,
   },
 });
 
@@ -34,6 +35,8 @@ let interactableCount = $derived(Object.values(currentState.interactables).filte
 let maxInteractables = $derived(Object.keys(currentState.interactables).length);
 let sceneCooldown = 0;
 const timeCooldown = 3000;
+
+const eatAnimation = 4000;
 
 export function getScene() {
   return {
@@ -45,15 +48,16 @@ export function getScene() {
       return interactableCount;
     },
 
+    get eatTime() {
+      return eatAnimation;
+    },
+
     get maxInteractables() {
       return maxInteractables;
     },
 
     setInteractable(name) {
-      currentState = {
-        ...currentState,
-        interactables: { ...currentState.interactables, [name]: true },
-      };
+      currentState.interactables[name] = true;
     },
 
     setOverlay(nextOverlayType) {
@@ -76,29 +80,26 @@ export function getScene() {
 
     closeOverlay() {
       if (currentState.overlayType === "hud") {
-        currentState = {
-          ...currentState,
-          hudControls: false,
-        };
+        currentState.hudControls = false;
       }
       currentState.overlayType = "";
     },
 
     openDialog(dialogBox) {
-      currentState = { ...currentState, showDialog: dialogBox };
+      currentState.showDialog = dialogBox;
     },
 
     closeDialog() {
-      currentState = { ...currentState, showDialog: null };
+      currentState.showDialog = null;
     },
 
     setFloor(newFloor) {
       if (currentState.hudControls) return;
-      currentState = { ...currentState, currentFloor: newFloor };
+      currentState.currentFloor = newFloor;
     },
 
     toggleAudio() {
-      currentState = { ...currentState, muted: !currentState.muted };
+      currentState.muted = !currentState.muted;
     },
 
     toggleHud() {
@@ -107,10 +108,7 @@ export function getScene() {
       this.setOverlay("hud");
       this.setInteractable("earl-street");
 
-      currentState = {
-        ...currentState,
-        hudControls: true,
-      };
+      currentState.hudControls = true;
     },
 
     togglePOVCamera() {
@@ -121,18 +119,16 @@ export function getScene() {
       if (Date.now() < sceneCooldown) return;
       sceneCooldown = Date.now() + camCooldown;
       changeBlocker();
+
       setTimeout(() => {
-        currentState = { ...currentState, povCamera: !currentState.povCamera };
+        currentState.povCamera = !currentState.povCamera;
+        currentState.currentPlate = "";
       }, camCooldown);
     },
 
     setPlate(newDish) {
-      const oldPlateCount = currentState.plateCount;
-      currentState = {
-        ...currentState,
-        currentPlate: newDish,
-        plateCount: oldPlateCount + 1,
-      };
+      currentState.currentPlate = newDish;
+      currentState.plateCount += 1;
     },
 
     setCafe() {

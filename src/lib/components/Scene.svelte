@@ -43,7 +43,7 @@
     target.clamp(minPan, maxPan);
   });
 
-  let browserZoomLevel = $state(1); // Initialize with a default value (100% zoom)
+  let browserZoomLevel = $state(1);
 
   function updateZoomLevel() {
     browserZoomLevel = window.devicePixelRatio;
@@ -82,11 +82,7 @@
 <HudScene {browserZoomLevel} />
 
 {#if scene.currentState.scene === "cafe"}
-  <Cafe
-    visible={true}
-    bind:ref={cafeRef}
-    transition={fly({ x: 0, y: 50, z: 0 })}
-  />
+  <Cafe visible={true} bind:ref={cafeRef} transition={fly({ x: 0, y: 50, z: 0 })} />
 {:else if scene.currentState.scene === "mToilet"}
   <MToilet transition={fly({ x: 0, y: 50, z: 0 })} />
 {:else if scene.currentState.scene === "fToilet"}

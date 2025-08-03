@@ -16,9 +16,16 @@
   let overlayVisible = $derived(scene.currentState.overlayType !== "");
   let hideButton = $state(false);
 
+  let closeEatTimer = null;
   $effect(() => {
-    hideButton =
-      scene.currentState.overlayType === "bear" || scene.currentState.overlayType === "flag";
+    hideButton = ["bear", "flag", "eat"].includes(scene.currentState.overlayType);
+
+    if (scene.currentState.overlayType === "eat") {
+      clearTimeout(closeEatTimer);
+      closeEatTimer = setTimeout(() => {
+        scene.closeOverlay();
+      }, scene.eatTime);
+    }
   });
 
   const showBlocker = () => {
@@ -40,17 +47,13 @@
 
 {#if overlayVisible}
   <div
+    class:no-bg={scene.currentState.overlayType === "eat"}
     class:no-pointer={scene.currentState.overlayType === "hud"}
     class="close-up flex"
     transition:fly={{ y: 150, duration: 300 }}
   >
     {#if scene.currentState.overlayType === "photo"}
-      <video autoplay loop>
-        <source src={video["eat_ios.mov"]} type="video/quicktime" />
-        <track kind="captions" />
-        Your browser does not support the video tag.
-      </video>
-      <!-- <Photo /> -->
+      <Photo />
     {:else if scene.currentState.overlayType === "grid"}
       <Grid />
     {:else if scene.currentState.overlayType === "bear"}
@@ -63,6 +66,13 @@
       </div>
     {:else if scene.currentState.overlayType === "flag"}
       <Flag />
+    {:else if scene.currentState.overlayType === "eat"}
+      <img
+        class="eat-img"
+        class:matcha={scene.currentPlate === "matcha"}
+        src={`${image["eat.apng"]}?v=${Date.now()}`}
+        alt="eating animation"
+      />
     {:else if scene.currentState.overlayType === "checkout"}
       <div class="checkout-div flex">
         <div class="checkout-box">
@@ -115,6 +125,10 @@
     background: none;
   }
 
+  .no-bg {
+    background-color: transparent;
+  }
+
   .drop-shadow {
     filter: drop-shadow(0 0 0.2rem black);
   }
@@ -142,6 +156,36 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .eat-img {
+    position: absolute;
+    bottom: 0;
+    /* width: min(1000px, 100%); */
+    width: 100%;
+    height: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .eat-img.matcha {
+    filter: hue-rotate(45deg) brightness(0.8);
+  }
+
+  .eat-img.earlgrey {
+    filter: hue-rotate(350deg) brightness(1) saturate(0.8);
+  }
+
+  .eat-img.custard {
+    filter: hue-rotate(18deg) brightness(1.3);
+  }
+
+  .eat-img.lemon {
+    filter: hue-rotate(28deg) brightness(1.6);
+  }
+
+  .eat-img.brownie {
+    filter: hue-rotate(350deg) brightness(0.4);
   }
 
   .checkout-div {

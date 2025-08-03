@@ -43,10 +43,12 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     duration: bearKeyframe,
     easing: cubicInOut,
   });
+
   let bearRotation = new Tween([0, 0, 0], {
     duration: bearKeyframe,
     easing: cubicInOut,
   });
+
   let bearYDelta = new Tween(0, {
     duration: bearKeyframe,
     easing: cubicInOut,
@@ -94,8 +96,6 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     }
   });
 
-  // invalidate();
-
   let robotPOVController = $state(null);
   const rotationTween = new Tween(0, {
     duration: 2000,
@@ -109,8 +109,24 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 
   loopRotation();
 
-  let faceTextures = $state([]);
+  const plateKeyframe = 650;
+  let plateLocation = new Tween([0, 0, 0], {
+    duration: plateKeyframe,
+    easing: cubicInOut,
+  });
 
+  const consumeDessert = (e) => {
+    e.stopPropagation();
+    plateLocation.set([1, 0.18, 0.14]).then(() => {
+      setTimeout(() => {
+        scene.currentState.currentPlate = "empty";
+        plateLocation.set([0, 0, 0.0]);
+      }, scene.eatTime);
+    });
+    scene.setOverlay("eat");
+  };
+
+  let faceTextures = $state([]);
   let currentFaceRoam = $state(4);
   let nextFaceRoam = $state(4);
   let roamingAlpha = new Tween(1, {
@@ -195,7 +211,13 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
       position={[4.25, 5.89, 11.56]}
     />
     <T.Group name="Bottom" position={[2.15, cafeBottomY, -2.77]}>
-      <T.Group name="Dish">
+      <T.Group
+        name="Dish"
+        position={scene.currentState.povCamera
+          ? plateLocation.current
+          : [nullZone, nullZone, nullZone]}
+        visible={scene.currentState.povCamera}
+      >
         {#if scene.currentState.currentPlate != ""}
           <T.Mesh
             name="Order_Plate"
@@ -210,6 +232,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
             geometry={gltf.nodes.Chesecake.geometry}
             material={gltf.materials["Cheesecake Main"]}
             position={[2.33, -1.57, 3.47]}
+            onclick={(e) => {
+              consumeDessert(e);
+            }}
           />
         {/if}
       </T.Group>
@@ -289,12 +314,12 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                   visible={true ||
                     (scene.currentState.interactables.flag && !scene.currentState.povCamera)}
                 >
-                  <InstancedMesh id="plate" position={[0, 0.35, 0]}>
+                  <InstancedMesh position={[0, 0.35, 0]}>
                     <T.BufferGeometry is={gltf.nodes.Order_Plate.geometry} />
                     <T.MeshStandardMaterial is={gltf.materials["Showcase Plate.001"]} />
 
                     {#each Array(scene.currentState.plateCount) as _, i}
-                      <Instance id="plate" position={[0, i * 0.04, 0]} />
+                      <Instance position={[0, i * 0.04, 0]} frustumCulled={false} />
                     {/each}
                   </InstancedMesh>
                   <T.Mesh
@@ -418,9 +443,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                             e.stopPropagation();
                             if (cooldownActive) return;
 
-                            let newFace = Math.floor(Math.random() * 5);
+                            let newFace = 1 + Math.floor(Math.random() * 4);
                             while (newFace === currentFacePOV) {
-                              newFace = Math.floor(Math.random() * 5);
+                              newFace = 1 + Math.floor(Math.random() * 4);
                             }
 
                             changeFace(newFace);
