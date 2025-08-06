@@ -1,5 +1,5 @@
-import { showBlocker } from "./sceneControls";
-// import { get } from "svelte/store";
+import { showBlocker, audioRef } from "./sceneControls";
+import { get } from "svelte/store";
 
 let changeBlocker = () => {};
 showBlocker.subscribe((fn) => {
@@ -100,6 +100,10 @@ export function getScene() {
 
     toggleAudio() {
       currentState.muted = !currentState.muted;
+
+      const audioEl = get(audioRef);
+      audioEl.playBGM();
+      audioEl.muteAudio();
     },
 
     toggleHud() {
