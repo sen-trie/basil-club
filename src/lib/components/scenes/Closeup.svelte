@@ -69,7 +69,12 @@
     {:else if scene.currentState.overlayType === "eat"}
       <img
         class="eat-img"
-        class:matcha={scene.currentPlate === "matcha"}
+        class:matcha={["matcha-muffin", "matcha-cake"].includes(scene.currentState.currentPlate)}
+        class:earlgrey={scene.currentState.currentPlate === "earlgrey-cheesecake"}
+        class:custard={scene.currentState.currentPlate === "cremebrulee"}
+        class:brownie={["brownie-cheesecake", "choc-cremebrulee", "lava-cake"].includes(
+          scene.currentState.currentPlate,
+        )}
         src={`${image["eat.apng"]}?v=${Date.now()}`}
         alt="eating animation"
       />
@@ -180,9 +185,9 @@
     filter: hue-rotate(18deg) brightness(1.3);
   }
 
-  .eat-img.lemon {
+  /* .eat-img.lemon {
     filter: hue-rotate(28deg) brightness(1.6);
-  }
+  } */
 
   .eat-img.brownie {
     filter: hue-rotate(350deg) brightness(0.4);

@@ -7,28 +7,29 @@
   const scene = getScene();
   const image = getContext("images");
 
-  const categories = [
-    {
-      name: "Pastries",
-      items: ["Financier", "Yuzu Financier", "Matcha Muffin", "Melonpan"],
+  const foodItems = {
+    Pastries: {
+      "Financier": { shortname: "financier" },
+      "Matcha Financier": { shortname: "matcha-financier", soldout: true },
+      "Matcha Muffin": { shortname: "matcha-muffin" },
     },
-    {
-      name: "Cakes",
-      items: [
-        "Lava Cake",
-        "Yuzu Molten Cake",
-        "Matcha Molten Cake",
-        "Cheesecake",
-        "Lemon Basque Cheesecake",
-        "Earl Grey Basque Cheesecake",
-        "Brownie Basque Cheesecake",
-      ],
+    Cakes: {
+      "Lava Cake": { shortname: "lava-cake" },
+      "Yuzu Molten Cake": { shortname: "yuzu-cake", soldout: true },
+      "Matcha Molten Cake": { shortname: "matcha-cake" },
+      "Cheesecake": { shortname: "cheesecake" },
+      "Earl Grey Basque Cheesecake": { shortname: "earlgrey-cheesecake" },
+      "Brownie Basque Cheesecake": { shortname: "brownie-cheesecake" },
     },
-    { name: "Custards", items: ["Crème Brûlée", "Chocolate Crème Brûlée"] },
-  ];
+    Custards: {
+      "Crème Brûlée": { shortname: "cremebrulee" },
+      "Chocolate Crème Brûlée": { shortname: "choc-cremebrulee" },
+    },
+  };
 
   let refs = $state({});
-  let currentHeader = $state(categories[0].name);
+  let categoryList = Object.keys(foodItems);
+  let currentHeader = $state(categoryList[0]);
   let orderBox = $state(null);
   let confirmState = $state(false);
   let currentOrder = $state(null);
@@ -49,11 +50,9 @@
       { root: orderBox, threshold: 0.5 },
     );
 
-    categories.forEach((cat) => {
-      const element = refs[cat.name];
-      if (element) {
-        observer.observe(element);
-      }
+    categoryList.forEach((name) => {
+      const element = refs[name];
+      if (element) observer.observe(element);
     });
 
     return () => observer.disconnect();
@@ -62,13 +61,11 @@
   $effect(() => {
     if (currentOrder !== null) {
       waitTimer = setTimeout(() => {
-        scene.setPlate("cheesecake");
+        scene.setPlate(currentOrder);
         waitFinished = true;
-      }, 3000);
+      }, 1500);
     }
   });
-
-  // TODO: RETEXTURE TABLET BLACK
 </script>
 
 <div class="flag-wrapper flexbox">
@@ -77,12 +74,9 @@
       <div class="header-left">
         <p class="header-title">Menu</p>
         <nav class="navbar">
-          {#each categories as cat}
-            <button
-              class:selected={currentHeader === cat.name}
-              onclick={() => scrollToCategory(cat.name)}
-            >
-              {cat.name}
+          {#each categoryList as cat}
+            <button class:selected={currentHeader === cat} onclick={() => scrollToCategory(cat)}>
+              {cat}
             </button>
           {/each}
         </nav>
@@ -90,24 +84,25 @@
       <img class="header-logo" alt="Cafe logo" src={image[`tablet/logo.webp`]} />
     </div>
     <div class="order-box" bind:this={orderBox}>
-      {#each categories as cat}
+      {#each categoryList as cat}
         <section>
-          <h2 bind:this={refs[cat.name]} data-name={cat.name}>{cat.name}</h2>
-          {#each cat.items as item}
+          <h2 bind:this={refs[cat]} data-name={cat}>{cat}</h2>
+          {#each Object.entries(foodItems[cat]) as [item, data]}
             <div class="food-box">
               <p>{item}</p>
               <img alt="Food item" src={image[`tablet/logo.webp`]} />
               <button
-                class:order-button-red={currentOrder === item}
+                disabled={data.soldout}
+                class:order-button-red={currentOrder === data.shortname}
                 onclick={() => {
-                  if (currentOrder === item) {
-                    confirmState = item;
+                  if (currentOrder === data.shortname) {
+                    confirmState = data.shortname;
                   } else {
-                    currentOrder = item;
+                    currentOrder = data.shortname;
                   }
                 }}
               >
-                {currentOrder === item ? "Confirm?" : "Order"}
+                {data.soldout ? "Sold Out" : currentOrder === data.shortname ? "Confirm?" : "Order"}
               </button>
             </div>
           {/each}
@@ -290,12 +285,16 @@
     width: 75%;
     border-radius: 25px;
     background-color: var(--colour-green);
-    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
     transition: background-color 0.4s ease;
   }
 
   .food-box button.order-button-red {
     background-color: #b33939;
+  }
+
+  .food-box button:disabled {
+    cursor: default;
+    background-color: rgba(0, 0, 0, 0.3);
   }
 
   .order-confirm {

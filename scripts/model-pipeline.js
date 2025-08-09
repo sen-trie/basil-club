@@ -1,11 +1,5 @@
 import { execSync } from "node:child_process";
-import {
-  readdirSync,
-  copyFileSync,
-  unlinkSync,
-  mkdirSync,
-  existsSync,
-} from "node:fs";
+import { readdirSync, copyFileSync, unlinkSync, mkdirSync, existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { exit } from "node:process";
 
@@ -32,7 +26,7 @@ const configuration = {
   suspense: false,
   isolated: false,
   transform: {
-    enabled: true,
+    enabled: false,
     resolution: 4096,
     simplify: {
       enabled: false,
@@ -69,8 +63,7 @@ if (gltfFiles.length === 0) {
 
 const filteredGltfFiles = gltfFiles.filter((file) => {
   if (!configuration.overwrite) {
-    const componentFilename =
-      file.split(".").slice(0, -1).join(".") + ".svelte";
+    const componentFilename = file.split(".").slice(0, -1).join(".") + ".svelte";
     const componentPath = join(configuration.targetDir, componentFilename);
     if (existsSync(componentPath)) {
       console.error(`File ${componentPath} already exists, skipping.`);
@@ -126,9 +119,7 @@ filteredGltfFiles.forEach((file) => {
 });
 
 // read dir again, but search for .svelte files only.
-const svelteFiles = readdirSync(configuration.sourceDir).filter((file) =>
-  file.endsWith(".svelte"),
-);
+const svelteFiles = readdirSync(configuration.sourceDir).filter((file) => file.endsWith(".svelte"));
 
 svelteFiles.forEach((file) => {
   // now move every file to /src/components/models
