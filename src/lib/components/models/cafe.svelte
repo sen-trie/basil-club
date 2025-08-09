@@ -5,7 +5,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
 
 <script module>
   import { T, useTask } from "@threlte/core";
-  import { useGltf, useDraco, Instance, InstancedMesh } from "@threlte/extras";
+  import { useGltf, useDraco, Instance, InstancedMesh, useCursor } from "@threlte/extras";
   import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
 
   const load = () => {
@@ -126,6 +126,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
     scene.setOverlay("eat");
   };
 
+  const { hovering } = useCursor("grab");
   let faceTextures = $state([]);
   let currentFaceRoam = $state(4);
   let nextFaceRoam = $state(4);
@@ -537,7 +538,9 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                       <Transform>
                         <T.Group
                           name="Cat_Face_POV"
-                          position={[0, 0.63, 0]}
+                          onpointerenter={() => ($hovering = true)}
+                          onpointerleave={() => ($hovering = false)}
+                          position.y={hideZone(0.63, !scene.currentState.povCamera)}
                           onclick={(e) => {
                             e.stopPropagation();
                             if (cooldownActive) return;

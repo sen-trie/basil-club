@@ -6,6 +6,7 @@
   import Photo from "$lib/components/scenes/closeup/Photo.svelte";
   import Grid from "$lib/components/scenes/closeup/Grid.svelte";
   import Flag from "$lib/components/scenes/closeup/Flag.svelte";
+  import Cashier from "$lib/components/scenes/closeup/Cashier.svelte";
   import ArrowDown from "$lib/assets/ui/arrow-down.svelte";
 
   const image = getContext("images");
@@ -53,7 +54,8 @@
     transition:fly={{ y: 150, duration: 300 }}
   >
     {#if scene.currentState.overlayType === "photo"}
-      <Photo />
+      <Cashier />
+      <!-- <Photo /> -->
     {:else if scene.currentState.overlayType === "grid"}
       <Grid />
     {:else if scene.currentState.overlayType === "bear"}

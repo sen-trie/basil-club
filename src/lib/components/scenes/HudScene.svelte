@@ -32,11 +32,7 @@
 </script>
 
 <HUD visible={scene.currentState.hudControls}>
-  <T.OrthographicCamera
-    makeDefault
-    position={[12, 4, 10]}
-    zoom={270 / browserZoomLevel}
-  >
+  <T.OrthographicCamera makeDefault position={[12, 4, 10]} zoom={270 / browserZoomLevel}>
     <OrbitControls
       enabled={scene.currentState.hudControls}
       minZoom={(270 * 0.75) / browserZoomLevel}
