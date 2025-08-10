@@ -1,11 +1,13 @@
 <script>
   import { fly, fade } from "svelte/transition";
 
+  let { exitGame } = $props();
+
   const suits = ["♠", "♥", "♦", "♣"];
   const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
   const defaultBet = 100;
 
-  let credits = $state(1000);
+  let credits = $state(1111000);
 
   function createDeck() {
     let deck = [];
@@ -38,7 +40,9 @@
   }
 
   function canSplit(hand) {
-    return hand.cards.length === 2 && hand.cards[0].rank === hand.cards[1].rank && !hand.hasSplit;
+    return (
+      hand && hand.cards.length === 2 && hand.cards[0].rank === hand.cards[1].rank && !hand.hasSplit
+    );
   }
 
   let deck = $state([]);
@@ -122,7 +126,7 @@
   }
 
   function canDoubleDown(hand) {
-    return hand.cards.length === 2 && !hand.isFinished && !gameOver;
+    return hand && hand.cards.length === 2 && !hand.isFinished && !gameOver;
   }
 
   function doubleDown() {
@@ -211,19 +215,25 @@
 
   <h2>Player Hands</h2>
   <div class="card-deck">
-    {#each hands as hand}
-      <div class="card-hand" transition:fly={{ x: 75, duration: handDrawTime }}>
-        {#if !gameOver || handValue(dealer.cards) > 0}
-          <span transition:fade={{ delay: handDrawTime, duration: 300 }}>
-            ({handValue(hand.cards)})
-            {handText(hand.cards)}
-          </span>
-        {/if}
-        {#each hand.cards as card}
-          {@render cardDiv(card.rank, card.suit)}
-        {/each}
-      </div>
-    {/each}
+    {#key hands}
+      {#each hands as hand, index}
+        <div
+          class="card-hand"
+          class:dim={hands.length > 1 && !gameOver && index !== currentHandIndex}
+          transition:fly={{ x: 75, duration: handDrawTime }}
+        >
+          {#if !gameOver || handValue(dealer.cards) > 0}
+            <span transition:fade={{ delay: handDrawTime, duration: 300 }}>
+              ({handValue(hand.cards)})
+              {handText(hand.cards)}
+            </span>
+          {/if}
+          {#each hand.cards as card}
+            {@render cardDiv(card.rank, card.suit)}
+          {/each}
+        </div>
+      {/each}
+    {/key}
   </div>
   <div class="credits-display">
     Credits: {credits}
@@ -239,11 +249,11 @@
     <button onclick={splitHand} disabled={!canSplit(hands[currentHandIndex])}>Split</button>
   {:else}
     {#if credits > 0}
-      <button class="play-button" onclick={startGame}>Play!</button>
+      <button class="play-button" onclick={startGame}>Deal</button>
     {:else}
       <button class="play-button" disabled>Insufficient Credits</button>
     {/if}
-    <button class="play-button" onclick={startGame}>Exit</button>
+    <button class="play-button" onclick={exitGame}>Exit</button>
   {/if}
 </div>
 
@@ -254,14 +264,14 @@
     position: relative;
     flex-grow: 1;
     padding: 8px 12px 8px;
-    gap: 6px;
+    gap: 10px;
     overflow: hidden;
   }
 
   .credits-display {
     position: absolute;
-    top: 8px;
-    right: 12px;
+    top: 0px;
+    right: 0px;
     font-size: 1.3rem;
     background: rgba(0, 0, 0, 0.6);
     padding: 6px 10px;
@@ -298,7 +308,6 @@
     width: 100%;
     height: 27.5%;
     background-color: rgba(255, 255, 255, 0.7);
-    transition: 0.3s height ease;
   }
 
   .card-deck:has(> :nth-child(2):last-child) {
@@ -311,7 +320,14 @@
     height: 100%;
     display: flex;
     flex-direction: row;
-    transition: 0.45s height ease;
+  }
+
+  .card-hand.dim {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .card-hand.dim .card {
+    filter: brightness(0.7);
   }
 
   .card-hand + .card-hand,
