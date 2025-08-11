@@ -2,30 +2,10 @@
   import { blur } from "svelte/transition";
   import { getContext } from "svelte";
   import { onMount } from "svelte";
-  import { getScene } from "$lib/stores/worldState.svelte.js";
+  import { getScene, foodItems } from "$lib/stores/worldState.svelte.js";
 
   const scene = getScene();
   const image = getContext("images");
-
-  const foodItems = {
-    Pastries: {
-      "Financier": { shortname: "financier" },
-      "Matcha Financier": { shortname: "matcha-financier", soldout: true },
-      "Matcha Muffin": { shortname: "matcha-muffin" },
-    },
-    Cakes: {
-      "Lava Cake": { shortname: "lava-cake" },
-      "Yuzu Molten Cake": { shortname: "yuzu-cake", soldout: true },
-      "Matcha Molten Cake": { shortname: "matcha-cake" },
-      "Cheesecake": { shortname: "cheesecake" },
-      "Earl Grey Basque Cheesecake": { shortname: "earlgrey-cheesecake" },
-      "Brownie Basque Cheesecake": { shortname: "brownie-cheesecake" },
-    },
-    Custards: {
-      "Crème Brûlée": { shortname: "cremebrulee" },
-      "Chocolate Crème Brûlée": { shortname: "choc-cremebrulee" },
-    },
-  };
 
   let refs = $state({});
   let categoryList = Object.keys(foodItems);
@@ -93,16 +73,16 @@
               <img alt="Food item" src={image[`tablet/logo.webp`]} />
               <button
                 disabled={data.soldout}
-                class:order-button-red={currentOrder === data.shortname}
+                class:order-button-red={currentOrder === item}
                 onclick={() => {
-                  if (currentOrder === data.shortname) {
-                    confirmState = data.shortname;
+                  if (currentOrder === item) {
+                    confirmState = item;
                   } else {
-                    currentOrder = data.shortname;
+                    currentOrder = item;
                   }
                 }}
               >
-                {data.soldout ? "Sold Out" : currentOrder === data.shortname ? "Confirm?" : "Order"}
+                {data.soldout ? "Sold Out" : currentOrder === item ? "Confirm?" : "Order"}
               </button>
             </div>
           {/each}

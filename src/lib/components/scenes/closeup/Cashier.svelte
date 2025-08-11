@@ -1,13 +1,25 @@
 <script>
   import { fade } from "svelte/transition";
+  import { getContext } from "svelte";
   import Blackjack from "./Blackjack.svelte";
+  import { getScene } from "$lib/stores/worldState.svelte.js";
+
+  const scene = getScene();
+  const images = getContext("images");
 
   let cashierState = $state("order");
 
   $effect(() => {
     if (cashierState === "processing") {
       setTimeout(() => {
-        cashierState = "incomplete";
+        if (scene.currentState.credits > scene.foodPaid * 100) {
+          cashierState = "complete";
+          scene.currentState.credits -= scene.foodPaid * 100;
+          scene.currentState.foodOrders = [];
+        } else {
+          cashierState = "incomplete";
+          scene.setInteractable("blackjack");
+        }
       }, 1500);
     }
   });
@@ -17,54 +29,51 @@
   <div class="flag-tablet">
     <div class="transition-container">
       {#if cashierState === "order"}
-        <div class="flex-v checkout-div" transition:fade={{ duration: 300 }}>
-          <h1>Your Orders</h1>
+        <div class="flex-v checkout-div">
+          <h1>Your orders</h1>
           <div class="order-list">
-            <div class="flexbox order-item">
-              <img src="" />
-              <h3>Lemon Basque</h3>
-              <h2>1</h2>
-            </div>
-            <div class="flexbox order-item">
-              <img src="" />
-              <h3>Lemon Basque</h3>
-              <h2>1</h2>
-            </div>
-            <div class="flexbox order-item">
-              <img src="" />
-              <h3>Lemon Basque</h3>
-              <h2>1</h2>
-            </div>
-            <div class="flexbox order-item">
-              <img src="" />
-              <h3>Lemon Basque Lemon Basque Lemon Basque</h3>
-              <h2>1</h2>
-            </div>
-            <div class="flexbox order-item">
-              <img src="" />
-              <h3>Lemon Basque</h3>
-              <h2>1</h2>
-            </div>
+            {#each Object.entries(scene.currentState.foodOrders.reduce((acc, order) => {
+                acc[order] = (acc[order] || 0) + 1;
+                return acc;
+              }, {})) as [itemName, count]}
+              <div class="flexbox order-item">
+                <img src="" />
+                <h3>{itemName}</h3>
+                <h2>{count}</h2>
+              </div>
+            {/each}
           </div>
-          <h2 class="flexbox">Total<span>$ 1</span></h2>
-          <button class="big-button" onclick={() => (cashierState = "payment")}>
+          <h2 class="flexbox">
+            Total
+            <span>
+              ${scene.foodPaid.toFixed(2)}
+              ({Math.round(scene.foodPaid * 100)} Credits)
+            </span>
+          </h2>
+          <button
+            class="big-button payment-button"
+            disabled={scene.foodPaid <= 0}
+            onclick={() => (cashierState = "payment")}
+          >
             Proceed to payment
           </button>
         </div>
       {/if}
 
       {#if cashierState === "payment"}
-        <div class="flex-v payment-div" transition:fade={{ duration: 300 }}>
+        <div class="flex-v payment-div">
+          <h1>Choose payment method</h1>
           <div class="flexbox payment-container">
             <button class="big-button checkout-button flex-v" disabled>
-              <img src="" />
+              <img src={images["cash.webp"]} alt="Cash" />
               Cash
+              <p>Out of order</p>
             </button>
             <button
               class="big-button checkout-button flex-v"
               onclick={() => (cashierState = "processing")}
             >
-              <img src="" />
+              <img src={images["cash.webp"]} alt="Cash" />
               Store credit
             </button>
           </div>
@@ -73,13 +82,13 @@
       {/if}
 
       {#if cashierState === "blackjack"}
-        <div class="blackjack-div" transition:fade={{ duration: 300 }}>
+        <div class="blackjack-div" in:fade={{ duration: 300 }}>
           <Blackjack exitGame={() => (cashierState = "order")} />
         </div>
       {/if}
 
       {#if ["processing", "incomplete", "complete"].includes(cashierState)}
-        <div class="flex-v complete-div" transition:fade={{ duration: 300 }}>
+        <div class="flex-v complete-div" in:fade={{ duration: 300 }}>
           {#if cashierState === "processing"}
             <h1>Processing...</h1>
           {/if}
@@ -98,7 +107,7 @@
             <img src="" />
             <h1>Payment succesful</h1>
             <h2>Please come back again!</h2>
-            <button class="big-button" onclick={() => (cashierState = "order")}>Return</button>
+            <button class="big-button" onclick={scene.closeOverlay}>Return</button>
           {/if}
         </div>
       {/if}
@@ -174,16 +183,22 @@
 
   .checkout-div > h2 {
     width: 100%;
-    padding: 0 16px;
+    padding: 16px 16px 0;
+    border-top: 3px solid var(--colour-dark);
   }
 
   .big-button {
-    background-color: lightblue;
+    background-color: var(--colour-dark);
+    color: white;
     width: 100%;
     font-size: 1.4rem;
     font-weight: 600;
     padding: 24px 16px;
     border-radius: 16px;
+  }
+
+  .payment-button:disabled {
+    opacity: 0.5;
   }
 
   .order-list {
@@ -224,13 +239,18 @@
   }
 
   .payment-container {
-    width: 100%;
-    height: auto;
+    max-width: 100%;
+    max-height: 90%;
     aspect-ratio: 2.2;
     gap: 15px;
   }
 
   .checkout-button {
+    position: relative;
+    background-color: var(--colour-white);
+    border: 4px solid var(--colour-dull-black);
+    color: var(--colour-dark);
+    overflow: hidden;
     width: 50%;
     height: 100%;
   }
@@ -238,13 +258,31 @@
   .checkout-button img {
     width: auto;
     height: 80%;
-    aspect-ratio: 1;
-    margin-bottom: 1rem;
-    background-color: wheat;
+    object-fit: contain;
+    aspect-ratio: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  .checkout-button:disabled {
+    border-color: rgba(0, 0, 0, 0.1);
+    color: var(--colour-dull-black);
+  }
+
+  .checkout-button:disabled img {
+    opacity: 0.5;
+  }
+
+  .checkout-button p {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: var(--colour-red);
+    padding: 2px 0;
+    color: var(--colour-white);
   }
 
   .complete-div {
-    background-color: white;
+    background-color: var(--colour-white);
     gap: 10px;
   }
 

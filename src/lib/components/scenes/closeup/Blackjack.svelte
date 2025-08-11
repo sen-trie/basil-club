@@ -1,13 +1,14 @@
 <script>
   import { fly, fade } from "svelte/transition";
+  import { getScene } from "$lib/stores/worldState.svelte.js";
+
+  const scene = getScene();
 
   let { exitGame } = $props();
 
   const suits = ["♠", "♥", "♦", "♣"];
   const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
   const defaultBet = 100;
-
-  let credits = $state(1111000);
 
   function createDeck() {
     let deck = [];
@@ -51,12 +52,14 @@
   let currentHandIndex = $state(0);
   let message = $state("");
   let gameOver = $state(true);
+  let firstPlay = $state(false);
 
   const handDrawTime = 300;
   const delay = () => new Promise((r) => setTimeout(r, handDrawTime));
+  let handsReady = $state([]);
 
   async function startGame() {
-    credits -= defaultBet;
+    scene.currentState.credits -= defaultBet;
     message = "";
     gameOver = false;
 
@@ -80,6 +83,8 @@
         await delay();
         action();
       }
+
+      firstPlay = true;
       break;
     } while (true);
 
@@ -89,7 +94,7 @@
   async function splitHand() {
     if (!canSplit(hands[currentHandIndex])) return;
 
-    credits -= defaultBet;
+    scene.currentState.credits -= defaultBet;
 
     const handToSplit = hands[currentHandIndex];
     const card1 = handToSplit.cards[0];
@@ -103,8 +108,14 @@
     const newCard2 = deck.pop();
 
     const sequence = [
-      () => hands[currentHandIndex].cards.push(newCard1),
-      () => hands[currentHandIndex + 1].cards.push(newCard2),
+      () => {
+        hands[currentHandIndex].cards.push(newCard1);
+        handsReady[currentHandIndex] = true; // Mark first hand as ready
+      },
+      () => {
+        hands[currentHandIndex + 1].cards.push(newCard2);
+        handsReady[currentHandIndex + 1] = true; // Mark second hand as ready
+      },
     ];
 
     for (const action of sequence) {
@@ -131,7 +142,7 @@
 
   function doubleDown() {
     if (!canDoubleDown(hands[currentHandIndex])) return;
-    credits -= defaultBet;
+    scene.currentState.credits -= defaultBet;
 
     const hand = hands[currentHandIndex];
     hand.cards.push(deck.pop());
@@ -163,8 +174,8 @@
 
     for (const hand of hands) {
       const result = handText(hand.cards);
-      if (result.includes("Win")) credits += defaultBet * 2;
-      else if (result.includes("Push")) credits += defaultBet;
+      if (result.includes("Win")) scene.currentState.credits += defaultBet * 2;
+      else if (result.includes("Push")) scene.currentState.credits += defaultBet;
     }
   }
 
@@ -201,8 +212,8 @@
   <h2>Dealer</h2>
   <div class="card-deck">
     <div class="card-hand">
-      {#if !gameOver || handValue(dealer.cards) > 0}
-        <span transition:fade={{ delay: handDrawTime * 2, duration: 300 }}>
+      {#if firstPlay}
+        <span transition:fade={{ delay: handDrawTime, duration: 300 }}>
           ({dealer.isFinished ? handValue(dealer.cards) : "?"})
           {handValue(dealer.cards) > 21 ? " Bust!" : ""}
         </span>
@@ -222,7 +233,7 @@
           class:dim={hands.length > 1 && !gameOver && index !== currentHandIndex}
           transition:fly={{ x: 75, duration: handDrawTime }}
         >
-          {#if !gameOver || handValue(dealer.cards) > 0}
+          {#if firstPlay}
             <span transition:fade={{ delay: handDrawTime, duration: 300 }}>
               ({handValue(hand.cards)})
               {handText(hand.cards)}
@@ -236,7 +247,7 @@
     {/key}
   </div>
   <div class="credits-display">
-    Credits: {credits}
+    Credits: {Math.round(scene.currentState.credits)}
   </div>
 </div>
 <!-- <p class="message-container">{message}</p> -->
@@ -248,10 +259,10 @@
     <button onclick={doubleDown} disabled={!canDoubleDown(hands[currentHandIndex])}>Double</button>
     <button onclick={splitHand} disabled={!canSplit(hands[currentHandIndex])}>Split</button>
   {:else}
-    {#if credits > 0}
+    {#if scene.currentState.credits > 0}
       <button class="play-button" onclick={startGame}>Deal</button>
     {:else}
-      <button class="play-button" disabled>Insufficient Credits</button>
+      <button class="play-button" disabled>Insufficient credits</button>
     {/if}
     <button class="play-button" onclick={exitGame}>Exit</button>
   {/if}

@@ -1,10 +1,12 @@
 :root {
+  --colour-dull-black: rgba(0, 0, 0, 0.3);
   --colour-white: #f1e6d5;
   --colour-light: #e8d5b7;
   --colour-grey: #949494;
   --colour-darkgrey: #302f2f;
   --colour-dark: #442214;
   --colour-black: #2d1810;
+  --colour-red: #ed1f2c;
   --colour-green: #7a9d54;
   --colour-dark-green: rgb(71, 99, 41);
 }
@@ -74,6 +76,10 @@ canvas {
 
 button {
   cursor: pointer;
+}
+
+button:disabled {
+  cursor: auto;
 }
 
 button.overlay-element {

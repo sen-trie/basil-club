@@ -54,8 +54,7 @@
     transition:fly={{ y: 150, duration: 300 }}
   >
     {#if scene.currentState.overlayType === "photo"}
-      <Cashier />
-      <!-- <Photo /> -->
+      <Photo />
     {:else if scene.currentState.overlayType === "grid"}
       <Grid />
     {:else if scene.currentState.overlayType === "bear"}
@@ -80,12 +79,8 @@
         src={`${image["eat.apng"]}?v=${Date.now()}`}
         alt="eating animation"
       />
-    {:else if scene.currentState.overlayType === "checkout"}
-      <div class="checkout-div flex">
-        <div class="checkout-box">
-          <p>ORDERS RECEIVED: NONE</p>
-        </div>
-      </div>
+    {:else if scene.currentState.overlayType === "payment"}
+      <Cashier />
     {/if}
 
     {#if !hideButton}

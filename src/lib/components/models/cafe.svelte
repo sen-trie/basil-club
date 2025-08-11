@@ -865,7 +865,14 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           position={[5.4, -3.02, 3.42]}
         />
       {/if}
-      <T.Group name="Cashier_Screen" position={[4.12, -2.77, 0.75]}>
+      <T.Group
+        name="Cashier_Screen"
+        position={[4.12, -2.77, 0.75]}
+        onclick={(e) => {
+          e.stopPropagation();
+          scene.setOverlay("payment");
+        }}
+      >
         <T.Mesh
           name="Cube098"
           geometry={gltf.nodes.Cube098.geometry}
