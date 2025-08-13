@@ -7,7 +7,7 @@
   const scene = getScene();
   const images = getContext("images");
 
-  let cashierState = $state("order");
+  let cashierState = $state("blackjack");
 
   $effect(() => {
     if (cashierState === "processing") {
@@ -42,6 +42,10 @@
                 <h2>{count}</h2>
               </div>
             {/each}
+            {#if scene.currentState.foodOrders.length === 0}
+              <!-- TODO -->
+              <p class="empty-order">No orders yet</p>
+            {/if}
           </div>
           <h2 class="flexbox">
             Total

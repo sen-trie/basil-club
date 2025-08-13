@@ -67,7 +67,7 @@
       deck = createDeck();
       const cards = [deck.pop(), deck.pop(), deck.pop(), deck.pop()]; // p1, p2, d1, d2
 
-      hands = [{ cards: [], isFinished: false, hasSplit: false }];
+      hands = [{ cards: [], isFinished: false, hasSplit: false, isDoubled: false }];
       dealer = { cards: [], isFinished: false };
 
       if (handValue(cards.slice(0, 2)) === 21 || handValue(cards.slice(2)) === 21) continue;
@@ -100,8 +100,8 @@
     const card1 = handToSplit.cards[0];
     const card2 = handToSplit.cards[1];
 
-    const newHand1 = { cards: [card1], isFinished: false, hasSplit: true };
-    const newHand2 = { cards: [card2], isFinished: false, hasSplit: true };
+    const newHand1 = { cards: [card1], isFinished: false, hasSplit: true, isDoubled: false };
+    const newHand2 = { cards: [card2], isFinished: false, hasSplit: true, isDoubled: false };
     hands.splice(currentHandIndex, 1, newHand1, newHand2);
 
     const newCard1 = deck.pop();
@@ -146,6 +146,7 @@
 
     const hand = hands[currentHandIndex];
     hand.cards.push(deck.pop());
+    hand.isDoubled = true;
     hand.isFinished = true;
     nextHand();
   }
@@ -174,8 +175,13 @@
 
     for (const hand of hands) {
       const result = handText(hand.cards);
-      if (result.includes("Win")) scene.currentState.credits += defaultBet * 2;
-      else if (result.includes("Push")) scene.currentState.credits += defaultBet;
+      const handBet = hand.isDoubled ? defaultBet * 2 : defaultBet;
+
+      if (result.includes("Win")) {
+        scene.currentState.credits += handBet * 2;
+      } else if (result.includes("Push")) {
+        scene.currentState.credits += handBet;
+      }
     }
   }
 
@@ -224,7 +230,7 @@
     </div>
   </div>
 
-  <h2>Player Hands</h2>
+  <h2>Customer Hands</h2>
   <div class="card-deck">
     {#key hands}
       {#each hands as hand, index}
@@ -371,10 +377,11 @@
     background-image: url("textures/cards.webp");
     background-size: 1300%;
     background-repeat: no-repeat;
-    transition: 0.3s filter ease;
+    transition: 0.4s background-image ease;
   }
 
   .back {
-    filter: brightness(0);
+    background-image: url("textures/card-back.webp");
+    background-size: 100%;
   }
 </style>
