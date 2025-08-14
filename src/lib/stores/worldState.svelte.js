@@ -52,9 +52,9 @@ export const foodItems = {
     "Lava Cake": { shortname: "lava-cake", price: 6.5 },
     "Yuzu Molten Cake": { shortname: "yuzu-cake", price: 7.0, soldout: true },
     "Matcha Molten Cake": { shortname: "matcha-cake", price: 6.8 },
-    "Cheesecake": { shortname: "cheesecake", price: 5.5 },
-    "Earl Grey Basque Cheesecake": { shortname: "earlgrey-cheesecake", price: 6.2 },
-    "Brownie Basque Cheesecake": { shortname: "brownie-cheesecake", price: 6.2 },
+    "Cheesecake": { shortname: "cheesecake", price: 5.0 },
+    "Earl Grey Basque Cheesecake": { shortname: "earlgrey-cheesecake", price: 5.2 },
+    "Brownie Basque Cheesecake": { shortname: "brownie-cheesecake", price: 5.6 },
   },
   Custards: {
     "Crème Brûlée": { shortname: "cremebrulee", price: 4.8 },
@@ -62,7 +62,7 @@ export const foodItems = {
   },
 };
 
-function findItemByName(itemName) {
+export function findItemByName(itemName) {
   const lowerItemName = itemName.toLowerCase();
 
   for (const category of Object.values(foodItems)) {

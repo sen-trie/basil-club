@@ -61,16 +61,16 @@
           {/each}
         </nav>
       </div>
-      <img class="header-logo" alt="Cafe logo" src={image[`tablet/logo.webp`]} />
+      <img class="header-logo" alt="Cafe logo" src={image[`tablet/logo_w.webp`]} />
     </div>
     <div class="order-box" bind:this={orderBox}>
       {#each categoryList as cat}
         <section>
           <h2 bind:this={refs[cat]} data-name={cat}>{cat}</h2>
           {#each Object.entries(foodItems[cat]) as [item, data]}
-            <div class="food-box">
+            <div class="food-box" class:soldout={data.soldout}>
               <p>{item}</p>
-              <img alt="Food item" src={image[`tablet/logo.webp`]} />
+              <img alt="Food item" src={image[`tablet/${data.shortname}.webp`]} />
               <button
                 disabled={data.soldout}
                 class:order-button-red={currentOrder === item}
@@ -237,25 +237,37 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 0.75rem;
-    font-size: 1.55rem;
-    line-height: 1.9rem;
     gap: 1rem;
     background-color: var(--colour-white);
     border: 3px solid rgba(45, 24, 16, 0.3);
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+    filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.3));
   }
 
   .food-box p {
+    font-size: 1.4rem;
+    line-height: 1.7rem;
     flex-grow: 1;
     display: flex;
     align-items: center;
   }
 
   .food-box img {
-    width: 90%;
+    width: 80%;
     height: auto;
     aspect-ratio: 1;
     object-fit: contain;
+    border: 3px solid var(--colour-grey);
+    border-radius: 1rem;
+  }
+
+  .food-box.soldout {
+    color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .food-box.soldout img {
+    border: 3px solid var(--colour-white);
+    filter: opacity(0.5) grayscale(0.5);
   }
 
   .food-box button {

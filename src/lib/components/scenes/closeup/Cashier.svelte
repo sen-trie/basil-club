@@ -2,12 +2,12 @@
   import { fade } from "svelte/transition";
   import { getContext } from "svelte";
   import Blackjack from "./Blackjack.svelte";
-  import { getScene } from "$lib/stores/worldState.svelte.js";
+  import { getScene, findItemByName } from "$lib/stores/worldState.svelte.js";
 
   const scene = getScene();
   const images = getContext("images");
 
-  let cashierState = $state("blackjack");
+  let cashierState = $state("order");
 
   $effect(() => {
     if (cashierState === "processing") {
@@ -37,13 +37,17 @@
                 return acc;
               }, {})) as [itemName, count]}
               <div class="flexbox order-item">
-                <img src="" />
+                <img
+                  src={images[`tablet/${findItemByName(itemName).shortname}.webp`]}
+                  alt="Food item"
+                />
                 <h3>{itemName}</h3>
                 <h2>{count}</h2>
               </div>
             {/each}
             {#if scene.currentState.foodOrders.length === 0}
               <!-- TODO -->
+              <img src="" />
               <p class="empty-order">No orders yet</p>
             {/if}
           </div>
@@ -208,7 +212,7 @@
   .order-list {
     overflow-y: auto;
     width: 100%;
-    padding: 0 16px;
+    padding: 0 12px;
     flex-grow: 1;
   }
 

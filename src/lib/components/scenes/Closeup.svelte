@@ -51,7 +51,7 @@
     class:no-bg={scene.currentState.overlayType === "eat"}
     class:no-pointer={scene.currentState.overlayType === "hud"}
     class="close-up flex"
-    transition:fly={{ y: 150, duration: 300 }}
+    transition:fly={{ y: 150, duration: 300, opacity: 0 }}
   >
     {#if scene.currentState.overlayType === "photo"}
       <Photo />
