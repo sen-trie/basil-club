@@ -164,9 +164,16 @@ export function getScene() {
       currentState.showDialog = null;
     },
 
-    setFloor(newFloor) {
+    cycleFloor() {
       if (currentState.hudControls) return;
-      currentState.currentFloor = newFloor;
+
+      if (currentState.currentFloor === 0) {
+        currentState.currentFloor = 1;
+      } else if (currentState.currentFloor === 1) {
+        currentState.currentFloor = 2;
+      } else {
+        currentState.currentFloor = 0;
+      }
     },
 
     toggleAudio() {

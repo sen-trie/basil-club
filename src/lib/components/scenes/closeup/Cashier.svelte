@@ -2,7 +2,7 @@
   import { fade } from "svelte/transition";
   import { getContext } from "svelte";
   import Blackjack from "./Blackjack.svelte";
-  import { getScene, findItemByName } from "$lib/stores/worldState.svelte.js";
+  import { getScene, foodItems, findItemByName } from "$lib/stores/worldState.svelte.js";
 
   const scene = getScene();
   const images = getContext("images");
@@ -38,7 +38,7 @@
               }, {})) as [itemName, count]}
               <div class="flexbox order-item">
                 <img
-                  src={images[`tablet/${findItemByName(itemName).shortname}.webp`]}
+                  src={images[`tablet/${findItemByName(itemName)["shortname"]}.webp`]}
                   alt="Food item"
                 />
                 <h3>{itemName}</h3>

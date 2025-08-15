@@ -4,7 +4,7 @@
   const scene = getScene();
 
   const dialogObj = {
-    "bear": "A low growl can be heard from the café.",
+    "bear-sign": "A low growl can be heard from the café.",
     "men": "The men's restroom is currently unavailable. Come back later.",
     "photo": "Try clicking on the artworks at the top floor!",
     "grid": "Try clicking on the photo grid at the top floor!",
@@ -49,6 +49,8 @@
 {#if scene.currentState.showDialog !== null}
   <button
     class="dialog"
+    class:f-toilet={scene.currentState.scene === "fToilet"}
+    class:m-toilet={scene.currentState.scene === "mToilet"}
     transition:fly={{ y: 150, duration: 450 }}
     onclick={() => {
       if (dialogTimer) {
@@ -74,11 +76,22 @@
     padding: 1rem 1.5rem;
     font-size: 1.6rem;
     line-height: 2rem;
-    background: var(--colour-black);
     color: var(--colour-light);
+    background: var(--colour-black);
     border: 2px solid var(--colour-dark);
     border-radius: 20px;
     z-index: 3;
     cursor: pointer;
+    transition: all var(--trans-time) ease;
+  }
+
+  .f-toilet {
+    background: var(--ftoilet-dark);
+    border-color: var(--ftoilet-light);
+  }
+
+  .m-toilet {
+    background: var(--mtoilet-dark);
+    border-color: var(--mtoilet-light);
   }
 </style>

@@ -9,6 +9,13 @@
   --colour-red: #ed1f2c;
   --colour-green: #7a9d54;
   --colour-dark-green: rgb(71, 99, 41);
+
+  --ftoilet-dark: #361626;
+  --ftoilet-light: #68394f;
+  --mtoilet-dark: #171c35;
+  --mtoilet-light: #38426b;
+
+  --trans-time: 3.8s;
 }
 
 * {
@@ -74,6 +81,16 @@ canvas {
   box-sizing: border-box;
 }
 
+.f-toilet .overlay-element {
+  border-color: var(--ftoilet-dark);
+  background-color: var(--ftoilet-light);
+}
+
+.m-toilet .overlay-element {
+  border-color: var(--mtoilet-dark);
+  background-color: var(--mtoilet-light);
+}
+
 button {
   cursor: pointer;
 }
@@ -85,7 +102,10 @@ button:disabled {
 button.overlay-element {
   font-size: 1.4rem;
   font-weight: 600;
-  transition: transform 0.2s ease;
+  transition:
+    border-color var(--trans-time) ease,
+    background-color var(--trans-time) ease,
+    transform 0.2s ease;
 }
 
 button.overlay-element:hover {

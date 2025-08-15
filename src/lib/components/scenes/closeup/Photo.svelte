@@ -81,6 +81,7 @@
     min-height: 70%;
     height: 70%;
     max-width: 80%;
+    min-width: 50%;
     object-fit: contain;
     margin: 0 1rem;
     transition: transform 0.1s ease;

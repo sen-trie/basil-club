@@ -39,12 +39,16 @@
   });
 
   $effect(() => {
-    if (currentOrder !== null) {
+    if (confirmState !== null) {
       waitTimer = setTimeout(() => {
-        scene.setPlate(currentOrder);
+        scene.setPlate(confirmState);
         waitFinished = true;
       }, 1500);
     }
+
+    return () => {
+      clearTimeout(waitTimer);
+    };
   });
 </script>
 

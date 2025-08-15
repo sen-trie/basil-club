@@ -81,7 +81,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\m-toilet.glb --ro
           e.stopPropagation();
           if (!scene.currentState.interactables.bear) {
             playTada();
-            scene.openDialog("bear");
+            scene.openDialog("bear-sign");
           }
           scene.setInteractable("bear");
         }}
