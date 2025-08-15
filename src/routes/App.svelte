@@ -11,7 +11,7 @@
   import Overlay from "$lib/components/Overlay.svelte";
   import projectState from "$lib/assets/configState.json";
   import Audio from "$lib/components/Audio.svelte";
-  import { audioRef } from "$lib/stores/sceneControls.js";
+  import { audioRef } from "$lib/stores/worldState.svelte.js";
   import * as THREE from "three";
 
   const image = getContext("images");

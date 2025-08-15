@@ -1,10 +1,13 @@
-import { showBlocker, audioRef } from "./sceneControls";
+import { showBlocker } from "./sceneControls";
 import { get } from "svelte/store";
+import { writable } from "svelte/store";
 
 let changeBlocker = () => {};
 showBlocker.subscribe((fn) => {
   changeBlocker = fn;
 });
+
+export const audioRef = writable(null);
 
 let currentState = $state({
   muted: false,
@@ -36,7 +39,6 @@ let currentState = $state({
 });
 
 let interactableCount = $derived(Object.values(currentState.interactables).filter(Boolean).length);
-
 let maxInteractables = $derived(Object.keys(currentState.interactables).length);
 let sceneCooldown = 0;
 const timeCooldown = 3000;
@@ -112,6 +114,11 @@ export function getScene() {
     setOverlay(nextOverlayType) {
       if (currentState.scene !== "cafe") return;
       if (this.currentState.hudControls) return;
+
+      if (currentState.showDialog) {
+        this.closeDialog();
+      }
+
       if (nextOverlayType !== "hud") {
         this.setInteractable(nextOverlayType);
       }
@@ -136,6 +143,21 @@ export function getScene() {
 
     openDialog(dialogBox) {
       currentState.showDialog = dialogBox;
+    },
+
+    rollDialog() {
+      if (currentState.showDialog) return;
+      if (interactableCount === maxInteractables) {
+        this.openDialog("allfound");
+      } else {
+        const interactableKeys = Object.keys(currentState.interactables).filter(
+          (key) => !currentState.interactables[key],
+        );
+        if (interactableKeys.length === 0) return;
+
+        const randomKey = interactableKeys[Math.floor(Math.random() * interactableKeys.length)];
+        this.openDialog(randomKey);
+      }
     },
 
     closeDialog() {

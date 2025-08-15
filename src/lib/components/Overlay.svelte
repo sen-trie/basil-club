@@ -12,9 +12,14 @@
 </script>
 
 <div transition:fade={{ duration: 400, delay: 500 }} class="overlay-screen">
-  <p class="interactable-count">
+  <button
+    class="interactable-count"
+    onclick={() => {
+      scene.rollDialog();
+    }}
+  >
     {scene.countInteractables} / {scene.maxInteractables}
-  </p>
+  </button>
   <button
     class="overlay-element"
     onclick={() => {
@@ -73,6 +78,7 @@
     font-size: 2.5rem;
     font-weight: 700;
     text-align: right;
+    cursor: pointer;
     background: rgb(68, 34, 20, 1);
     background: linear-gradient(
       -90deg,
