@@ -5,7 +5,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\m-toilet.glb --ro
 
 <script module>
   import { T } from "@threlte/core";
-  import { useGltf, useDraco } from "@threlte/extras";
+  import { useGltf, useDraco, useCursor } from "@threlte/extras";
 
   const load = () => {
     return useGltf("/models/m-toilet-transformed.glb", {
@@ -25,13 +25,15 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\m-toilet.glb --ro
   import { cubicOut } from "svelte/easing";
   const scene = getScene();
 
+  const { onPointerEnter, onPointerLeave } = useCursor();
+
   let signScale = new Tween([1, 1, 1], { duration: 175, easing: cubicOut });
 
   async function playTada() {
     await signScale.set([0.9, 0.9, 0.9]);
-    await signScale.set([1.2, 1.2, 1.2]);
-    await signScale.set([1.2, 1.2, 1.2]);
-    await signScale.set([1.2, 1.2, 1.2]);
+    await signScale.set([2, 2, 2]);
+    await signScale.set([2, 2, 2]);
+    await signScale.set([2, 2, 2]);
     await signScale.set([1, 1, 1]);
   }
 
@@ -134,21 +136,30 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\m-toilet.glb --ro
           alphaTest={0.4}
         />
       </T.Mesh>
-      <T.Mesh
-        name="Cylinder029_5"
-        geometry={gltf.nodes.Cylinder029_5.geometry}
-        material={gltf.materials["Wood.001"]}
-      />
-      <T.Mesh
-        name="Cylinder029_6"
-        geometry={gltf.nodes.Cylinder029_6.geometry}
-        material={gltf.materials["Wood.001"]}
-      />
-      <T.Mesh
-        name="Cylinder029_7"
-        geometry={gltf.nodes.Cylinder029_7.geometry}
-        material={gltf.materials["Wood.001"]}
-      />
+      <T.Group
+        onpointerenter={onPointerEnter}
+        onpointerleave={onPointerLeave}
+        onclick={(e) => {
+          e.stopPropagation();
+          window.open("https://www.youtube.com/watch?v=RgBwLQty8B4", "_blank");
+        }}
+      >
+        <T.Mesh
+          name="Cylinder029_5"
+          geometry={gltf.nodes.Cylinder029_5.geometry}
+          material={gltf.materials["Wood.001"]}
+        />
+        <T.Mesh
+          name="Cylinder029_6"
+          geometry={gltf.nodes.Cylinder029_6.geometry}
+          material={gltf.materials["Wood.001"]}
+        />
+        <T.Mesh
+          name="Cylinder029_7"
+          geometry={gltf.nodes.Cylinder029_7.geometry}
+          material={gltf.materials["Wood.001"]}
+        />
+      </T.Group>
     </T.Group>
     <T.Group name="MT-Set2" position={[-2.38, 0.07, -3.22]}>
       <T.Mesh

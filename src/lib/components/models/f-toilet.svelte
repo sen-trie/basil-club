@@ -5,7 +5,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\f-toilet.glb --ro
 
 <script module>
   import { T } from "@threlte/core";
-  import { useGltf, useDraco } from "@threlte/extras";
+  import { useGltf, useDraco, interactivity, useCursor } from "@threlte/extras";
 
   const load = () => {
     return useGltf("/models/f-toilet-transformed.glb", {
@@ -22,6 +22,8 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\f-toilet.glb --ro
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
 
   const gltf = load();
+
+  const { onPointerEnter, onPointerLeave } = useCursor();
 </script>
 
 <T.Group bind:ref dispose={false} scale={1.2} {...props}>
@@ -110,6 +112,12 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\f-toilet.glb --ro
       name="Guitar"
       position={[-3.95, -0.56, -1.58]}
       rotation={[0.02, -0.02, 0.02]}
+      onpointerenter={onPointerEnter}
+      onpointerleave={onPointerLeave}
+      onclick={(e) => {
+        e.stopPropagation();
+        window.open("https://www.youtube.com/watch?v=_uEzKYpAo58", "_blank");
+      }}
     >
       <T.Mesh
         name="메쉬002"
