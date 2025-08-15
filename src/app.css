@@ -79,6 +79,7 @@ canvas {
   background-color: var(--colour-black);
   color: var(--colour-light);
   box-sizing: border-box;
+  transition: transform 0.2s ease;
 }
 
 .f-toilet .overlay-element {
@@ -108,7 +109,7 @@ button.overlay-element {
     transform 0.2s ease;
 }
 
-button.overlay-element:hover {
+.overlay-element:hover {
   transform: scale(1.1);
 }
 
@@ -120,4 +121,8 @@ img {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+hr {
+  border: 1px dashed var(--colour-dark);
 }
