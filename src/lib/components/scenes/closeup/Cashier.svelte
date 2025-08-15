@@ -46,8 +46,7 @@
               </div>
             {/each}
             {#if scene.currentState.foodOrders.length === 0}
-              <!-- TODO -->
-              <img src="" />
+              <img class="img-wrapper" src={images["cashier/empty.webp"]} alt="No orders" />
               <p class="empty-order">No orders yet</p>
             {/if}
           </div>
@@ -73,7 +72,7 @@
           <h1>Choose payment method</h1>
           <div class="flexbox payment-container">
             <button class="big-button checkout-button flex-v" disabled>
-              <img src={images["cash.webp"]} alt="Cash" />
+              <img src={images["cashier/cash.webp"]} alt="Cash" />
               Cash
               <p>Out of order</p>
             </button>
@@ -81,8 +80,8 @@
               class="big-button checkout-button flex-v"
               onclick={() => (cashierState = "processing")}
             >
-              <img src={images["cash.webp"]} alt="Cash" />
-              Store credit
+              <img src={images["cashier/credit.webp"]} alt="Cash" />
+              Credit
             </button>
           </div>
           <button class="big-button" onclick={() => (cashierState = "order")}>Go back</button>
@@ -102,7 +101,11 @@
           {/if}
 
           {#if cashierState === "incomplete"}
-            <img src="" />
+            <img
+              src={images["cashier/incomplete.webp"]}
+              class="img-wrapper"
+              alt="Insufficient credits"
+            />
             <h1>Payment unsuccesful</h1>
             <h2>Insufficient credits...</h2>
             <button class="big-button" onclick={() => (cashierState = "blackjack")}
@@ -112,7 +115,11 @@
           {/if}
 
           {#if cashierState === "complete"}
-            <img src="" />
+            <img
+              src={images["cashier/complete.webp"]}
+              class="img-wrapper"
+              alt="Insufficient credits"
+            />
             <h1>Payment succesful</h1>
             <h2>Please come back again!</h2>
             <button class="big-button" onclick={scene.closeOverlay}>Return</button>
@@ -216,6 +223,31 @@
     flex-grow: 1;
   }
 
+  .img-wrapper {
+    width: 45%;
+    height: auto;
+    aspect-ratio: 1;
+    margin-bottom: 5px;
+    padding: 0.5rem;
+    background-color: var(--colour-light);
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+  }
+
+  .order-list img {
+    display: block;
+    width: 55%;
+    background-color: var(--colour-white);
+    margin: 1rem auto;
+  }
+
+  .order-list p {
+    display: block;
+    margin: 0 auto;
+    width: fit-content;
+    font-size: 1.6rem;
+  }
+
   .order-item {
     width: 100%;
     height: 18%;
@@ -292,14 +324,6 @@
   .complete-div {
     background-color: var(--colour-white);
     gap: 10px;
-  }
-
-  .complete-div img {
-    width: 35%;
-    height: auto;
-    aspect-ratio: 1;
-    margin-bottom: 5px;
-    background-color: black;
   }
 
   .complete-div button:first-of-type {

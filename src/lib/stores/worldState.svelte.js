@@ -18,6 +18,7 @@ let currentState = $state({
   currentPlate: "",
   plateCount: 0,
   credits: 1000,
+  freeDeals: 3,
   foodOrders: [],
   earlstreetClicked: false,
   interactables: {

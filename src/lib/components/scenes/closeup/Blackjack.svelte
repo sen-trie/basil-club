@@ -1,6 +1,7 @@
 <script>
   import { fly, fade } from "svelte/transition";
   import { getScene } from "$lib/stores/worldState.svelte.js";
+  import { onMount } from "svelte";
 
   const scene = getScene();
 
@@ -59,7 +60,12 @@
   let handsReady = $state([]);
 
   async function startGame() {
-    scene.currentState.credits -= defaultBet;
+    if (scene.currentState.freeDeals > 0) {
+      scene.currentState.freeDeals -= 1;
+    } else {
+      scene.currentState.credits -= defaultBet;
+    }
+
     message = "";
     gameOver = false;
 
@@ -166,7 +172,9 @@
   }
 
   async function dealerPlay() {
-    while (handValue(dealer.cards) < 17) {
+    const pity = scene.currentState.credits < 500;
+
+    while (handValue(dealer.cards) < (pity ? 20 : 17)) {
       dealer.cards.push(deck.pop());
       await new Promise((r) => setTimeout(r, handDrawTime));
     }
@@ -266,7 +274,13 @@
     <button onclick={splitHand} disabled={!canSplit(hands[currentHandIndex])}>Split</button>
   {:else}
     {#if scene.currentState.credits > 0}
-      <button class="play-button" onclick={startGame}>Deal</button>
+      <button class="play-button" onclick={startGame}>
+        {#if scene.currentState.freeDeals > 0}
+          Free Deal ({scene.currentState.freeDeals})
+        {:else}
+          Deal
+        {/if}
+      </button>
     {:else}
       <button class="play-button" disabled>Insufficient credits</button>
     {/if}

@@ -11,7 +11,6 @@
   const scene = getScene();
 </script>
 
-<!-- TODO Disable when hud -->
 <div transition:fade={{ duration: 400, delay: 500 }} class="overlay-screen">
   <p class="interactable-count">
     {scene.countInteractables} / {scene.maxInteractables}
