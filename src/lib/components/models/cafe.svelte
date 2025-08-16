@@ -411,8 +411,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                 <T.Group
                   name="Cat_Base_Roam"
                   rotation={[0, 0, 0]}
-                  visible={true ||
-                    (scene.currentState.interactables.flag && !scene.currentState.povCamera)}
+                  visible={scene.currentState.interactables.flag && !scene.currentState.povCamera}
                 >
                   <InstancedMesh position={[0, 0.35, 0]} frustumCulled={false}>
                     <T.BufferGeometry is={gltf.nodes.Order_Plate.geometry} />

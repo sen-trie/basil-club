@@ -42,7 +42,8 @@
         </div>
         <div class="info-content">
           Welcome to <strong>Basil Club</strong>! <br /><br /> Take your time to explore the café -
-          there are many interactables scattered about. I hope you enjoy your stay!
+          there are many interactables scattered about. You can get hints by clicking the counter at
+          the <u>top right</u> of the screen. I hope you enjoy your stay!
           {@render sectionBreak("What is this?")}
           This virtual experience is a homage to my stay in
           <span class="red">Ca</span><span class="white">na</span><span class="red">da</span>. It is

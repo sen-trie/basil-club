@@ -19,7 +19,6 @@
   const { progress } = useProgress();
   const p = fromStore(progress);
   const tweenedProgress = Tween.of(() => p.current, { duration: 100 });
-  const progressWidth = $derived(100 * tweenedProgress.current);
   const progressLessThanOne = $derived(tweenedProgress.current < 1);
 
   let pageStarted = $state(false);
@@ -58,9 +57,9 @@
   });
 </script>
 
-{#if !dev && !pageStarted}
+{#if !pageStarted}
   <div out:clipReverse={{ duration: 1200 }} class="wrapper">
-    <Loading {progressLessThanOne} {progressWidth} startPage={() => (pageStarted = true)} />
+    <Loading {progressLessThanOne} startPage={() => (pageStarted = true)} />
   </div>
 {:else}
   <Overlay />
