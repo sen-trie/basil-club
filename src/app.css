@@ -3,6 +3,7 @@
   --colour-white: #f1e6d5;
   --colour-light: #e8d5b7;
   --colour-grey: #949494;
+  --colour-med: #96573b;
   --colour-darkgrey: #302f2f;
   --colour-dark: #442214;
   --colour-black: #2d1810;
@@ -12,8 +13,10 @@
 
   --ftoilet-dark: #361626;
   --ftoilet-light: #68394f;
+  --ftoilet-white: #9e637f;
   --mtoilet-dark: #171c35;
   --mtoilet-light: #38426b;
+  --mtoilet-white: #586597;
 
   --trans-time: 3.8s;
 }
@@ -24,6 +27,9 @@
   box-sizing: border-box;
   background: none;
   border: none;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--colour-dark) var(--colour-med);
 
   user-select: none;
   -webkit-user-select: none; /* Safari and Chrome */
@@ -47,6 +53,18 @@
   font-weight: 100 1000;
   font-style: italic;
   font-display: swap;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--colour-med);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--colour-dark);
 }
 
 canvas {
@@ -87,9 +105,33 @@ canvas {
   background-color: var(--ftoilet-light);
 }
 
+.f-toilet * {
+  scrollbar-color: var(--ftoilet-dark) var(--ftoilet-white);
+}
+
+.f-toilet *::-webkit-scrollbar-track {
+  background: var(--ftoilet-white);
+}
+
+.f-toilet *::-webkit-scrollbar-thumb {
+  background: var(--ftoilet-dark);
+}
+
 .m-toilet .overlay-element {
   border-color: var(--mtoilet-dark);
   background-color: var(--mtoilet-light);
+}
+
+.m-toilet * {
+  scrollbar-color: var(--mtoilet-dark) var(--mtoilet-white);
+}
+
+.m-toilet *::-webkit-scrollbar-track {
+  background: var(--mtoilet-white);
+}
+
+.m-toilet *::-webkit-scrollbar-thumb {
+  background: var(--mtoilet-dark);
 }
 
 button {

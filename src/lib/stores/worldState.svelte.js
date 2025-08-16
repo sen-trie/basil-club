@@ -66,6 +66,7 @@ export const foodItems = {
 };
 
 export function findItemByName(itemName) {
+  console.log(itemName);
   const lowerItemName = itemName.toLowerCase();
 
   for (const category of Object.values(foodItems)) {

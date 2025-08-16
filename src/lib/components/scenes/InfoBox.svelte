@@ -44,7 +44,10 @@
           Welcome to <strong>Basil Club</strong>! <br /><br /> Take your time to explore the café -
           there are many interactables scattered about. I hope you enjoy your stay!
           {@render sectionBreak("What is this?")}
-          1231231
+          This virtual experience is a homage to my stay in
+          <span class="red">Ca</span><span class="white">na</span><span class="red">da</span>. It is
+          where I took up baking for the first time and found that the process came naturally to me.
+          Thus, many of the objects you see here pay tribute to my experiences there.
           <br /><br />
           Made in
           <a href="https://threlte.xyz/" target="_blank">Threlte </a>
@@ -99,8 +102,9 @@
 {/if}
 
 <style>
-  a {
-    text-decoration: none;
+  a:not(.overlay-element),
+  a:visited:not(.overlay-element) {
+    color: var(--colour-med);
   }
 
   .info-screen {
@@ -160,7 +164,7 @@
 
   .info-content {
     font-size: 1.4rem;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     padding: 0 1rem 0.5rem;
     width: calc(100% - 2rem);
     overflow-y: auto;
@@ -185,6 +189,18 @@
     padding: 0 1rem;
     gap: 2rem;
     text-align: center;
+  }
+
+  span.red {
+    background-color: var(--colour-red);
+    color: white;
+    padding: 2px 0;
+  }
+
+  span.white {
+    background-color: white;
+    color: var(--colour-red);
+    padding: 2px 0;
   }
 
   .contact-grid .exit-link {

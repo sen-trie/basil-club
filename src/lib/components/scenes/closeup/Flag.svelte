@@ -38,14 +38,20 @@
     return () => observer.disconnect();
   });
 
-  $effect(() => {
-    if (confirmState !== null) {
+  const orderItem = (item) => {
+    if (currentOrder === item) {
+      confirmState = item;
+      scene.setPlate(confirmState);
+
       waitTimer = setTimeout(() => {
-        scene.setPlate(confirmState);
         waitFinished = true;
       }, 1500);
+    } else {
+      currentOrder = item;
     }
+  };
 
+  $effect(() => {
     return () => {
       clearTimeout(waitTimer);
     };
@@ -78,13 +84,7 @@
               <button
                 disabled={data.soldout}
                 class:order-button-red={currentOrder === item}
-                onclick={() => {
-                  if (currentOrder === item) {
-                    confirmState = item;
-                  } else {
-                    currentOrder = item;
-                  }
-                }}
+                onclick={() => orderItem(item)}
               >
                 {data.soldout ? "Sold Out" : currentOrder === item ? "Confirm?" : "Order"}
               </button>
@@ -232,6 +232,15 @@
     flex-grow: 1;
     overflow-y: auto;
     padding: 0 1rem 1rem;
+    scrollbar-color: var(--colour-med) var(--colour-light);
+  }
+
+  .order-box::-webkit-scrollbar-track {
+    background: var(--colour-light);
+  }
+
+  .order-box::-webkit-scrollbar-thumb {
+    background: var(--colour-med);
   }
 
   .order-box .food-box {
