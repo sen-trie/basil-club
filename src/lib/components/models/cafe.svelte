@@ -422,19 +422,10 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                     {/each}
                   </InstancedMesh>
                   <T.Mesh
-                    name="Cylinder"
-                    geometry={gltf.nodes.Cylinder.geometry}
-                    material={gltf.materials["Robot Black"]}
-                  />
-                  <T.Mesh
-                    name="Cylinder_1"
-                    geometry={gltf.nodes.Cylinder_1.geometry}
-                    material={gltf.materials["Robot Black"]}
-                  />
-                  <T.Mesh
-                    name="Cylinder_2"
-                    geometry={gltf.nodes.Cylinder_2.geometry}
-                    material={gltf.materials["Robot Black"]}
+                    name="Cat_Base"
+                    geometry={gltf.nodes.Cat_Base.geometry}
+                    material={gltf.materials["Robot Texure"]}
+                    position={[0.64, -1.9, 6.18]}
                   />
                   <SheetObject key="Cat Face Roam">
                     {#snippet children({ Transform })}
@@ -443,21 +434,16 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                           <T.Mesh
                             name="Sphere"
                             geometry={gltf.nodes.Sphere.geometry}
-                            material={gltf.materials["Robot Black"]}
+                            material={gltf.materials["Robot Texure"]}
                           />
-                          <T.Mesh
-                            name="Sphere_1"
-                            geometry={gltf.nodes.Sphere_1.geometry}
-                            material={gltf.materials["Robot Black"]}
-                          />
-                          <T.Mesh name="Sphere_2_Front" geometry={gltf.nodes.Sphere_2.geometry}>
+                          <T.Mesh name="Sphere_2_Front" geometry={gltf.nodes.Sphere_1.geometry}>
                             <T.MeshBasicMaterial
                               transparent={true}
                               opacity={1 - roamingAlpha.current}
                               map={faceTextures[nextFaceRoam]}
                             />
                           </T.Mesh>
-                          <T.Mesh name="Sphere_2_Back" geometry={gltf.nodes.Sphere_2.geometry}>
+                          <T.Mesh name="Sphere_2_Back" geometry={gltf.nodes.Sphere_1.geometry}>
                             <T.MeshBasicMaterial
                               transparent={true}
                               opacity={roamingAlpha.current}
@@ -493,45 +479,22 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                   visible={scene.currentState.povCamera}
                 >
                   <T.Mesh
-                    name="Cylinder"
-                    geometry={gltf.nodes.Cylinder.geometry}
-                    material={gltf.materials["Robot Black"]}
+                    name="Cat_Base"
+                    geometry={gltf.nodes.Cat_Base.geometry}
+                    material={gltf.materials["Robot Texure"]}
+                    position={[0.64, -1.9, 6.18]}
                   />
                   <T.Mesh
-                    name="Cylinder_1"
-                    geometry={gltf.nodes.Cylinder_1.geometry}
-                    material={gltf.materials["Robot Black"]}
-                  />
-                  <T.Mesh
-                    name="Cylinder_2"
-                    geometry={gltf.nodes.Cylinder_2.geometry}
-                    material={gltf.materials["Robot Black"]}
-                  />
-                  <T.Group
                     name="Tablet"
+                    geometry={gltf.nodes.Tablet.geometry}
+                    material={gltf.materials.Misc}
                     position={[0, hideZone(0.34 + 0.1, !scene.currentState.povCamera), 0.01]}
                     rotation={[0, rotationTween.current, -0.5]}
                     onclick={(e) => {
                       e.stopPropagation();
                       scene.setOverlay("flag");
                     }}
-                  >
-                    <T.Mesh
-                      name="Cube096"
-                      geometry={gltf.nodes.Cube096.geometry}
-                      material={gltf.materials["Tablet Screen"]}
-                    />
-                    <T.Mesh
-                      name="Cube096_1"
-                      geometry={gltf.nodes.Cube096_1.geometry}
-                      material={gltf.materials["Tablet Screen"]}
-                    />
-                    <T.Mesh
-                      name="Cube096_2"
-                      geometry={gltf.nodes.Cube096_2.geometry}
-                      material={gltf.materials["Tablet Screen"]}
-                    />
-                  </T.Group>
+                  />
                   <SheetObject key="POV Face">
                     {#snippet children({ Transform })}
                       <Transform>
@@ -565,21 +528,16 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
                           <T.Mesh
                             name="Sphere"
                             geometry={gltf.nodes.Sphere.geometry}
-                            material={gltf.materials["Robot Black"]}
+                            material={gltf.materials["Robot Texure"]}
                           />
-                          <T.Mesh
-                            name="Sphere_1"
-                            geometry={gltf.nodes.Sphere_1.geometry}
-                            material={gltf.materials["Robot Black"]}
-                          />
-                          <T.Mesh name="Sphere_2_Front" geometry={gltf.nodes.Sphere_2.geometry}>
+                          <T.Mesh name="Sphere_2_Front" geometry={gltf.nodes.Sphere_1.geometry}>
                             <T.MeshBasicMaterial
                               transparent={true}
                               opacity={1 - transitionAlpha.current}
                               map={faceTextures[nextFacePOV]}
                             />
                           </T.Mesh>
-                          <T.Mesh name="Sphere_2_Back" geometry={gltf.nodes.Sphere_2.geometry}>
+                          <T.Mesh name="Sphere_2_Back" geometry={gltf.nodes.Sphere_1.geometry}>
                             <T.MeshBasicMaterial
                               transparent={true}
                               opacity={transitionAlpha.current}
@@ -619,7 +577,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           geometry={gltf.nodes.Cube012_1.geometry}
           material={gltf.materials["Flag Holder"]}
         />
-        <!-- <T.Mesh
+        <T.Mesh
           name="Flag_Hitbox"
           geometry={gltf.nodes.Flag_Hitbox.geometry}
           material={gltf.nodes.Flag_Hitbox.material}
@@ -633,7 +591,7 @@ Command: npx @threlte/gltf@3.0.1 C:\Projects\abc\static\models\cafe.glb --root /
           }}
         >
           <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
-        </T.Mesh> -->
+        </T.Mesh>
       </T.Group>
       <T.Group name="Four" position={[0.49, -2.22, 3.36]}>
         <T.Mesh

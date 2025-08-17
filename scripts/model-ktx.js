@@ -54,6 +54,7 @@ function runKtxConversion() {
 
     try {
       const gltfTransformCommand = `npx @gltf-transform/cli uastc ${sourcePath} ${newFilePath}`;
+      // const gltfTransformCommand = `npx @gltf-transform/cli uastc ${sourcePath} ${newFilePath}`;
       execSync(gltfTransformCommand, { stdio: "inherit" });
     } catch (error) {}
   });

@@ -7,9 +7,9 @@
   import HudScene from "./scenes/HudScene.svelte";
   import POVScene from "./scenes/POVScene.svelte";
   import { fly } from "$lib/components/transitions.js";
-  import Cafe from "$lib/components/models/cafe.svelte";
-  import MToilet from "$lib/components/models/m-toilet.svelte";
-  import FToilet from "$lib/components/models/f-toilet.svelte";
+  import Cafe from "$lib/components/models/cafe-rc5-ktx-transformed.svelte";
+  import MToilet from "$lib/components/models/m-toilet-ktx-transformed.svelte";
+  import FToilet from "$lib/components/models/f-toilet-ktx-transformed.svelte";
   import {
     minPolarAngle,
     maxPolarAngle,
