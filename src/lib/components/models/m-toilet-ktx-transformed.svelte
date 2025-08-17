@@ -21,6 +21,7 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
 
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
   import { getScene } from "$lib/stores/worldState.svelte.js";
+  import Hitbox from "./hitbox.svelte";
   import { Tween } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
   const scene = getScene();
@@ -69,7 +70,9 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
           }
           scene.setInteractable("bear");
         }}
-      />
+      >
+        <Hitbox dim={[1.2, 1.2, 1.2]} />
+      </T.Mesh>
     </T.Mesh>
     <T.Mesh
       name="MT-Set4"
@@ -88,7 +91,9 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
           e.stopPropagation();
           window.open("https://www.youtube.com/watch?v=RgBwLQty8B4", "_blank");
         }}
-      />
+      >
+        <Hitbox dim={[1.5, 1.5, 1.5]} position={[-1.7, 0, 0.5]} />
+      </T.Mesh>
     </T.Mesh>
     <T.Mesh
       name="MT-Set2"

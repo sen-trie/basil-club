@@ -1,9 +1,9 @@
 <script>
-  let { progressLessThanOne, startPage } = $props();
+  let { progressLessThanOne, progressWidth, startPage } = $props();
 </script>
 
 {#if progressLessThanOne}
-  <p class="loading">Loading...</p>
+  <p class="loading">Loading...<br />{Math.round(progressWidth)}%</p>
 {:else}
   <button onclick={startPage}>
     <p>Start</p>

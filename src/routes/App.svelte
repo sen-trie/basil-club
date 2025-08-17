@@ -22,7 +22,7 @@
   const progressLessThanOne = $derived(tweenedProgress.current < 1);
 
   let pageStarted = $state(false);
-
+  const progressWidth = $derived(100 * tweenedProgress.current);
   import { cubicInOut } from "svelte/easing";
   function clipReverse(_node, { duration = 1000 } = {}) {
     return {
@@ -59,7 +59,7 @@
 
 {#if !pageStarted}
   <div out:clipReverse={{ duration: 1200 }} class="wrapper">
-    <Loading {progressLessThanOne} startPage={() => (pageStarted = true)} />
+    <Loading {progressLessThanOne} {progressWidth} startPage={() => (pageStarted = true)} />
   </div>
 {:else}
   <Overlay />

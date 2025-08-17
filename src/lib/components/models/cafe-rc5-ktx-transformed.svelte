@@ -27,6 +27,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
   import { Tween } from "svelte/motion";
   import { cubicInOut, linear } from "svelte/easing";
   import { getScene } from "$lib/stores/worldState.svelte.js";
+  import Hitbox from "./hitbox.svelte";
   const scene = getScene();
 
   const gltf = load();
@@ -323,7 +324,9 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
                       e.stopPropagation();
                       scene.setOverlay("flag");
                     }}
-                  />
+                  >
+                    <Hitbox dim={[0.7, 0.5, 0.7]} position={[0, -0.02, 0]} rotation.z={0.5} />
+                  </T.Mesh>
                   <SheetObject key="POV Face">
                     {#snippet children({ Transform })}
                       <Transform>
@@ -411,6 +414,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
           }}
         >
           <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
+          <Hitbox dim={[1, 1, 1]} />
         </T.Mesh>
       </T.Mesh>
       <T.Mesh
@@ -435,9 +439,11 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
           <T.Group
             name="Dish Collection"
             onclick={(e) => {
+              if (scene.currentState.currentPlate === "empty") return;
               consumeDessert(e);
             }}
           >
+            <Hitbox dim={[0.6, 0.3, 0.6]} position.y={0.1} />
             {#if scene.currentState.currentPlate === "earlgrey-cheesecake"}
               <T.Mesh
                 name="Basque_Cheesecake"
@@ -533,6 +539,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
             geometry={gltf.nodes.Earl_Street_Shell.geometry}
             material={gltf.materials["Lego Shell"]}
           />
+          <Hitbox dim={[1.5, 1.5, 5]} position={[0, -0.15, -0.9]} />
         </T.Mesh>
       </T.Mesh>
       <T.Mesh
@@ -544,7 +551,9 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
           e.stopPropagation();
           scene.setFToilet();
         }}
-      />
+      >
+        <Hitbox dim={[1.9, 3, 1]} position={[-0.2, 0.1, 0]} />
+      </T.Mesh>
       <T.Mesh
         name="Toilet-M"
         geometry={gltf.nodes["Toilet-M"].geometry}
@@ -558,7 +567,9 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
             scene.openDialog("men");
           }
         }}
-      />
+      >
+        <Hitbox dim={[1.9, 3, 1]} position={[0.2, 0.1, 0]} />
+      </T.Mesh>
       <T.Mesh
         name="Two"
         geometry={gltf.nodes.Two.geometry}
@@ -593,7 +604,9 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
               playTada();
             }
           }}
-        />
+        >
+          <Hitbox dim={[1, 1, 1]} />
+        </T.Mesh>
         <T.Mesh
           name="Disturb"
           geometry={gltf.nodes.Disturb.geometry}
@@ -610,7 +623,9 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
           e.stopPropagation();
           scene.setOverlay("payment");
         }}
-      />
+      >
+        <Hitbox dim={[1, 1, 1]} position={[-2.5, 0.2, 0]} />
+      </T.Mesh>
       <T.Mesh
         name="Eight"
         geometry={gltf.nodes.Eight.geometry}
@@ -632,6 +647,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
               scene.setOverlay("grid");
             }}
           >
+            <Hitbox dim={[2.5, 2.5, 1]} />
             <T.MeshBasicMaterial transparent opacity={0} depthWrite={false} />
           </T.Mesh>
         </T.Mesh>
@@ -657,7 +673,9 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
           e.stopPropagation();
           scene.setOverlay("photo");
         }}
-      />
+      >
+        <Hitbox dim={[1, 3, 4]} />
+      </T.Mesh>
       <T.Mesh
         name="Six"
         geometry={gltf.nodes.Six.geometry}

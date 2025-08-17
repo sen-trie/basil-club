@@ -20,6 +20,7 @@ Command: npx @threlte/gltf@3.0.1 f-toilet-ktx-transformed.glb --root /models/tra
   };
 
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
+  import Hitbox from "./hitbox.svelte";
 
   const gltf = load();
 
@@ -60,7 +61,9 @@ Command: npx @threlte/gltf@3.0.1 f-toilet-ktx-transformed.glb --root /models/tra
         e.stopPropagation();
         window.open("https://www.youtube.com/watch?v=_uEzKYpAo58", "_blank");
       }}
-    />
+    >
+      <Hitbox dim={[1, 2.8, 1.5]} position.y={0.5} />
+    </T.Mesh>
   {:catch err}
     {@render error?.({ error: err })}
   {/await}
