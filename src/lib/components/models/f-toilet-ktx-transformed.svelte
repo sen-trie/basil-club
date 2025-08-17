@@ -9,7 +9,7 @@ Command: npx @threlte/gltf@3.0.1 f-toilet-ktx-transformed.glb --root /models/tra
 
   const ktx2Loader = useKtx2("/transcoder/");
   const load = () => {
-    return useGltf("/models/ktx2/f-toilet-ktx.glb", {
+    return useGltf("/models/transformed/f-toilet-ktx-transformed.glb", {
       ktx2Loader: ktx2Loader,
       dracoLoader: useDraco(),
     });
@@ -26,7 +26,7 @@ Command: npx @threlte/gltf@3.0.1 f-toilet-ktx-transformed.glb --root /models/tra
   const { onPointerEnter, onPointerLeave } = useCursor();
 </script>
 
-<T.Group bind:ref dispose={false} {...props}>
+<T.Group scale={1.4} bind:ref dispose={false} {...props}>
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}

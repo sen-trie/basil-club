@@ -27,7 +27,7 @@
     }
     dialogTimer = setTimeout(() => {
       scene.closeDialog();
-    }, 6000);
+    }, 4000);
   };
 
   $effect(() => {

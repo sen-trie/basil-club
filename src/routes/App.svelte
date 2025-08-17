@@ -71,7 +71,7 @@
 <div class="main">
   <Canvas
     renderMode="on-demand"
-    createRenderer={(canvas) => new THREE.WebGLRenderer({ canvas, antialias: false })}
+    createRenderer={(canvas) => new THREE.WebGLRenderer({ canvas, antialias: true })}
   >
     <Project name="Basil Club" config={{ state: projectState }}>
       <Scene />

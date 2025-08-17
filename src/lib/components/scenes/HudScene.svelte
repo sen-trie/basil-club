@@ -1,7 +1,7 @@
 <script>
   import { T } from "@threlte/core";
   import { HUD, OrbitControls, HTML, Billboard } from "@threlte/extras";
-  import EarlStreet from "$lib/components/models/earl-street.svelte";
+  import EarlStreet from "$lib/components/models/earl-street-ktx-transformed.svelte";
   import { getScene } from "$lib/stores/worldState.svelte.js";
   import Hand from "$lib/assets/ui/hand.svelte";
   import { Tween } from "svelte/motion";

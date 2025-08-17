@@ -5,13 +5,13 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
 
 <script>
   import { T } from "@threlte/core";
-  import { useGltf, useKtx2, useDraco, useCursor } from "@threlte/extras";
+  import { useGltf, useCursor } from "@threlte/extras";
 
-  const ktx2Loader = useKtx2("/transcoder/");
+  // const ktx2Loader = useKtx2("/transcoder/");
   const load = () => {
-    return useGltf("/models/ktx2/m-toilet-ktx.glb", {
-      ktx2Loader: ktx2Loader,
-      dracoLoader: useDraco(),
+    return useGltf("/models/m-toilet.glb", {
+      // ktx2Loader: ktx2Loader,
+      // dracoLoader: useDraco(),
     });
   };
 
@@ -56,19 +56,40 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
       position={[0.51, -0.38, -4.23]}
     >
       <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} alphaTest={0.1} />
+      <T.Mesh
+        name="Bear_Sign"
+        geometry={gltf.nodes.Bear_Sign.geometry}
+        material={gltf.materials["MT-Set1"]}
+        scale={signScale.current}
+        onclick={(e) => {
+          e.stopPropagation();
+          if (!scene.currentState.interactables.bear) {
+            playTada();
+            scene.openDialog("bear-sign");
+          }
+          scene.setInteractable("bear");
+        }}
+      />
     </T.Mesh>
     <T.Mesh
       name="MT-Set4"
       geometry={gltf.nodes["MT-Set4"].geometry}
       material={gltf.materials["MT-Set4"]}
       position={[0.17, -0.76, 0.75]}
-      onpointerenter={onPointerEnter}
-      onpointerleave={onPointerLeave}
-      onclick={(e) => {
-        e.stopPropagation();
-        window.open("https://www.youtube.com/watch?v=RgBwLQty8B4", "_blank");
-      }}
-    />
+    >
+      <T.MeshBasicMaterial map={gltf.materials["MT-Set4"].map} transparent={true} alphaTest={0.4} />
+      <T.Mesh
+        name="Camp_Bench"
+        geometry={gltf.nodes.Camp_Bench.geometry}
+        material={gltf.materials["MT-Set4"]}
+        onpointerenter={onPointerEnter}
+        onpointerleave={onPointerLeave}
+        onclick={(e) => {
+          e.stopPropagation();
+          window.open("https://www.youtube.com/watch?v=RgBwLQty8B4", "_blank");
+        }}
+      />
+    </T.Mesh>
     <T.Mesh
       name="MT-Set2"
       geometry={gltf.nodes["MT-Set2"].geometry}
