@@ -4,17 +4,21 @@ import { join, resolve } from "node:path";
 import { exit } from "node:process";
 
 /**
- * This script is used to transform gltf and glb files into Threlte components.
- * It uses the `@threlte/gltf` package to do so.
- * It works in two steps:
- * 1. Transform the gltf/glb files located in the sourceDir directory
- * 2. Move the Threlte components to the targetDir directory
+ * This script automates the entire model optimization pipeline.
+ * It performs three main steps:
+ * 1. Takes KTX2-optimized GLTF/GLB files from the ktx2 directory.
+ * 2. Compresses their geometry with Draco and saves them to a new 'transformed' directory.
+ * 3. Generates Svelte components for each transformed model, referencing the new path.
+ * 4. Moves the generated Svelte components to the components/models directory.
+ * This ensures the final Svelte components are optimized and correctly linked.
  */
 const configuration = {
-  sourceDir: resolve(join("static", "models")),
+  sourceDir: resolve(join("static", "models", "ktx2")),
+  transformedDir: resolve(join("static", "models", "transformed")),
   targetDir: resolve(join("src", "lib", "components", "models")),
+
   overwrite: true,
-  root: "/models/",
+  root: "/models/transformed/",
   types: false,
   keepnames: true,
   meta: false,
@@ -37,17 +41,16 @@ const configuration = {
   },
 };
 
-// if the target directory doesn't exist, create it
+// Ensure all necessary directories exist
+mkdirSync(configuration.transformedDir, { recursive: true });
 mkdirSync(configuration.targetDir, { recursive: true });
 
-// throw error if source directory doesn't exist
+// Check if the source directory exists
 if (!existsSync(configuration.sourceDir)) {
   throw new Error(`Source directory ${configuration.sourceDir} doesn't exist.`);
 }
 
-// read the directory, filter for .glb and .gltf files and files *not* ending
-// with -transformed.gltf or -transformed.glb as these should not be transformed
-// again.
+// 1. Filter for models that have not yet been transformed.
 const gltfFiles = readdirSync(configuration.sourceDir).filter((file) => {
   return (
     (file.endsWith(".glb") || file.endsWith(".gltf")) &&
@@ -57,32 +60,38 @@ const gltfFiles = readdirSync(configuration.sourceDir).filter((file) => {
 });
 
 if (gltfFiles.length === 0) {
-  console.log("No gltf or glb files found.");
+  console.log("No gltf or glb files found to transform.");
   exit();
 }
 
-const filteredGltfFiles = gltfFiles.filter((file) => {
-  if (!configuration.overwrite) {
-    const componentFilename = file.split(".").slice(0, -1).join(".") + ".svelte";
-    const componentPath = join(configuration.targetDir, componentFilename);
-    if (existsSync(componentPath)) {
-      console.error(`File ${componentPath} already exists, skipping.`);
-      return false;
-    }
+// 2. Perform the model transformation to the 'transformed' folder.
+gltfFiles.forEach((file) => {
+  const sourcePath = join(configuration.sourceDir, file);
+  const fileExt = file.split(".").pop();
+  const fileName = file.split(".").slice(0, -1).join(".");
+
+  // Construct the new transformed filename
+  const transformedFileName = `${fileName}-transformed.${fileExt}`;
+  const transformedPath = join(configuration.transformedDir, transformedFileName);
+
+  try {
+    // Use gltf-transform to apply Draco compression
+    const gltfTransformCommand = `npx @gltf-transform/cli draco ${sourcePath} ${transformedPath}`;
+    execSync(gltfTransformCommand, { stdio: "inherit" });
+  } catch (error) {
+    console.error(`Error applying Draco transformation to ${file}: ${error}`);
   }
-  return true;
 });
 
-if (filteredGltfFiles.length === 0) {
-  console.log("No gltf or glb files to process.");
-  exit();
-}
+// 3. Generate Svelte components from the newly transformed models
+const transformedGltfFiles = readdirSync(configuration.transformedDir).filter((file) => {
+  return file.endsWith(".gltf") || file.endsWith(".glb");
+});
 
-filteredGltfFiles.forEach((file) => {
-  // run the gltf transform command on every file
-  const path = join(configuration.sourceDir, file);
+transformedGltfFiles.forEach((file) => {
+  const sourcePath = join(configuration.transformedDir, file);
 
-  // parse the configuration
+  // Generate the Threlte Svelte component
   const args = [];
   if (configuration.root) args.push(`--root ${configuration.root}`);
   if (configuration.types) args.push("--types");
@@ -107,43 +116,31 @@ filteredGltfFiles.forEach((file) => {
   }
   const formattedArgs = args.join(" ");
 
-  // run the command
-  const cmd = `npx @threlte/gltf@latest ${path} ${formattedArgs}`;
+  // run the command in the transformed directory so the Svelte file is created next to the gltf
+  const cmd = `npx @threlte/gltf@latest ${file} ${formattedArgs}`;
   try {
     execSync(cmd, {
-      cwd: configuration.sourceDir,
+      cwd: configuration.transformedDir,
+      stdio: "inherit",
     });
   } catch (error) {
-    console.error(`Error transforming model: ${error}`);
+    console.error(`Error generating Svelte component for ${file}: ${error}`);
   }
 });
 
-// read dir again, but search for .svelte files only.
-const svelteFiles = readdirSync(configuration.sourceDir).filter((file) => file.endsWith(".svelte"));
+// 4. Move the generated Svelte files to the components directory
+const svelteFiles = readdirSync(configuration.transformedDir).filter((file) =>
+  file.endsWith(".svelte"),
+);
 
 svelteFiles.forEach((file) => {
-  // now move every file to /src/components/models
-  const path = join(configuration.sourceDir, file);
+  const sourcePath = join(configuration.transformedDir, file);
   const newPath = join(configuration.targetDir, file);
-  copyFile: try {
-    // Sanity check, we checked earlier if the file exists. Still, the CLI takes
-    // a while, so who knows what happens in the meantime.
-    if (!configuration.overwrite) {
-      // check if file already exists
-      if (existsSync(newPath)) {
-        console.error(`File ${newPath} already exists, skipping.`);
-        break copyFile;
-      }
-    }
-    copyFileSync(path, newPath);
-  } catch (error) {
-    console.error(`Error copying file: ${error}`);
-  }
 
-  // remove the file from /static/models
   try {
-    unlinkSync(path);
+    copyFileSync(sourcePath, newPath);
+    unlinkSync(sourcePath);
   } catch (error) {
-    console.error(`Error removing file: ${error}`);
+    console.error(`Error moving file ${sourcePath}: ${error}`);
   }
 });
