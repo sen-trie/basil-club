@@ -163,7 +163,7 @@
 
   .flag-tablet::before {
     background: none;
-    border: var(--cashier-padding-h) solid var(--colour-darkgrey);
+    border: var(--cashier-padding-h) solid var(--colour-medgrey);
     border-top-width: var(--cashier-padding-v);
     border-bottom-width: var(--cashier-padding-v);
     border-radius: calc(var(--cashier-padding-h) - 3px);
