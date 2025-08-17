@@ -71,13 +71,12 @@
 <div class="main">
   <Canvas
     renderMode="on-demand"
-    createRenderer={(canvas) => new THREE.WebGLRenderer({ canvas, antialias: true })}
+    createRenderer={(canvas) => new THREE.WebGLRenderer({ canvas, antialias: false })}
   >
     <Project name="Basil Club" config={{ state: projectState }}>
       <Scene />
     </Project>
   </Canvas>
-  <img class="loading-img" src={image["loading.webp"]} alt="" />
 </div>
 
 <style>
@@ -87,7 +86,7 @@
     background-color: #1f100a;
   }
 
-  .loading-img {
+  /* .loading-img {
     position: absolute;
     object-fit: contain;
     width: min(300px, 80%);
@@ -95,9 +94,9 @@
     top: 50%;
     left: 50%;
     translate: -50% -50%;
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
-  }
+  } */
 
   .wrapper {
     position: absolute;

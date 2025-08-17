@@ -3,7 +3,14 @@
   import { Vector3 } from "three";
   import { onMount } from "svelte";
   import { T, useTask } from "@threlte/core";
-  import { OrbitControls, interactivity, transitions } from "@threlte/extras";
+  import {
+    OrbitControls,
+    interactivity,
+    transitions,
+    Billboard,
+    useViewport,
+  } from "@threlte/extras";
+  import { TextureLoader } from "three";
   import HudScene from "./scenes/HudScene.svelte";
   import POVScene from "./scenes/POVScene.svelte";
   import { fly } from "$lib/components/transitions.js";
@@ -44,6 +51,9 @@
   });
 
   let browserZoomLevel = $state(1);
+  let loadingTexture = $state(null);
+
+  const viewport = useViewport();
 
   function updateZoomLevel() {
     browserZoomLevel = window.devicePixelRatio;
@@ -52,6 +62,9 @@
   onMount(() => {
     updateZoomLevel();
     window.addEventListener("resize", updateZoomLevel);
+
+    const loader = new TextureLoader();
+    loadingTexture = loader.load("/textures/loading.webp");
 
     return () => window.removeEventListener("resize", updateZoomLevel);
   });
@@ -75,7 +88,14 @@
     {enablePan}
     minZoom={(defaultZoom * 0.9) / browserZoomLevel}
     maxZoom={(defaultZoom * 5) / browserZoomLevel}
-  />
+  ></OrbitControls>
+
+  <Billboard>
+    <T.Mesh scale={[$viewport.width / 6, $viewport.width / 6, 1]} position={[0.5, 3, -50]}>
+      <T.PlaneGeometry args={[2.1, 1]} />
+      <T.MeshBasicMaterial map={loadingTexture} transparent />
+    </T.Mesh>
+  </Billboard>
 </T.OrthographicCamera>
 
 <POVScene />
