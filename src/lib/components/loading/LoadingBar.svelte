@@ -1,5 +1,6 @@
 <script>
   let { progressLessThanOne, progressWidth, startPage } = $props();
+  import { isMobile } from "$lib/stores/worldState.svelte.js";
 </script>
 
 {#if progressLessThanOne}
@@ -8,6 +9,10 @@
   <button onclick={startPage}>
     <p>Start</p>
   </button>
+  {#if $isMobile}
+    MOBILE
+  {:else}
+    DESKTOP{/if}
 {/if}
 
 <style>

@@ -6,35 +6,74 @@
   const scene = getScene();
 
   const sounds = getContext("audios");
-  const bgm = new Sound(sounds["bgm.mp3"]);
+  const audio = {
+    eat: new Sound(sounds["eat.mp3"]),
+    bgm: new Sound(sounds["bgm.mp3"]),
+    bgmF: new Sound(sounds["bgm-f.mp3"]),
+    bgmM: new Sound(sounds["bgm-m.mp3"]),
+    bear: new Sound(sounds["bear.mp3"]),
+    orderConfirmed: new Sound(sounds["order-confirmed.mp3"]),
+    paymentSuccess: new Sound(sounds["payment-success.mp3"]),
+    paymentUnsucess: new Sound(sounds["payment-unsucess.mp3"]),
+  };
 
+  let currentBGM = audio.bgm;
   export const playBGM = () => {
-    if (!bgm.howl.playing()) {
-      bgm.howl.loop(true);
-      bgm.play();
+    if (!currentBGM.howl.playing()) {
+      currentBGM.howl.loop(true);
+      currentBGM.play();
     }
   };
 
+  export const playSound = (sfx) => {
+    const sound = audio[sfx];
+    if (sound && !sound.howl.playing()) {
+      sound.howl.loop(false);
+      sound.play();
+    }
+  };
+
+  const crossFadeDuration = 2000;
+  export const swapBGM = (target) => {
+    const newBGM = audio[target];
+    if (!newBGM || newBGM === currentBGM) return;
+
+    const seekPos = currentBGM.howl.seek();
+
+    newBGM.play();
+    newBGM.howl.loop(true);
+    newBGM.howl.seek(seekPos);
+    newBGM.howl.volume(0);
+
+    currentBGM.howl.fade(currentBGM.howl.volume(), 0, crossFadeDuration);
+    newBGM.howl.fade(0, 1, crossFadeDuration);
+
+    setTimeout(() => {
+      currentBGM.stop();
+      currentBGM = newBGM;
+    }, crossFadeDuration);
+  };
+
   export const pauseBGM = () => {
-    if (bgm.howl.playing()) {
-      bgm.howl.pause();
+    if (currentBGM.howl.playing()) {
+      currentBGM.howl.pause();
     }
   };
 
   export const resumeBGM = () => {
-    if (!bgm.howl.playing()) {
-      bgm.howl.play();
+    if (!currentBGM.howl.playing()) {
+      currentBGM.howl.play();
     }
   };
 
   export const muteAudio = () => {
-    bgm.howl.mute(scene.currentState.muted);
+    Object.values(audio).forEach((s) => s.howl.mute(scene.currentState.muted));
   };
 
   $effect(() => {
     return () => {
-      if (bgm.howl.playing()) {
-        bgm.destroy();
+      if (currentBGM.howl.playing()) {
+        currentBGM.destroy();
       }
     };
   });

@@ -2,7 +2,7 @@
   import { fade } from "svelte/transition";
   import { getContext } from "svelte";
   import Blackjack from "./Blackjack.svelte";
-  import { getScene, foodItems, findItemByName } from "$lib/stores/worldState.svelte.js";
+  import { getScene, findItemByName } from "$lib/stores/worldState.svelte.js";
 
   const scene = getScene();
   const images = getContext("images");
@@ -16,9 +16,11 @@
           cashierState = "complete";
           scene.currentState.credits -= scene.foodPaid * 100;
           scene.currentState.foodOrders = [];
+          scene.playSound("paymentSuccess");
         } else {
           cashierState = "incomplete";
           scene.setInteractable("blackjack");
+          scene.playSound("paymentUnsucess");
         }
       }, 1500);
     }

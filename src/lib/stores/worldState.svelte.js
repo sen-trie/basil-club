@@ -1,6 +1,15 @@
 import { showBlocker } from "./sceneControls";
 import { get } from "svelte/store";
 import { writable } from "svelte/store";
+import { readable } from "svelte/store";
+
+export const isMobile = readable(false, (set) => {
+  const mql = typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)") : null;
+  const update = () => set(!!mql?.matches);
+  mql?.addEventListener("change", update);
+  update();
+  return () => mql?.removeEventListener("change", update);
+});
 
 let changeBlocker = () => {};
 showBlocker.subscribe((fn) => {
@@ -184,6 +193,11 @@ export function getScene() {
       audioEl.muteAudio();
     },
 
+    playSound(soundName) {
+      const audioEl = get(audioRef);
+      audioEl.playSound(soundName);
+    },
+
     toggleHud() {
       if (currentState.scene !== "cafe") return;
       if (currentState.povCamera) return;
@@ -218,27 +232,38 @@ export function getScene() {
       if (Date.now() < sceneCooldown) return;
       sceneCooldown = Date.now() + timeCooldown;
       currentState = { ...currentState, scene: "cafe" };
+
+      const audioEl = get(audioRef);
+      audioEl.swapBGM("bgm");
     },
 
     setMToilet() {
       if (currentState.hudControls || currentState.povCamera) return;
       if (Date.now() < sceneCooldown) return;
+
       sceneCooldown = Date.now() + timeCooldown;
       this.setInteractable("mToilet");
       currentState = { ...currentState, scene: "mToilet" };
+
+      const audioEl = get(audioRef);
+      audioEl.swapBGM("bgmM");
     },
 
     setFToilet() {
       if (currentState.hudControls || currentState.povCamera) return;
       if (Date.now() < sceneCooldown) return;
+
       sceneCooldown = Date.now() + timeCooldown;
       this.setInteractable("fToilet");
       currentState = { ...currentState, scene: "fToilet" };
+
+      const audioEl = get(audioRef);
+      audioEl.swapBGM("bgmF");
     },
 
     touchBear() {
       if (Date.now() < sceneCooldown) return null;
-      sceneCooldown = Date.now() + timeCooldown / 3;
+      sceneCooldown = Date.now() + timeCooldown / 1.5;
       currentState.bearTouches++;
       if (currentState.bearTouches < 5) {
         return false;

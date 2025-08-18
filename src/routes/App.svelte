@@ -14,15 +14,14 @@
   import { audioRef } from "$lib/stores/worldState.svelte.js";
   import * as THREE from "three";
 
-  const image = getContext("images");
+  let pageStarted = $state(false);
 
   const { progress } = useProgress();
   const p = fromStore(progress);
-  const tweenedProgress = Tween.of(() => p.current, { duration: 100 });
+  const tweenedProgress = Tween.of(() => p.current, { duration: 0 });
   const progressLessThanOne = $derived(tweenedProgress.current < 1);
-
-  let pageStarted = $state(false);
   const progressWidth = $derived(100 * tweenedProgress.current);
+
   import { cubicInOut } from "svelte/easing";
   function clipReverse(_node, { duration = 1000 } = {}) {
     return {

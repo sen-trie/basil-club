@@ -41,7 +41,7 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
   const gltf = load();
 </script>
 
-<T.Group bind:ref dispose={false} {...props}>
+<T.Group bind:ref dispose={false} scale={1.2} {...props}>
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}

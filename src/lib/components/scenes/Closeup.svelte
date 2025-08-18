@@ -59,7 +59,14 @@
       <Grid />
     {:else if scene.currentState.overlayType === "bear"}
       <div class="grid-div">
-        <video autoplay onended={scene.closeOverlay}>
+        <video
+          autoplay
+          playsinline
+          onended={scene.closeOverlay}
+          controls={false}
+          style="pointer-events: none;"
+          oncontextmenu={(e) => e.preventDefault()}
+        >
           <source src={video["bear.mp4"]} type="video/mp4" />
           <track kind="captions" />
           Your browser does not support the video tag.

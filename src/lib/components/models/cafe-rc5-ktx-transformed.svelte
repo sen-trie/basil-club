@@ -8,10 +8,11 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
   import { useGltf, useKtx2, useDraco, Instance, InstancedMesh, useCursor } from "@threlte/extras";
   import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
   import { dev } from "$app/environment";
+  import { isMobile } from "$lib/stores/worldState.svelte.js";
 
   const ktx2Loader = useKtx2("/transcoder/");
   const load = () => {
-    return useGltf("/models/ktx2/cafe-rc5-ktx.glb", {
+    return useGltf("/models/transformed/cafe-rc5-transformed.glb", {
       ktx2Loader: ktx2Loader,
       dracoLoader: useDraco(),
     });
@@ -28,6 +29,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
   import { cubicInOut, linear } from "svelte/easing";
   import { getScene } from "$lib/stores/worldState.svelte.js";
   import Hitbox from "./hitbox.svelte";
+
   const scene = getScene();
 
   const gltf = load();
@@ -128,6 +130,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
       }, scene.eatTime);
     });
     scene.setOverlay("eat");
+    scene.playSound("eat");
   };
 
   const { hovering } = useCursor("grab");
@@ -247,7 +250,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
                 >
                   <InstancedMesh position={[0, 0.35, 0]} frustumCulled={false}>
                     <T.BufferGeometry is={gltf.nodes.Order_Plate.geometry} />
-                    <T.MeshStandardMaterial is={gltf.materials["Showcase Plate.001"]} />
+                    <T.MeshStandardMaterial is={gltf.materials.Misc} />
 
                     {#each Array(scene.currentState.plateCount) as _, i}
                       <Instance position={[0, i * 0.04, 0]} />
@@ -598,10 +601,11 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
             if (res === true) {
               scene.setOverlay("bear");
               setTimeout(() => {
-                bearVisible = false;
+                // bearVisible = false;
               }, 2000);
             } else if (res === false) {
               playTada();
+              scene.playSound("bear");
             }
           }}
         >
@@ -624,7 +628,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
           scene.setOverlay("payment");
         }}
       >
-        <Hitbox dim={[1, 1, 1]} position={[-2.5, 0.2, 0]} />
+        <Hitbox dim={[1, 1, 1]} position={[-2.4, 0.15, 0]} />
       </T.Mesh>
       <T.Mesh
         name="Eight"

@@ -45,6 +45,7 @@
 
       waitTimer = setTimeout(() => {
         waitFinished = true;
+        scene.playSound("orderConfirmed");
       }, 1500);
     } else {
       currentOrder = item;

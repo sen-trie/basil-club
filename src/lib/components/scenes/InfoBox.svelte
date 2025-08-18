@@ -42,17 +42,21 @@
         </div>
         <div class="info-content">
           Welcome to <strong>Basil Club</strong>! <br /><br /> Take your time to explore the café -
-          there are many interactables scattered about. You can get hints by clicking the counter at
-          the <u>top right</u> of the screen. I hope you enjoy your stay!
+          there are many interactables scattered about. You can get hints by clicking the number
+          counter at the <u>top</u> of the screen. I hope you enjoy your stay!
           {@render sectionBreak("What is this?")}
           This virtual experience is a homage to my stay in
           <span class="red">Ca</span><span class="white">na</span><span class="red">da</span>. It is
           where I took up baking for the first time and found that the process came naturally to me.
           Thus, many of the objects you see here pay tribute to my experiences there.
           <br /><br />
+          This project is my first foray into 3D web development and developing a modelling workflow
+          in Blender. I've learnt quite a bit about topology (it was a trial by fire...) and it's also
+          my first time working with Three.js.
+          <br /><br />
           Made in
-          <a href="https://threlte.xyz/" target="_blank">Threlte </a>
-          v8
+          <a href="https://threlte.xyz/" target="_blank">Threlte v8</a>
+
           {@render sectionBreak("If you liked this, check out my other works!")}
           <div class="contact-grid">
             <a class="overlay-element exit-link" href="https://github.com/sen-trie" target="_blank">

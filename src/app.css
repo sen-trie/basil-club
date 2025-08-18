@@ -36,8 +36,11 @@
   -webkit-user-select: none; /* Safari and Chrome */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 
   font-family: "Nunito", sans-serif;
+  touch-action: manipulation;
 }
 
 @font-face {
