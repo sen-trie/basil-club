@@ -139,4 +139,33 @@
   button {
     color: var(--colour-white);
   }
+
+  @media (max-width: 768px) {
+    .overlay-screen {
+      left: 0;
+      padding: 1rem 1rem;
+      gap: 10px;
+    }
+
+    .overlay-element {
+      width: 55px;
+      height: 55px;
+      border-width: 3px;
+      font-size: 1.2rem;
+    }
+
+    .info {
+      font-size: 2rem;
+    }
+
+    .interactable-count {
+      position: absolute;
+      right: unset;
+      left: -2rem;
+      background: linear-gradient(90deg, var(--c0) 0%, var(--c1) 75%, transparent 100%);
+      padding: 0.5rem 4rem;
+      padding-right: 6rem;
+      font-size: 2rem;
+    }
+  }
 </style>

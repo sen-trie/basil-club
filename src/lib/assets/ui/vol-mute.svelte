@@ -1,7 +1,5 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  width="40"
-  height="40"
   viewBox="0 0 24 24"
   fill="none"
   stroke="var(--colour-light)"
@@ -14,3 +12,17 @@
   />
   <path d="M16 10l4 4m0 -4l-4 4" />
 </svg>
+
+<style>
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (max-width: 768px) {
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+</style>

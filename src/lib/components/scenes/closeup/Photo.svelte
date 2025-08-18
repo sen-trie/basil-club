@@ -53,28 +53,30 @@
   }
 </script>
 
-<button
-  class="drop-shadow left-arrow"
-  onclick={() => {
-    nextImage(true);
-  }}
-  ><ArrowLeft />
-</button>
-<img
-  bind:this={imageHover}
-  src={image[`spread/${currentImage}.webp`]}
-  alt="Spread"
-  class="photo-spread"
-  onmousemove={handleMove}
-  onmouseleave={resetMove}
-/>
-<button
-  class="drop-shadow right-arrow"
-  onclick={() => {
-    nextImage(false);
-  }}
-  ><ArrowRight />
-</button>
+<div class="flex-h spread-container">
+  <button
+    class="drop-shadow left-arrow"
+    onclick={() => {
+      nextImage(true);
+    }}
+    ><ArrowLeft />
+  </button>
+  <img
+    bind:this={imageHover}
+    src={image[`spread/${currentImage}.webp`]}
+    alt="Spread"
+    class="photo-spread"
+    onmousemove={handleMove}
+    onmouseleave={resetMove}
+  />
+  <button
+    class="drop-shadow right-arrow"
+    onclick={() => {
+      nextImage(false);
+    }}
+    ><ArrowRight />
+  </button>
+</div>
 
 <style>
   .photo-spread {
@@ -101,5 +103,31 @@
 
   .right-arrow:hover {
     transform: translateX(5px);
+  }
+
+  @media (max-width: 768px) {
+    .spread-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 400px;
+      width: 100dvw;
+    }
+
+    .left-arrow {
+      grid-column: 1 / 2;
+      grid-row-start: 2;
+    }
+
+    .photo-spread {
+      grid-column: span 2;
+      justify-self: center;
+      height: 100%;
+      width: 100%;
+    }
+
+    .left-arrow,
+    .right-arrow {
+      align-self: flex-start;
+    }
   }
 </style>

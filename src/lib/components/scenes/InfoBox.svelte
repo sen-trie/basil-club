@@ -40,7 +40,7 @@
             <Cup />Visit Main Site
           </a>
         </div>
-        <div class="info-content">
+        <div class="scrollable info-content">
           Welcome to <strong>Basil Club</strong>! <br /><br /> Take your time to explore the café -
           there are many interactables scattered about. You can get hints by clicking the number
           counter at the <u>top</u> of the screen. I hope you enjoy your stay!

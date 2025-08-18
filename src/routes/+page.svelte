@@ -1,5 +1,19 @@
 <script>
   import App from "./App.svelte";
+  import { onMount } from "svelte";
+
+  onMount(() => {
+    const handleTouchMove = (e) => {
+      if (e.target.classList.contains("scrollable")) return;
+      e.preventDefault();
+    };
+
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    return () => {
+      document.removeEventListener("touchmove", handleTouchMove);
+    };
+  });
 </script>
 
 <div>

@@ -82,6 +82,13 @@ canvas {
   justify-content: space-between;
 }
 
+.flex-h {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .flex-v {
   display: flex;
   flex-direction: column;
