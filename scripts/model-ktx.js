@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { readdirSync, mkdirSync, existsSync } from "node:fs";
+import { readdirSync, mkdirSync, existsSync, unlinkSync } from "node:fs";
 import { join, resolve, basename } from "node:path";
 import { exit, argv } from "node:process";
 
@@ -11,6 +11,7 @@ const config = {
 
 function runKtxConversion() {
   if (!existsSync(config.sourceDir)) {
+    console.error(`Source directory ${config.sourceDir} does not exist. Exiting.`);
     exit(1);
   }
 
@@ -28,6 +29,7 @@ function runKtxConversion() {
     if (existsSync(filePath) && isModel) {
       modelFiles.push(inputFile);
     } else {
+      console.error(`Input file ${inputFile} not found or is not a glTF/GLB model.`);
       exit(1);
     }
   } else {
@@ -41,6 +43,7 @@ function runKtxConversion() {
   }
 
   if (modelFiles.length === 0) {
+    console.log("No gltf or glb files found to convert. Exiting.");
     exit(0);
   }
 
@@ -49,14 +52,41 @@ function runKtxConversion() {
     const fileExt = file.split(".").pop();
     const fileName = basename(file, `.${fileExt}`);
 
-    const newFileName = `${fileName}-ktx.${fileExt}`;
-    const newFilePath = join(config.targetDir, newFileName);
+    // Standard KTX2 conversion
+    const standardFileName = `${fileName}-ktx.${fileExt}`;
+    const standardFilePath = join(config.targetDir, standardFileName);
+    try {
+      console.log(`Converting ${file} to standard KTX2...`);
+      const gltfTransformStandardCommand = `npx @gltf-transform/cli uastc ${sourcePath} ${standardFilePath}`;
+      execSync(gltfTransformStandardCommand, { stdio: "inherit" });
+    } catch (error) {
+      console.error(`Error converting ${file} to standard KTX2: ${error.message}`);
+    }
+
+    // Mobile KTX2 conversion with halved textures
+    const mobileFileName = `${fileName}-ktx-mobile.${fileExt}`;
+    const mobileFilePath = join(config.targetDir, mobileFileName);
+    const tempMobileFilePath = join(config.targetDir, `${fileName}-temp-mobile.${fileExt}`);
 
     try {
-      const gltfTransformCommand = `npx @gltf-transform/cli uastc ${sourcePath} ${newFilePath}`;
-      // const gltfTransformCommand = `npx @gltf-transform/cli uastc ${sourcePath} ${newFilePath}`;
-      execSync(gltfTransformCommand, { stdio: "inherit" });
-    } catch (error) {}
+      console.log(`Processing mobile version of ${file}...`);
+
+      const resizeCommand = `npx @gltf-transform/cli resize ${sourcePath} ${tempMobileFilePath} --width 2048 --height 2048 --filter lanczos3`;
+      execSync(resizeCommand, { stdio: "inherit" });
+
+      // Then, convert the resized model to KTX2
+      const gltfTransformMobileCommand = `npx @gltf-transform/cli etc1s ${tempMobileFilePath} ${mobileFilePath}`;
+      execSync(gltfTransformMobileCommand, { stdio: "inherit" });
+
+      // Clean up the temporary file
+      unlinkSync(tempMobileFilePath);
+      console.log(`Successfully created ${standardFileName} and ${mobileFileName}`);
+    } catch (error) {
+      console.error(`Error processing mobile version of ${file}: ${error.message}`);
+      if (existsSync(tempMobileFilePath)) {
+        unlinkSync(tempMobileFilePath);
+      }
+    }
   });
 }
 

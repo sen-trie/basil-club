@@ -4,7 +4,7 @@
 
   const ktx2Loader = useKtx2("/transcoder/");
   const load = () => {
-    return useGltf("/models/transformed/earl-street-ktx-transformed.glb", {
+    return useGltf("/models/transformed/earl-street-transformed.glb", {
       ktx2Loader: ktx2Loader,
       dracoLoader: useDraco(),
     });

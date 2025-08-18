@@ -54,8 +54,8 @@ if (!existsSync(configuration.sourceDir)) {
 const gltfFiles = readdirSync(configuration.sourceDir).filter((file) => {
   return (
     (file.endsWith(".glb") || file.endsWith(".gltf")) &&
-    !file.endsWith("-transformed.gltf") &&
-    !file.endsWith("-transformed.glb")
+    !file.includes("-transformed.gltf") &&
+    !file.includes("-transformed.glb")
   );
 });
 
@@ -68,10 +68,9 @@ if (gltfFiles.length === 0) {
 gltfFiles.forEach((file) => {
   const sourcePath = join(configuration.sourceDir, file);
   const fileExt = file.split(".").pop();
-  const fileName = file.split(".").slice(0, -1).join(".");
 
-  // Construct the new transformed filename
-  const transformedFileName = `${fileName}-transformed.${fileExt}`;
+  // Create a new filename without the -ktx or -packed suffixes
+  const transformedFileName = file.replace("-ktx", "-transformed");
   const transformedPath = join(configuration.transformedDir, transformedFileName);
 
   try {
@@ -85,7 +84,7 @@ gltfFiles.forEach((file) => {
 
 // 3. Generate Svelte components from the newly transformed models
 const transformedGltfFiles = readdirSync(configuration.transformedDir).filter((file) => {
-  return file.endsWith(".gltf") || file.endsWith(".glb");
+  return (file.endsWith(".gltf") || file.endsWith(".glb")) && !file.includes("-mobile");
 });
 
 transformedGltfFiles.forEach((file) => {

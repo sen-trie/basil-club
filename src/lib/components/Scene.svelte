@@ -91,7 +91,7 @@
   ></OrbitControls>
 
   <Billboard>
-    <T.Mesh scale={[$viewport.width / 6, $viewport.width / 6, 1]} position={[0.5, 3, -50]}>
+    <T.Mesh scale={[$viewport.width / 6, $viewport.width / 6, 1]} position={[0.5, 3, -150]}>
       <T.PlaneGeometry args={[2.1, 1]} />
       <T.MeshBasicMaterial map={loadingTexture} transparent />
     </T.Mesh>
