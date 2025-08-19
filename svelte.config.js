@@ -1,5 +1,4 @@
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-// import { importAssets } from 'svelte-preprocess-import-assets';
 import adapter from "@sveltejs/adapter-vercel";
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -12,6 +11,9 @@ const config = {
     files: {
       lib: "./src/lib/",
     },
+    paths: {
+            base: '/cafe'
+        }
   },
   relative: true,
   preprocess: [vitePreprocess()],
