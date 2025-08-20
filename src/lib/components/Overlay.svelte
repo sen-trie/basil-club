@@ -100,6 +100,11 @@
     overflow: hidden;
     padding: 1rem 2rem;
     gap: 1.5rem;
+    pointer-events: none;
+  }
+
+  .overlay-screen > * {
+    pointer-events: auto;
   }
 
   .info {
@@ -142,8 +147,12 @@
 
   @media (max-width: 768px) {
     .overlay-screen {
+      align-items: center;
+      flex-direction: row;
+      justify-content: flex-end;
       left: 0;
-      padding: 1rem 1rem;
+      padding: 1rem 0;
+      padding-right: 5px;
       gap: 10px;
     }
 
@@ -152,6 +161,7 @@
       height: 55px;
       border-width: 3px;
       font-size: 1.2rem;
+      margin-right: 5px;
     }
 
     .info {
@@ -160,12 +170,12 @@
 
     .interactable-count {
       position: absolute;
+      left: -1rem;
       right: unset;
-      left: -2rem;
       background: linear-gradient(90deg, var(--c0) 0%, var(--c1) 75%, transparent 100%);
-      padding: 0.5rem 4rem;
-      padding-right: 6rem;
-      font-size: 2rem;
+      padding: 0.5rem 2rem;
+      padding-right: 4rem;
+      font-size: 1.6rem;
     }
   }
 </style>

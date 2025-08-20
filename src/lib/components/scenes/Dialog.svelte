@@ -94,4 +94,12 @@
     background: var(--mtoilet-dark);
     border-color: var(--mtoilet-light);
   }
+
+  @media (max-width: 768px) {
+    .dialog {
+      font-size: 1.2rem;
+      padding: 0.5rem 1rem;
+      line-height: 1.5rem;
+    }
+  }
 </style>
