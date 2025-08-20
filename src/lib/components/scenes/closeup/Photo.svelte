@@ -81,6 +81,7 @@
 <style>
   .photo-spread {
     min-height: 70%;
+    max-height: 70vh;
     height: 70%;
     max-width: 80%;
     min-width: 50%;
@@ -109,8 +110,12 @@
     .spread-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      height: 400px;
+      height: max(400px, 80vh);
       width: 100dvw;
+    }
+
+    .photo-spread {
+      max-width: 90%;
     }
 
     .left-arrow {
