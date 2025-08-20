@@ -32,8 +32,8 @@
     <div class="transition-container">
       {#if cashierState === "order"}
         <div class="flex-v checkout-div">
-          <h1>Your orders</h1>
-          <div class="order-list">
+          <h1 class="cashier-title">Your orders</h1>
+          <div class="order-list scrollable">
             {#each Object.entries(scene.currentState.foodOrders.reduce((acc, order) => {
                 acc[order] = (acc[order] || 0) + 1;
                 return acc;
@@ -71,7 +71,7 @@
 
       {#if cashierState === "payment"}
         <div class="flex-v payment-div">
-          <h1>Choose payment method</h1>
+          <h1 class="cashier-title">Choose payment method</h1>
           <div class="flexbox payment-container">
             <button class="big-button checkout-button flex-v" disabled>
               <img src={images["cashier/cash.webp"]} alt="Cash" />
@@ -99,7 +99,7 @@
       {#if ["processing", "incomplete", "complete"].includes(cashierState)}
         <div class="flex-v complete-div" in:fade={{ duration: 300 }}>
           {#if cashierState === "processing"}
-            <h1>Processing...</h1>
+            <h1 class="cashier-title">Processing...</h1>
           {/if}
 
           {#if cashierState === "incomplete"}
@@ -108,7 +108,7 @@
               class="img-wrapper"
               alt="Insufficient credits"
             />
-            <h1>Payment unsuccesful</h1>
+            <h1 class="cashier-title">Payment unsuccesful</h1>
             <h2>Insufficient credits...</h2>
             <button class="big-button" onclick={() => (cashierState = "blackjack")}
               >Obtain credits</button
@@ -122,7 +122,7 @@
               class="img-wrapper"
               alt="Insufficient credits"
             />
-            <h1>Payment succesful</h1>
+            <h1 class="cashier-title">Payment succesful</h1>
             <h2>Please come back again!</h2>
             <button class="big-button" onclick={scene.closeOverlay}>Return</button>
           {/if}
@@ -281,7 +281,7 @@
   }
 
   .payment-container {
-    max-width: 100%;
+    width: 100%;
     max-height: 90%;
     aspect-ratio: 2.2;
     gap: 15px;
@@ -294,12 +294,12 @@
     color: var(--colour-dark);
     overflow: hidden;
     width: 50%;
-    height: 100%;
+    aspect-ratio: 1;
   }
 
   .checkout-button img {
-    width: auto;
-    height: 80%;
+    height: auto;
+    width: 80%;
     object-fit: contain;
     aspect-ratio: 1.2;
     margin-bottom: 0.75rem;
@@ -336,5 +336,59 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
+  }
+
+  @media (max-width: 768px) {
+    .flag-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .flag-tablet {
+      aspect-ratio: auto;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      margin-bottom: 1rem;
+    }
+
+    .flag-tablet::before {
+      border: 0;
+      border-radius: 0;
+    }
+
+    .checkout-div,
+    .payment-div,
+    .complete-div {
+      padding: calc(var(--checkout-padding-v) / 2) calc(var(--cashier-padding-h) / 2);
+      gap: 15px;
+    }
+
+    .cashier-title {
+      font-size: 1.6rem;
+    }
+
+    .big-button {
+      padding: 12px 8px;
+    }
+
+    .checkout-div > h2 {
+      padding: 4px;
+      padding-top: 16px;
+      padding-bottom: 0;
+    }
+
+    .payment-container {
+      gap: 5px;
+    }
+
+    .order-list {
+      padding: 0;
+    }
+
+    .order-list .order-item {
+      padding: 6px 9px;
+      margin-bottom: 0.5rem;
+    }
   }
 </style>

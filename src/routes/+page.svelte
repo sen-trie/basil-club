@@ -4,7 +4,13 @@
 
   onMount(() => {
     const handleTouchMove = (e) => {
-      if (e.target.classList.contains("scrollable")) return;
+      if (e.target.closest(".scrollable")) return;
+
+      if (window.scrollY === 0 && e.touches[0].clientY > 0) {
+        e.preventDefault();
+        return;
+      }
+
       e.preventDefault();
     };
 

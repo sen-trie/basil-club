@@ -20,6 +20,7 @@
   --mtoilet-white: #586597;
 
   --trans-time: 3.8s;
+  --mobile-size: 768px;
 }
 
 * {
@@ -69,6 +70,12 @@
 
 ::-webkit-scrollbar-thumb {
   background: var(--colour-dark);
+}
+
+html,
+body {
+  overscroll-behavior: none;
+  height: 100%;
 }
 
 canvas {

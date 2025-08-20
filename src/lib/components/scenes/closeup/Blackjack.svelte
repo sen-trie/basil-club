@@ -210,8 +210,12 @@
   }
 </script>
 
-{#snippet cardDiv(rank, suit, cardback = false)}
-  <div class="card-container" transition:fly={{ x: 75, duration: handDrawTime }}>
+{#snippet cardDiv(rank, suit, index, cardback = false)}
+  <div
+    class="card-container"
+    transition:fly={{ x: 75, duration: handDrawTime }}
+    style="left: calc({index} * 30px)"
+  >
     <div
       class="card"
       class:back={cardback}
@@ -233,7 +237,7 @@
         </span>
       {/if}
       {#each dealer.cards as card, i}
-        {@render cardDiv(card.rank, card.suit, !(i === 0 || dealer.isFinished))}
+        {@render cardDiv(card.rank, card.suit, i, !(i === 0 || dealer.isFinished))}
       {/each}
     </div>
   </div>
@@ -253,8 +257,8 @@
               {handText(hand.cards)}
             </span>
           {/if}
-          {#each hand.cards as card}
-            {@render cardDiv(card.rank, card.suit)}
+          {#each hand.cards as card, i}
+            {@render cardDiv(card.rank, card.suit, i)}
           {/each}
         </div>
       {/each}
@@ -321,10 +325,15 @@
   .button-container button {
     font-size: 1.3rem;
     background-color: white;
+    color: var(--colour-black);
     margin: 4px;
     border-radius: 10px;
     padding: 10px 12px;
     pointer-events: all;
+  }
+
+  .button-container button:disabled {
+    color: var(--colour-dull-black);
   }
 
   .play-button {
@@ -367,10 +376,12 @@
   }
 
   .card-container {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     aspect-ratio: 4 / 5.4;
     container-type: inline-size;
-    margin-right: -100px;
   }
 
   span {
@@ -397,5 +408,11 @@
   .back {
     background-image: url("textures/card-back.webp");
     background-size: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .blackjack-container {
+      padding: 8px 0 8px;
+    }
   }
 </style>

@@ -74,9 +74,9 @@
       </div>
       <img class="header-logo" alt="Cafe logo" src={image[`tablet/logo_w.webp`]} />
     </div>
-    <div class="order-box" bind:this={orderBox}>
+    <div class="order-box scrollable" bind:this={orderBox}>
       {#each categoryList as cat}
-        <section>
+        <section class="scrollable">
           <h2 bind:this={refs[cat]} data-name={cat}>{cat}</h2>
           {#each Object.entries(foodItems[cat]) as [item, data]}
             <div class="food-box" class:soldout={data.soldout}>
@@ -334,5 +334,63 @@
   .exit-button:disabled {
     background-color: rgba(45, 24, 16, 0.7);
     cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    .order-header {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .flag-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .flag-tablet {
+      aspect-ratio: auto;
+      border: none;
+      border-radius: 0;
+      padding-top: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .flag-tablet::before {
+      border-top: 0;
+      border-left: 0;
+      border-right: 0;
+      border-radius: 0;
+    }
+
+    .navbar button {
+      margin-right: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .header-logo {
+      height: 65px;
+      margin: 0;
+    }
+
+    .order-box {
+      padding: 0 0.5rem 1rem;
+    }
+
+    section {
+      gap: 0.5rem;
+    }
+
+    .order-confirm {
+      inset: 0;
+    }
+
+    .confirm-info {
+      font-size: 1.6rem;
+      width: 85%;
+    }
+
+    .confirm-info > .exit-button {
+      font-size: 1.4rem;
+    }
   }
 </style>
