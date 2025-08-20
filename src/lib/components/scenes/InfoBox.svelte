@@ -239,4 +239,51 @@
     --c0: var(--mtoilet-dark);
     --c1: var(--mtoilet-light);
   }
+
+  @media (max-width: 768px) {
+    .info-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .info-wrapper .out-button {
+      translate: 0;
+      top: 5px;
+      right: 5px;
+      width: 60px;
+      height: 60px;
+    }
+
+    .info-div {
+      border: 0;
+      border-radius: 0;
+    }
+
+    .info-div .exit-link {
+      font-size: 1.3rem;
+      white-space: nowrap;
+    }
+
+    .info-content {
+      padding: 0 0.5rem 0.5rem 0;
+      width: calc(100% - 1rem);
+      font-size: 1.2rem;
+      overflow-x: hidden;
+    }
+
+    .contact-grid {
+      width: 100%;
+      padding: 0;
+      gap: 0.5rem;
+    }
+
+    .contact-grid img {
+      width: 50px;
+      margin-right: 0.5rem;
+    }
+
+    .contact-grid .overlay-element:hover {
+      transform: none;
+    }
+  }
 </style>
