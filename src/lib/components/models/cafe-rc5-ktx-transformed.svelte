@@ -8,11 +8,12 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
   import { useGltf, useKtx2, useDraco, Instance, InstancedMesh, useCursor } from "@threlte/extras";
   import { Sheet, SheetObject, Sequence } from "@threlte/theatre";
   import { dev } from "$app/environment";
+  import { base } from "$app/paths";
   import { isMobile } from "$lib/stores/worldState.svelte.js";
 
-  const ktx2Loader = useKtx2("/transcoder/");
+  const ktx2Loader = useKtx2(`${base}/transcoder/`);
   const load = () => {
-    return useGltf("/models/transformed/cafe-rc5-transformed.glb", {
+    return useGltf(`${base}/models/transformed/cafe-rc5-transformed.glb`, {
       ktx2Loader: ktx2Loader,
       dracoLoader: useDraco(),
     });
@@ -170,7 +171,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
   onMount(() => {
     const loader = new TextureLoader();
     faceTextures = Array.from({ length: 10 }, (_, i) => {
-      const tex = loader.load(`/textures/cat-face/face-${i}.webp`);
+      const tex = loader.load(`${base}/textures/cat-face/face-${i}.webp`);
       tex.colorSpace = "srgb";
       tex.flipY = false;
       tex.wrapS = tex.wrapT = ClampToEdgeWrapping;

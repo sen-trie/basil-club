@@ -1,10 +1,11 @@
 <script>
   import { T } from "@threlte/core";
   import { useGltf, useKtx2, useDraco } from "@threlte/extras";
+  import { base } from "$app/paths";
 
-  const ktx2Loader = useKtx2("/transcoder/");
+  const ktx2Loader = useKtx2(`${base}/transcoder/`);
   const load = () => {
-    return useGltf("/models/transformed/earl-street-transformed.glb", {
+    return useGltf(`${base}/models/transformed/earl-street-transformed.glb`, {
       ktx2Loader: ktx2Loader,
       dracoLoader: useDraco(),
     });

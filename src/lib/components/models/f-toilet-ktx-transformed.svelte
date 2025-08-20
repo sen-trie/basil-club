@@ -6,10 +6,11 @@ Command: npx @threlte/gltf@3.0.1 f-toilet-ktx-transformed.glb --root /models/tra
 <script>
   import { T } from "@threlte/core";
   import { useGltf, useKtx2, useDraco, useCursor } from "@threlte/extras";
+  import { base } from "$app/paths";
 
-  const ktx2Loader = useKtx2("/transcoder/");
+  const ktx2Loader = useKtx2(`${base}/transcoder/`);
   const load = () => {
-    return useGltf("/models/transformed/f-toilet-transformed.glb", {
+    return useGltf(`${base}/models/transformed/f-toilet-transformed.glb`, {
       ktx2Loader: ktx2Loader,
       dracoLoader: useDraco(),
     });

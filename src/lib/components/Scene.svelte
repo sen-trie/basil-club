@@ -2,6 +2,7 @@
   import { getScene } from "$lib/stores/worldState.svelte.js";
   import { Vector3 } from "three";
   import { onMount } from "svelte";
+  import { base } from "$app/paths";
   import { T, useTask } from "@threlte/core";
   import {
     OrbitControls,
@@ -64,7 +65,7 @@
     window.addEventListener("resize", updateZoomLevel);
 
     const loader = new TextureLoader();
-    loadingTexture = loader.load("/textures/loading.webp");
+    loadingTexture = loader.load(`${base}/textures/loading.webp`);
 
     return () => window.removeEventListener("resize", updateZoomLevel);
   });
