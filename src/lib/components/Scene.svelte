@@ -1,5 +1,5 @@
 <script>
-  import { getScene } from "$lib/stores/worldState.svelte.js";
+  import { getScene, isMobile } from "$lib/stores/worldState.svelte.js";
   import { Vector3 } from "three";
   import { onMount } from "svelte";
   import { base } from "$app/paths";
@@ -57,7 +57,9 @@
   const viewport = useViewport();
 
   function updateZoomLevel() {
-    browserZoomLevel = window.devicePixelRatio;
+    // window.devicePixelRatio
+    console.log($isMobile);
+    browserZoomLevel = $isMobile ? window.devicePixelRatio * 0.75 : window.devicePixelRatio * 1;
   }
 
   onMount(() => {
