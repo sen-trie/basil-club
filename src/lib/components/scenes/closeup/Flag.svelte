@@ -392,5 +392,10 @@
     .confirm-info > .exit-button {
       font-size: 1.4rem;
     }
+
+    .food-box p {
+      font-size: 1.2rem;
+      line-height: 1.5rem;
+    }
   }
 </style>

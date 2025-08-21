@@ -8,7 +8,7 @@
 <T.PerspectiveCamera
   makeDefault={scene.currentState.povCamera}
   fov={40}
-  position={[5.7, 0.35, 0.9]}
+  position={[5.7, 0.35, 0.98]}
 >
   <CameraControls
     mouseButtons={{
