@@ -123,6 +123,8 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
   });
 
   const consumeDessert = (e) => {
+    if (!scene.currentState.currentPlate || scene.currentState.currentPlate === "") return;
+
     e.stopPropagation();
     plateLocation.set([1, 0.18, 0.14]).then(() => {
       setTimeout(() => {
@@ -438,7 +440,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
           name="Order_Plate"
           geometry={gltf.nodes.Order_Plate.geometry}
           material={gltf.materials.Misc}
-          position={[2.3, -1.64, 3.48]}
+          position={[2.3, -1.64, 3.55]}
         >
           <T.Group
             name="Dish Collection"

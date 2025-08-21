@@ -386,7 +386,7 @@
 
     .confirm-info {
       font-size: 1.6rem;
-      width: 85%;
+      width: min(400px, 95%);
     }
 
     .confirm-info > .exit-button {

@@ -186,7 +186,7 @@
   }
 
   .eat-img.custard {
-    filter: hue-rotate(18deg) brightness(1.3);
+    filter: hue-rotate(10deg) brightness(1.3);
   }
 
   /* .eat-img.lemon {
@@ -197,25 +197,10 @@
     filter: hue-rotate(350deg) brightness(0.4);
   }
 
-  .checkout-div {
-    --border-size: 2rem;
-
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    bottom: 1.5%;
-    height: 85%;
-    width: auto;
-    max-width: 90%;
-    aspect-ratio: 12/16;
-    border-radius: var(--border-size);
-    background-color: grey;
-  }
-
-  .checkout-div .checkout-box {
-    width: calc(100% - var(--border-size) * 2);
-    height: calc(100% - var(--border-size) * 2);
-    background-color: black;
+  @media (max-width: 768px) {
+    .eat-img {
+      transform: scale(1.4);
+      transform-origin: bottom;
+    }
   }
 </style>
