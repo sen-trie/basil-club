@@ -70,7 +70,12 @@
 <div class="main">
   <Canvas
     renderMode="on-demand"
-    createRenderer={(canvas) => new THREE.WebGLRenderer({ canvas, antialias: false })}
+    createRenderer={(canvas) => {
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+      console.log("Pixel ratio:", renderer.getPixelRatio())
+      renderer.setPixelRatio(1)
+      return renderer;
+    }}
   >
     <Project name="Basil Club" config={{ state: projectState }}>
       <Scene />
