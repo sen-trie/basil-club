@@ -5,14 +5,14 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
 
 <script>
   import { T } from "@threlte/core";
-  import { useGltf, useCursor } from "@threlte/extras";
+  import { useGltf, useCursor, useKtx2, useDraco } from "@threlte/extras";
   import { base } from "$app/paths";
 
-  // const ktx2Loader = useKtx2("/transcoder/");
+  const ktx2Loader = useKtx2(`${base}/transcoder/`);
   const load = () => {
-    return useGltf(`${base}/models/m-toilet.glb`, {
-      // ktx2Loader: ktx2Loader,
-      // dracoLoader: useDraco(),
+    return useGltf(`${base}/models/transformed/m-toilet-transformed.glb`, {
+      ktx2Loader: ktx2Loader,
+      dracoLoader: useDraco(),
     });
   };
 
@@ -61,7 +61,6 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
       <T.Mesh
         name="Bear_Sign"
         geometry={gltf.nodes.Bear_Sign.geometry}
-        material={gltf.materials["MT-Set1"]}
         scale={signScale.current}
         onclick={(e) => {
           e.stopPropagation();
@@ -72,6 +71,7 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
           scene.setInteractable("bear");
         }}
       >
+        <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} />
         <Hitbox dim={[1.2, 1.2, 1.2]} />
       </T.Mesh>
     </T.Mesh>
@@ -85,7 +85,6 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
       <T.Mesh
         name="Camp_Bench"
         geometry={gltf.nodes.Camp_Bench.geometry}
-        material={gltf.materials["MT-Set4"]}
         onpointerenter={onPointerEnter}
         onpointerleave={onPointerLeave}
         onclick={(e) => {
@@ -93,6 +92,7 @@ Command: npx @threlte/gltf@3.0.1 m-toilet-ktx-transformed.glb --root /models/tra
           window.open("https://www.youtube.com/watch?v=RgBwLQty8B4", "_blank");
         }}
       >
+        <T.MeshBasicMaterial map={gltf.materials["MT-Set4"].map} transparent={true} />
         <Hitbox dim={[1.5, 1.5, 1.5]} position={[-1.7, 0, 0.5]} />
       </T.Mesh>
     </T.Mesh>
