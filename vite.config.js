@@ -12,4 +12,7 @@ export default defineConfig({
       "camera-controls",
     ],
   },
+  resolve: {
+    dedupe: ["three"],
+  },
 });

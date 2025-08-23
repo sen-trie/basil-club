@@ -2,9 +2,11 @@
   import { getScene, isMobile } from "$lib/stores/worldState.svelte.js";
   import { Vector3 } from "three";
   import { onMount } from "svelte";
-  import { base } from "$app/paths";
   import { T, useTask } from "@threlte/core";
   import { OrbitControls, interactivity, transitions } from "@threlte/extras";
+  import { BlendFunction, SMAAPreset, EdgeDetectionMode } from "postprocessing";
+  import { EffectComposer } from "threlte-postprocessing";
+  import { SMAAEffect } from "threlte-postprocessing/effects";
   import HudScene from "./scenes/HudScene.svelte";
   import POVScene from "./scenes/POVScene.svelte";
   import { fly } from "$lib/components/transitions.js";
@@ -101,6 +103,15 @@
     {maxZoom}
   ></OrbitControls>
 </T.OrthographicCamera>
+
+{#key scene.currentState.povCamera}
+  <EffectComposer>
+    <SMAAEffect
+      preset={$isMobile ? SMAAPreset.LOW : SMAAPreset.HIGH}
+      edgeDetectionMode={EdgeDetectionMode.COLOR}
+    />
+  </EffectComposer>
+{/key}
 
 <POVScene />
 <HudScene {browserZoomLevel} />

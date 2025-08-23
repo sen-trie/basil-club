@@ -42,6 +42,7 @@
     "@threlte/theatre": "^3.0.4",
     "howler": "^2.2.4",
     "node-html-parser": "^7.0.1",
-    "three": "^0.178.0"
+    "three": "^0.178.0",
+    "threlte-postprocessing": "^0.0.10"
   }
 }

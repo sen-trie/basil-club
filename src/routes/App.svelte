@@ -12,7 +12,7 @@
   import projectState from "$lib/assets/configState.json";
   import Audio from "$lib/components/Audio.svelte";
   import { audioRef } from "$lib/stores/worldState.svelte.js";
-  import * as THREE from "three";
+  import { WebGLRenderer } from "three";
 
   let pageStarted = $state(false);
 
@@ -72,9 +72,8 @@
   <Canvas
     renderMode="on-demand"
     createRenderer={(canvas) => {
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+      const renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor("#ffffff", 0);
       renderer.setPixelRatio(1);
       return renderer;
     }}
