@@ -260,7 +260,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
                   <T.Mesh
                     name="Cat_Base"
                     geometry={gltf.nodes.Cat_Base.geometry}
-                    material={gltf.materials["Robot Texture"]}
+                    material={gltf.materials["Robot Texure"]}
                   />
                   <SheetObject key="Cat Face Roam">
                     {#snippet children({ Transform })}
@@ -269,7 +269,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
                           <T.Mesh
                             name="Sphere"
                             geometry={gltf.nodes.Sphere.geometry}
-                            material={gltf.materials["Robot Texture"]}
+                            material={gltf.materials["Robot Texure"]}
                           />
                           <T.Mesh name="Sphere_2_Front" geometry={gltf.nodes.Sphere_1.geometry}>
                             <T.MeshBasicMaterial
@@ -296,7 +296,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
                     position={[0, -0.685, 0]}
                   >
                     <T.MeshBasicMaterial transparent={true} opacity={0.25} color="black" />
-                  </T.Mesh>
+                  </T.Mesh> -->
                 </T.Group>
               </Transform>
             {/snippet}
