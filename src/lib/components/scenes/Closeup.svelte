@@ -69,6 +69,7 @@
           style="pointer-events: none;"
           oncontextmenu={(e) => e.preventDefault()}
         >
+          <source src={video["bear.webm"]} type="video/webm" />
           <source src={video["bear.mp4"]} type="video/mp4" />
           <track kind="captions" />
           Your browser does not support the video tag.
