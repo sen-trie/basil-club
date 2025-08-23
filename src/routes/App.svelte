@@ -40,6 +40,7 @@
   }
 
   let audioEl = $state(null);
+  const images = getContext("images");
 
   $effect(() => {
     if (pageStarted) {
@@ -72,8 +73,9 @@
     renderMode="on-demand"
     createRenderer={(canvas) => {
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
-      console.log("Pixel ratio:", renderer.getPixelRatio())
-      renderer.setPixelRatio(1)
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor("#ffffff", 0);
+      renderer.setPixelRatio(1);
       return renderer;
     }}
   >
@@ -81,26 +83,26 @@
       <Scene />
     </Project>
   </Canvas>
+  <img class="loading-img" src={images["loading.webp"]} alt="" />
 </div>
 
 <style>
   div.main {
     position: relative;
     height: 100%;
-    background-color: #1f100a;
+    background-color: #110f0f;
   }
 
-  /* .loading-img {
+  .loading-img {
     position: absolute;
     object-fit: contain;
-    width: min(300px, 80%);
+    width: min(400px, 80%);
     height: auto;
     top: 50%;
     left: 50%;
-    translate: -50% -50%;
-    z-index: 2;
+    translate: -50% -65%;
     pointer-events: none;
-  } */
+  }
 
   .wrapper {
     position: absolute;
