@@ -2,6 +2,7 @@
   import { fly, fade } from "svelte/transition";
   import { getScene } from "$lib/stores/worldState.svelte.js";
   import { base } from "$app/paths";
+  import { onMount } from "svelte";
 
   const scene = getScene();
 
@@ -208,6 +209,15 @@
       return " Lose...";
     }
   }
+
+  onMount(() => {
+    const preloadImages = [`${base}/textures/cards.webp`, `${base}/textures/card-back.webp`];
+
+    preloadImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  });
 </script>
 
 {#snippet cardDiv(rank, suit, index, cardback = false)}
@@ -270,7 +280,6 @@
     Credits: {Math.round(scene.currentState.credits)}
   </div>
 </div>
-<!-- <p class="message-container">{message}</p> -->
 
 <div class="button-container">
   {#if !gameOver}
