@@ -260,7 +260,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
                   <T.Mesh
                     name="Cat_Base"
                     geometry={gltf.nodes.Cat_Base.geometry}
-                    material={gltf.materials["Robot Texure"]}
+                    material={gltf.materials["Robot Texture"]}
                   />
                   <SheetObject key="Cat Face Roam">
                     {#snippet children({ Transform })}
@@ -269,7 +269,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
                           <T.Mesh
                             name="Sphere"
                             geometry={gltf.nodes.Sphere.geometry}
-                            material={gltf.materials["Robot Texure"]}
+                            material={gltf.materials["Robot Texture"]}
                           />
                           <T.Mesh name="Sphere_2_Front" geometry={gltf.nodes.Sphere_1.geometry}>
                             <T.MeshBasicMaterial
@@ -538,11 +538,11 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
             scene.toggleHud();
           }}
         >
-          <T.Mesh
+          <!-- <T.Mesh
             name="Earl_Street_Shell"
             geometry={gltf.nodes.Earl_Street_Shell.geometry}
             material={gltf.materials["Lego Shell"]}
-          />
+          /> -->
           <Hitbox dim={[1.5, 1.5, 5]} position={[0, -0.15, -0.9]} />
         </T.Mesh>
       </T.Mesh>
