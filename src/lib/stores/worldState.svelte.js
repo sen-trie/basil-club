@@ -263,7 +263,7 @@ export function getScene() {
 
     touchBear() {
       if (Date.now() < sceneCooldown) return null;
-      sceneCooldown = Date.now() + timeCooldown / 1.5;
+      sceneCooldown = Date.now() + timeCooldown / 2;
       currentState.bearTouches++;
       if (currentState.bearTouches < 5) {
         return false;

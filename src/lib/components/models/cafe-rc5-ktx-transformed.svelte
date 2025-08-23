@@ -604,7 +604,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
             if (res === true) {
               scene.setOverlay("bear");
               setTimeout(() => {
-                // bearVisible = false;
+                bearVisible = false;
               }, 2000);
             } else if (res === false) {
               playTada();

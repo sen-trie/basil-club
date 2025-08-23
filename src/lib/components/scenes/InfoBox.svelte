@@ -37,7 +37,7 @@
         <div class="info-banner">
           <img class="info-img" src={images["banner.webp"]} alt="info banner" />
           <a class="overlay-element exit-link" href="example.com" target="_blank">
-            <Cup />Visit Main Site
+            <Cup />Visit main site!
           </a>
         </div>
         <div class="scrollable info-content">

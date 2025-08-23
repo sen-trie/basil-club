@@ -1,20 +1,19 @@
 <script>
+  import { base } from "$app/paths";
   import { Sound } from "svelte-sound";
-  import { getContext } from "svelte";
   import { getScene } from "$lib/stores/worldState.svelte.js";
 
   const scene = getScene();
 
-  const sounds = getContext("audios");
   const audio = {
-    eat: new Sound(sounds["eat.mp3"]),
-    bgm: new Sound(sounds["bgm.mp3"]),
-    bgmF: new Sound(sounds["bgm-f.mp3"]),
-    bgmM: new Sound(sounds["bgm-m.mp3"]),
-    bear: new Sound(sounds["bear.mp3"]),
-    orderConfirmed: new Sound(sounds["order-confirmed.mp3"]),
-    paymentSuccess: new Sound(sounds["payment-success.mp3"]),
-    paymentUnsucess: new Sound(sounds["payment-unsucess.mp3"]),
+    eat: new Sound(`${base}/audio/eat.mp3`),
+    bgm: new Sound(`${base}/audio/bgm.mp3`),
+    bgmF: new Sound(`${base}/audio/bgm-f.mp3`),
+    bgmM: new Sound(`${base}/audio/bgm-m.mp3`),
+    bear: new Sound(`${base}/audio/bear.mp3`),
+    orderConfirmed: new Sound(`${base}/audio/order-confirmed.mp3`),
+    paymentSuccess: new Sound(`${base}/audio/payment-success.mp3`),
+    paymentUnsucess: new Sound(`${base}/audio/payment-unsucess.mp3`),
   };
 
   let currentBGM = audio.bgm;
@@ -27,7 +26,11 @@
 
   export const playSound = (sfx) => {
     const sound = audio[sfx];
-    if (sound && !sound.howl.playing()) {
+    if (sound) {
+      if (sound.howl.playing()) {
+        sound.howl.stop();
+      }
+
       sound.howl.loop(false);
       sound.play();
     }
