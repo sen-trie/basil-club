@@ -40,8 +40,8 @@
     "@threlte/core": "^8.0.5",
     "@threlte/extras": "^9.4.1",
     "@threlte/theatre": "^3.0.4",
+    "howler": "^2.2.4",
     "node-html-parser": "^7.0.1",
-    "svelte-sound": "^0.6.0",
     "three": "^0.178.0"
   }
 }
