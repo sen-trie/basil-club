@@ -18,6 +18,8 @@
   let hideButton = $state(false);
 
   let closeEatTimer = null;
+  let flagScroll = $state(0);
+
   $effect(() => {
     hideButton = ["bear", "flag", "eat"].includes(scene.currentState.overlayType);
 
@@ -73,7 +75,7 @@
         </video>
       </div>
     {:else if scene.currentState.overlayType === "flag"}
-      <Flag />
+      <Flag bind:flagScroll />
     {:else if scene.currentState.overlayType === "eat"}
       <img
         class="eat-img"
