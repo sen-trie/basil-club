@@ -1,7 +1,7 @@
 <script>
   import { fly, fade } from "svelte/transition";
   import { getScene } from "$lib/stores/worldState.svelte.js";
-  import { onMount } from "svelte";
+  import { base } from "$app/paths";
 
   const scene = getScene();
 
@@ -219,9 +219,11 @@
     <div
       class="card"
       class:back={cardback}
-      style="background-position: 
-        {(ranks.indexOf(rank) * 100) / 12}% 
-        {suits.indexOf(suit) === 0 ? -0.07 : (suits.indexOf(suit) * 100) / 3}%;"
+      style="
+        background-image: url({base}/textures/{cardback ? 'card-back' : 'cards'}.webp);
+        background-position: 
+          {(ranks.indexOf(rank) * 100) / 12}% 
+          {suits.indexOf(suit) === 0 ? -0.07 : (suits.indexOf(suit) * 100) / 3}%;"
     ></div>
   </div>
 {/snippet}
@@ -399,14 +401,12 @@
   .card {
     width: 100%;
     height: 100%;
-    background-image: url("textures/cards.webp");
     background-size: 1300%;
     background-repeat: no-repeat;
     transition: 0.4s background-image ease;
   }
 
   .back {
-    background-image: url("textures/card-back.webp");
     background-size: 100%;
   }
 

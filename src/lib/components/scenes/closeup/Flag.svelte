@@ -4,6 +4,8 @@
   import { onMount } from "svelte";
   import { getScene, foodItems } from "$lib/stores/worldState.svelte.js";
 
+  let { flagScroll = $bindable() } = $props();
+
   const scene = getScene();
   const image = getContext("images");
 
@@ -20,7 +22,14 @@
     refs[name]?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  function closeFlag() {
+    flagScroll = orderBox.scrollTop;
+    scene.closeOverlay();
+  }
+
   onMount(() => {
+    orderBox.scrollTop = flagScroll;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -104,15 +113,14 @@
             </button>
           {:else}
             <p>Your order is confirmed!</p>
-            <button class="exit-button" onclick={scene.closeOverlay} aria-label="Put down tablet">
+            <button class="exit-button" onclick={closeFlag} aria-label="Put down tablet">
               Return
             </button>
           {/if}
         </div>
       </div>
     {/if}
-    <button class="tablet-button" onclick={scene.closeOverlay} aria-label="Put down tablet"
-    ></button>
+    <button class="tablet-button" onclick={closeFlag} aria-label="Put down tablet"></button>
   </div>
 </div>
 
