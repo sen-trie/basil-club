@@ -4,14 +4,7 @@
   import { onMount } from "svelte";
   import { base } from "$app/paths";
   import { T, useTask } from "@threlte/core";
-  import {
-    OrbitControls,
-    interactivity,
-    transitions,
-    Billboard,
-    useViewport,
-  } from "@threlte/extras";
-  import { TextureLoader } from "three";
+  import { OrbitControls, interactivity, transitions } from "@threlte/extras";
   import HudScene from "./scenes/HudScene.svelte";
   import POVScene from "./scenes/POVScene.svelte";
   import { fly } from "$lib/components/transitions.js";
@@ -52,22 +45,37 @@
   });
 
   let browserZoomLevel = $state(1);
-  let loadingTexture = $state(null);
-
-  const viewport = useViewport();
+  let zoom = $derived(defaultZoom / browserZoomLevel);
+  let minZoom = $derived((defaultZoom * 0.8) / browserZoomLevel);
+  let maxZoom = $derived((defaultZoom * 5) / browserZoomLevel);
 
   function updateZoomLevel() {
-    // window.devicePixelRatio
-    console.log($isMobile);
-    browserZoomLevel = $isMobile ? window.devicePixelRatio * 0.75 : window.devicePixelRatio * 1;
+    const nativeWidth = 1080;
+    let scaleFactor;
+    if (window.innerWidth < 576) {
+      scaleFactor = 0.2;
+    } else if (window.innerWidth < 576) {
+      scaleFactor = 0.3;
+    } else if (window.innerWidth < 768) {
+      scaleFactor = 0.5;
+    } else if (window.innerWidth < 992) {
+      scaleFactor = 0.8;
+    } else if (window.innerWidth < 1080) {
+      scaleFactor = 1;
+    } else if (window.innerWidth < 1400) {
+      scaleFactor = 1.4;
+    } else if (window.innerWidth < 2400) {
+      scaleFactor = 1.8;
+    } else {
+      scaleFactor = 4;
+    }
+
+    browserZoomLevel = window.innerWidth / nativeWidth / scaleFactor;
   }
 
   onMount(() => {
     updateZoomLevel();
     window.addEventListener("resize", updateZoomLevel);
-
-    const loader = new TextureLoader();
-    loadingTexture = loader.load(`${base}/textures/loading.webp`);
 
     return () => window.removeEventListener("resize", updateZoomLevel);
   });
@@ -76,9 +84,9 @@
 <T.OrthographicCamera
   makeDefault={!scene.currentState.povCamera}
   position={[20, 0, 20]}
-  zoom={defaultZoom / browserZoomLevel}
   view={{ ...defaultView }}
   bind:ref={cameraRef}
+  {zoom}
 >
   <OrbitControls
     enabled={!scene.currentState.hudControls}
@@ -89,16 +97,9 @@
     {maxAzimuthAngle}
     {enableDamping}
     {enablePan}
-    minZoom={(defaultZoom * 0.9) / browserZoomLevel}
-    maxZoom={(defaultZoom * 5) / browserZoomLevel}
+    {minZoom}
+    {maxZoom}
   ></OrbitControls>
-
-  <Billboard>
-    <T.Mesh scale={[$viewport.width / 6, $viewport.width / 6, 1]} position={[0.5, 3, -150]}>
-      <T.PlaneGeometry args={[2.1, 1]} />
-      <T.MeshBasicMaterial map={loadingTexture} transparent />
-    </T.Mesh>
-  </Billboard>
 </T.OrthographicCamera>
 
 <POVScene />

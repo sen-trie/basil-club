@@ -227,13 +227,12 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
       material={gltf.materials.Three}
       position={[2.15, cafeBottomY, -2.77]}
     >
-      <!-- TODO CHANGE TO POV -->
       <T.Mesh
         name="Bottom_Wall"
         geometry={gltf.nodes.Bottom_Wall.geometry}
         material={gltf.materials.Misc}
         position={[-1, -0.46, 6.76]}
-        visible={false}
+        visible={scene.currentState.povCamera}
       />
       <Sheet name="Robot-Roam">
         <Sequence
@@ -248,8 +247,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
                 <T.Group
                   name="Cat_Base_Roam"
                   rotation={[0, 0, 0]}
-                  visible={dev ||
-                    (scene.currentState.interactables.flag && !scene.currentState.povCamera)}
+                  visible={scene.currentState.interactables.flag && !scene.currentState.povCamera}
                 >
                   <InstancedMesh position={[0, 0.35, 0]} frustumCulled={false}>
                     <T.BufferGeometry is={gltf.nodes.Order_Plate.geometry} />
@@ -589,7 +587,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
       material={gltf.materials.Top}
       position={[-1.58, cafeTopY, -1.92]}
     >
-      {#if dev || scene.currentState.interactables.bear}
+      {#if scene.currentState.interactables.bear}
         <T.Mesh
           name="Bear"
           material={gltf.materials.Bear}

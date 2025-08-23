@@ -9,5 +9,5 @@
 
 <T.Mesh {scale} {...props}>
   <T.BoxGeometry args={dim} />
-  <T.MeshBasicMaterial color="hotpink" wireframe depthTest={true} />
+  <T.MeshBasicMaterial color="hotpink" wireframe depthTest={true} visible={false} />
 </T.Mesh>
