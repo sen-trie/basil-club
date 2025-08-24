@@ -1,4 +1,4 @@
-export const maxPolarAngle = 1.23;
+export const maxPolarAngle = 1.3;
 export const minPolarAngle = maxPolarAngle - 0.5;
 export const minAzimuthAngle = 0.2;
 export const maxAzimuthAngle = Math.PI / 2 - minAzimuthAngle;

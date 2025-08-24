@@ -111,7 +111,7 @@
     {enablePan}
     {minZoom}
     {maxZoom}
-  ></OrbitControls>
+  />
 </T.OrthographicCamera>
 
 <POVScene />

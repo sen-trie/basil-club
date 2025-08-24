@@ -36,7 +36,11 @@
       <div class="info-div flex-v">
         <div class="info-banner">
           <img class="info-img" src={images["banner.webp"]} alt="info banner" />
-          <a class="overlay-element exit-link" href="example.com" target="_blank">
+          <a
+            class="overlay-element exit-link"
+            href="https://basil-main.vercel.app/"
+            target="_blank"
+          >
             <Cup />Visit main site!
           </a>
         </div>

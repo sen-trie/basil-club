@@ -32,19 +32,62 @@
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) currentHeader = e.target.dataset.name;
-        });
+        const visibleEntries = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+        if (visibleEntries.length > 0) {
+          currentHeader = visibleEntries[0].target.dataset.name;
+        }
       },
-      { root: orderBox, threshold: 0.5 },
+      {
+        root: orderBox,
+        threshold: [0, 0.1, 0.25],
+        rootMargin: "-20px 0px -70% 0px",
+      },
     );
+
+    const handleScroll = () => {
+      const scrollTop = orderBox.scrollTop;
+      const scrollHeight = orderBox.scrollHeight;
+      const clientHeight = orderBox.clientHeight;
+      const containerTop = orderBox.getBoundingClientRect().top;
+
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        const lastCategory = categoryList[categoryList.length - 1];
+        if (currentHeader !== lastCategory) {
+          currentHeader = lastCategory;
+        }
+        return;
+      }
+
+      for (const categoryName of categoryList) {
+        const element = refs[categoryName];
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const elementTop = rect.top - containerTop;
+
+          if (elementTop <= 100 && elementTop >= -50) {
+            if (currentHeader !== categoryName) {
+              currentHeader = categoryName;
+            }
+            break;
+          }
+        }
+      }
+    };
 
     categoryList.forEach((name) => {
       const element = refs[name];
       if (element) observer.observe(element);
     });
 
-    return () => observer.disconnect();
+    orderBox.addEventListener("scroll", handleScroll);
+
+    return () => {
+      observer.disconnect();
+      orderBox.removeEventListener("scroll", handleScroll);
+    };
   });
 
   const orderItem = (item) => {
