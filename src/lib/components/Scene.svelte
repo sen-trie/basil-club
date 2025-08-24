@@ -4,9 +4,9 @@
   import { onMount } from "svelte";
   import { T, useTask } from "@threlte/core";
   import { OrbitControls, interactivity, transitions } from "@threlte/extras";
-  import { BlendFunction, SMAAPreset, EdgeDetectionMode } from "postprocessing";
+  import { SMAAPreset, EdgeDetectionMode } from "postprocessing";
   import { EffectComposer } from "threlte-postprocessing";
-  import { SMAAEffect } from "threlte-postprocessing/effects";
+  import { SMAAEffect, HueSaturationEffect } from "threlte-postprocessing/effects";
   import HudScene from "./scenes/HudScene.svelte";
   import POVScene from "./scenes/POVScene.svelte";
   import { fly } from "$lib/components/transitions.js";
@@ -110,6 +110,7 @@
       preset={$isMobile ? SMAAPreset.LOW : SMAAPreset.HIGH}
       edgeDetectionMode={EdgeDetectionMode.COLOR}
     />
+    <HueSaturationEffect saturation={-0.1} />
   </EffectComposer>
 {/key}
 

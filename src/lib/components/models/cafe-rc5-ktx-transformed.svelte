@@ -565,6 +565,7 @@ Command: npx @threlte/gltf@3.0.1 cafe-rc5-ktx-transformed.glb --root /models/tra
         position={[0.03, -1.37, -0.83]}
         onclick={(e) => {
           e.stopPropagation();
+          if (scene.currentState.hudControls) return;
           if (scene.currentState.interactables.fToilet) {
             scene.setMToilet();
           } else {

@@ -36,7 +36,7 @@
     <OrbitControls
       enabled={scene.currentState.hudControls}
       minZoom={(270 * 0.75) / browserZoomLevel}
-      maxZoom={(270 * 1.25) / browserZoomLevel}
+      maxZoom={(270 * 2) / browserZoomLevel}
       enablePan={false}
     />
   </T.OrthographicCamera>

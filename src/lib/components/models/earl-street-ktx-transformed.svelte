@@ -27,7 +27,8 @@
     <T.Mesh
       name="Earl_Street"
       geometry={gltf.nodes.Earl_Street.geometry}
-      material={gltf.materials.Seven}
+      material={gltf.materials["Lego Group"]}
+      position={[0, 0.15, 0.84]}
     >
       <T.Mesh
         name="Earl_Street_Shell"
