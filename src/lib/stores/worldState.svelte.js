@@ -164,7 +164,10 @@ export function getScene() {
         );
         if (interactableKeys.length === 0) return;
 
-        const randomKey = interactableKeys[Math.floor(Math.random() * interactableKeys.length)];
+        let randomKey;
+        do {
+          randomKey = interactableKeys[Math.floor(Math.random() * interactableKeys.length)];
+        } while (randomKey === "bear" && !currentState.interactables["mToilet"]);
         this.openDialog(randomKey);
       }
     },

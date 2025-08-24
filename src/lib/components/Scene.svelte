@@ -83,6 +83,16 @@
   });
 </script>
 
+{#snippet postProcess()}
+  <EffectComposer>
+    <SMAAEffect
+      preset={$isMobile ? SMAAPreset.LOW : SMAAPreset.HIGH}
+      edgeDetectionMode={EdgeDetectionMode.COLOR}
+    />
+    <HueSaturationEffect saturation={-0.1} />
+  </EffectComposer>
+{/snippet}
+
 <T.OrthographicCamera
   makeDefault={!scene.currentState.povCamera}
   position={[20, 0, 20]}
@@ -104,18 +114,10 @@
   ></OrbitControls>
 </T.OrthographicCamera>
 
-{#key scene.currentState.povCamera}
-  <EffectComposer>
-    <SMAAEffect
-      preset={$isMobile ? SMAAPreset.LOW : SMAAPreset.HIGH}
-      edgeDetectionMode={EdgeDetectionMode.COLOR}
-    />
-    <HueSaturationEffect saturation={-0.1} />
-  </EffectComposer>
-{/key}
-
 <POVScene />
-<HudScene {browserZoomLevel} />
+{#key scene.currentState.hudControls}
+  <HudScene {browserZoomLevel} />
+{/key}
 
 {#if scene.currentState.scene === "cafe"}
   <Cafe visible={true} bind:ref={cafeRef} transition={fly({ x: 0, y: 50, z: 0 })} />
@@ -124,3 +126,7 @@
 {:else if scene.currentState.scene === "fToilet"}
   <FToilet transition={fly({ x: 0, y: 50, z: 0 })} />
 {/if}
+
+{#key scene.currentState.povCamera}
+  {@render postProcess()}
+{/key}
