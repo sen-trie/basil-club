@@ -15,30 +15,31 @@
 
   const { actions, mixer } = useGltfAnimations(gltf);
   let activeActionName = "Bored";
-  const nextActionName = "Rumba";
   const IDLE_ANIMATION_NAME = activeActionName;
 
   $effect(() => {
     $actions[IDLE_ANIMATION_NAME]?.play();
-    console.log($actions);
   });
 
   const playE = (e) => {
-    if (e.key !== "d") return;
+    if (e.key !== "d" || activeActionName !== IDLE_ANIMATION_NAME) {
+      return;
+    }
 
-    if (activeActionName === nextActionName) return;
+    const possibleNextAnimations = Object.keys($actions).filter(
+      (name) => name !== IDLE_ANIMATION_NAME && name !== activeActionName,
+    );
+    if (possibleNextAnimations.length === 0) return;
 
+    const nextActionName =
+      possibleNextAnimations[Math.floor(Math.random() * possibleNextAnimations.length)];
     const currentAction = $actions[activeActionName];
     const nextAction = $actions[nextActionName];
 
     if (currentAction && nextAction) {
-      nextAction.reset().play();
-
-      nextAction.setLoop(LoopOnce, 1);
+      nextAction.reset().setLoop(LoopOnce, 1).play();
       nextAction.clampWhenFinished = true;
-
       currentAction.crossFadeTo(nextAction, 0.5, true);
-
       activeActionName = nextActionName;
     }
   };
@@ -63,15 +64,22 @@
 
     mixer.addEventListener("finished", onFinish);
 
-    // Cleanup the listener
     return () => {
       mixer.removeEventListener("finished", onFinish);
     };
+  });
+
+  let catScene = $state(null);
+
+  $effect(() => {
+    if (catScene) {
+      catScene.children[1].position.set(1.1, -0.27, -0.1);
+    }
   });
 </script>
 
 <svelte:document onkeydown={playE} />
 
 {#await gltf then { scene }}
-  <T is={scene} position={[3, -1, 0]} scale={2} />
+  <T bind:ref={catScene} is={scene} position={[1.35, -3.4, 0]} scale={1} />
 {/await}

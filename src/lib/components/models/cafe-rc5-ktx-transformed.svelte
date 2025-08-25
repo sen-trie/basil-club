@@ -584,7 +584,9 @@
       material={gltf.materials.Top}
       position={[-1.58, cafeTopY, -1.92]}
     >
-      <Cat />
+      {#if dev || scene.currentState.interactables.payment}
+        <Cat />
+      {/if}
       {#if scene.currentState.interactables.bear}
         <T.Mesh
           name="Bear"
