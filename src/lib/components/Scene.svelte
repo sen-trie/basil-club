@@ -86,7 +86,7 @@
 {#snippet postProcess()}
   <EffectComposer>
     <SMAAEffect
-      preset={$isMobile ? SMAAPreset.LOW : SMAAPreset.HIGH}
+      preset={$isMobile ? SMAAPreset.LOW : SMAAPreset.ULTRA}
       edgeDetectionMode={EdgeDetectionMode.COLOR}
     />
     <HueSaturationEffect saturation={-0.1} />

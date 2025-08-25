@@ -9,7 +9,7 @@
     stroke-miterlimit:1.5;
     fill:none;
     stroke:var(--colour-light);
-    stroke-width:25px;"
+   ;"
 >
   <path d="M40.073,92.357l501.594,166.827l501.593,-166.827" />
   <path d="M40.073,197.836l501.594,166.828l501.593,-166.828" />
@@ -18,7 +18,8 @@
 <style>
   svg {
     width: 200px;
-    height: 100px;
+    height: 80px;
+    stroke-width: 20px;
   }
 
   @media (max-width: 768px) {

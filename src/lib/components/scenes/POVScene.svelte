@@ -16,16 +16,19 @@
   const sensitivity = 0.001;
 
   function onMouseDown(e) {
+    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
     isMouseDown = true;
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;
   }
 
   function onMouseUp(e) {
+    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
     isMouseDown = false;
   }
 
   function onTouchStart(e) {
+    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
     if (e.touches.length === 1) {
       isTouchDown = true;
       lastTouchX = e.touches[0].clientX;
@@ -34,10 +37,12 @@
   }
 
   function onTouchEnd(e) {
+    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
     isTouchDown = false;
   }
 
   function onTouchMove(e) {
+    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
     if (!isTouchDown || !cameraControls || e.touches.length !== 1) return;
 
     e.preventDefault();
@@ -48,6 +53,7 @@
   }
 
   function onMouseMove(e) {
+    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
     if (!isMouseDown || !cameraControls) return;
     updateCamera(e.clientX, e.clientY, lastMouseX, lastMouseY);
     lastMouseX = e.clientX;
@@ -69,21 +75,17 @@
     let yaw = Math.atan2(lookX, lookZ);
     let pitch = Math.asin(lookY / distance);
 
-    // Apply rotation
     yaw -= deltaX;
     pitch = Math.max(-Math.PI / 2 + 0.1, Math.min(Math.PI / 2 - 0.1, pitch - deltaY));
 
-    // Convert back to cartesian and set new target
     const newLookX = distance * Math.sin(yaw) * Math.cos(pitch);
     const newLookY = distance * Math.sin(pitch);
     const newLookZ = distance * Math.cos(yaw) * Math.cos(pitch);
 
-    // Calculate new target position
     const newTargetX = camera.x + newLookX;
     const newTargetY = camera.y + newLookY;
     const newTargetZ = camera.z + newLookZ;
 
-    // Clamp target within bounds
     const clampedX = Math.max(-1.2, Math.min(1.4, newTargetX));
     const clampedY = Math.max(-1.6, Math.min(-0.1, newTargetY));
     const clampedZ = Math.max(-1.2, Math.min(1.4, newTargetZ));

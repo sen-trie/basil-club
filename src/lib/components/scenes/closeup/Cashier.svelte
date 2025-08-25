@@ -134,24 +134,23 @@
 
 <style>
   :root {
-    --cashier-padding-v: 40px;
-    --cashier-padding-h: 30px;
-    --checkout-padding-v: 25px;
+    --cashier-padding-v: 30px;
+    --cashier-padding-h: 20px;
+    --checkout-padding-v: 15px;
   }
 
   .flag-wrapper {
-    position: relative;
+    position: absolute;
     width: 95%;
-    height: 97%;
+    height: calc(100% - 100px);
+    top: 5px;
   }
 
   .flag-tablet {
     position: absolute;
     inset: 0;
-    bottom: 10%;
     margin: auto;
-    max-width: 100%;
-    max-height: 90%;
+    height: 100%;
     aspect-ratio: 2 / 3;
     color: black;
     border: 3px solid var(--colour-light);
@@ -341,7 +340,6 @@
   @media (max-width: 768px) {
     .flag-wrapper {
       width: 100%;
-      height: 100%;
     }
 
     .flag-tablet {

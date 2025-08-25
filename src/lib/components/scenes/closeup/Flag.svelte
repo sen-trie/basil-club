@@ -169,8 +169,8 @@
 
 <style>
   :root {
-    --padding-v: 80px;
-    --padding-h: 35px;
+    --padding-v: 60px;
+    --padding-h: 25px;
   }
 
   .flag-wrapper {
@@ -182,9 +182,8 @@
   .flag-tablet {
     position: absolute;
     inset: 0;
-    margin: auto;
-    max-width: 100%;
-    max-height: 100%;
+    margin: 0 auto;
+    height: 100%;
     aspect-ratio: 2 / 3;
     border: 3px solid var(--colour-grey);
     border-radius: var(--padding-h);

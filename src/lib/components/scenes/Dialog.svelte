@@ -15,7 +15,7 @@
     "flag": "Take a seat at the bottom floor!",
     "eat": "Try ordering a meal after having a seat!",
     "payment": "After ordering, try paying for your meal!",
-    "blackjack": "After ordering too much food, try paying for your meal!",
+    "blackjack": "Try ordering a lot of food, then run out of credits to pay!",
     "allfound": "Congratulations! You have found all the interactables!",
   };
 
