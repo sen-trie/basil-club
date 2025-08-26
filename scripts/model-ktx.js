@@ -52,7 +52,6 @@ function runKtxConversion() {
     const fileExt = file.split(".").pop();
     const fileName = basename(file, `.${fileExt}`);
 
-    // Standard KTX2 conversion
     const standardFileName = `${fileName}-ktx.${fileExt}`;
     const standardFilePath = join(config.targetDir, standardFileName);
     try {
@@ -64,29 +63,29 @@ function runKtxConversion() {
     }
 
     // Mobile KTX2 conversion with halved textures
-    const mobileFileName = `${fileName}-ktx-mobile.${fileExt}`;
-    const mobileFilePath = join(config.targetDir, mobileFileName);
-    const tempMobileFilePath = join(config.targetDir, `${fileName}-temp-mobile.${fileExt}`);
+    // const mobileFileName = `${fileName}-ktx-mobile.${fileExt}`;
+    // const mobileFilePath = join(config.targetDir, mobileFileName);
+    // const tempMobileFilePath = join(config.targetDir, `${fileName}-temp-mobile.${fileExt}`);
 
-    try {
-      console.log(`Processing mobile version of ${file}...`);
+    // try {
+    //   console.log(`Processing mobile version of ${file}...`);
 
-      const resizeCommand = `npx @gltf-transform/cli resize ${sourcePath} ${tempMobileFilePath} --width 2048 --height 2048 --filter lanczos3`;
-      execSync(resizeCommand, { stdio: "inherit" });
+    //   const resizeCommand = `npx @gltf-transform/cli resize ${sourcePath} ${tempMobileFilePath} --width 2048 --height 2048 --filter lanczos3`;
+    //   execSync(resizeCommand, { stdio: "inherit" });
 
-      // Then, convert the resized model to KTX2
-      const gltfTransformMobileCommand = `npx @gltf-transform/cli etc1s ${tempMobileFilePath} ${mobileFilePath}`;
-      execSync(gltfTransformMobileCommand, { stdio: "inherit" });
+    //   // Then, convert the resized model to KTX2
+    //   const gltfTransformMobileCommand = `npx @gltf-transform/cli etc1s ${tempMobileFilePath} ${mobileFilePath}`;
+    //   execSync(gltfTransformMobileCommand, { stdio: "inherit" });
 
-      // Clean up the temporary file
-      unlinkSync(tempMobileFilePath);
-      console.log(`Successfully created ${standardFileName} and ${mobileFileName}`);
-    } catch (error) {
-      console.error(`Error processing mobile version of ${file}: ${error.message}`);
-      if (existsSync(tempMobileFilePath)) {
-        unlinkSync(tempMobileFilePath);
-      }
-    }
+    //   // Clean up the temporary file
+    //   unlinkSync(tempMobileFilePath);
+    //   console.log(`Successfully created ${standardFileName} and ${mobileFileName}`);
+    // } catch (error) {
+    //   console.error(`Error processing mobile version of ${file}: ${error.message}`);
+    //   if (existsSync(tempMobileFilePath)) {
+    //     unlinkSync(tempMobileFilePath);
+    //   }
+    // }
   });
 }
 

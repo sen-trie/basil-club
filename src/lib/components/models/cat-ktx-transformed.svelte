@@ -1,16 +1,17 @@
 <script>
   import { T } from "@threlte/core";
-  import { useGltf, useGltfAnimations, useKtx2, useDraco } from "@threlte/extras";
-  import { GLTF } from "@threlte/extras";
+  import { useGltf, useGltfAnimations, useKtx2, useDraco, useMeshopt } from "@threlte/extras";
   import { base } from "$app/paths";
   import { LoopOnce } from "three";
+  import Hitbox from "./hitbox.svelte";
 
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
 
   const ktx2Loader = useKtx2(`${base}/transcoder/`);
-  const gltf = useGltf(`${base}/models/cat.glb`, {
+  const gltf = useGltf(`${base}/models/transformed/cat-transformed.glb`, {
     ktx2Loader: ktx2Loader,
     dracoLoader: useDraco(),
+    meshoptDecoder: useMeshopt(),
   });
 
   const { actions, mixer } = useGltfAnimations(gltf);
@@ -21,8 +22,8 @@
     $actions[IDLE_ANIMATION_NAME]?.play();
   });
 
-  const playE = (e) => {
-    if (e.key !== "d" || activeActionName !== IDLE_ANIMATION_NAME) {
+  const playE = () => {
+    if (activeActionName !== IDLE_ANIMATION_NAME) {
       return;
     }
 
@@ -68,18 +69,10 @@
       mixer.removeEventListener("finished", onFinish);
     };
   });
-
-  let catScene = $state(null);
-
-  $effect(() => {
-    if (catScene) {
-      catScene.children[1].position.set(1.1, -0.27, -0.1);
-    }
-  });
 </script>
 
-<svelte:document onkeydown={playE} />
-
 {#await gltf then { scene }}
-  <T bind:ref={catScene} is={scene} position={[1.35, -3.4, 0]} scale={1} />
+  <T is={scene} position={[1.35, -3.4, 0]} onclick={playE}>
+    <Hitbox position={[1.2, 0.6, -0.15]} dim={[1.2, 2, 1]} />
+  </T>
 {/await}

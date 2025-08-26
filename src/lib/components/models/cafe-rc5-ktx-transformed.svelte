@@ -5,7 +5,6 @@
   import { base } from "$app/paths";
   import { dev } from "$app/environment";
   import { isMobile } from "$lib/stores/worldState.svelte.js";
-  import Cat from "./cat-ktx-transformed.svelte";
 
   const ktx2Loader = useKtx2(`${base}/transcoder/`);
   const load = () => {
@@ -26,6 +25,7 @@
   import { cubicInOut, linear } from "svelte/easing";
   import { getScene } from "$lib/stores/worldState.svelte.js";
   import Hitbox from "./hitbox.svelte";
+  import Cat from "./cat-ktx-transformed.svelte";
 
   const scene = getScene();
 
@@ -584,7 +584,7 @@
       material={gltf.materials.Top}
       position={[-1.58, cafeTopY, -1.92]}
     >
-      {#if dev || scene.currentState.interactables.payment}
+      {#if scene.currentState.interactables.blackjack}
         <Cat />
       {/if}
       {#if scene.currentState.interactables.bear}
