@@ -40,7 +40,7 @@
   const cafeTopHalf = 2.71;
   const cafeBotFull = 1.47;
 
-  let bearVisible = $state(true);
+  let bearVisible = $state(scene.currentState.bearTouches < 5);
   const bearKeyframe = 125;
   let bearScale = new Tween([1, 1, 1], {
     duration: bearKeyframe,
