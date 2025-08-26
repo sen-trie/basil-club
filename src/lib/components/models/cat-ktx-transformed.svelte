@@ -72,7 +72,7 @@
 </script>
 
 {#await gltf then { scene }}
-  <T is={scene} position={[1.35, -3.4, 0]} onclick={playE}>
+  <T is={scene} position={[1.35, -3.45, 0]} onclick={playE}>
     <Hitbox position={[1.2, 0.6, -0.15]} dim={[1.2, 2, 1]} />
   </T>
 {/await}

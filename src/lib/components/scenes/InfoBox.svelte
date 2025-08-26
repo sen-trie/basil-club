@@ -100,6 +100,13 @@
             >Bucket Hat
           </a>
           <br />
+          <a href="https://freesound.org/people/mokasza/sounds/810323/" target="_blank"
+            >Bell SFX
+          </a>
+          <br />
+          <a href="https://freesound.org/people/juskiddink/sounds/74893/" target="_blank"
+            >Bell Jingle
+          </a>
         </div>
       </div>
       <button class="overlay-element out-button" onclick={closeInfo}>
