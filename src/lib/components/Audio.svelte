@@ -73,11 +73,21 @@
     Object.values(audio).forEach((sound) => sound.mute(scene.currentState.muted));
   };
 
-  $effect(() => {
-    return () => {
-      if (currentBGM.playing()) {
-        currentBGM.unload();
+  const suspendAudio = () => {
+    if (document.visibilityState === "visible") {
+      if (Howler.ctx.state === "suspended") {
+        Howler.ctx.resume();
       }
-    };
-  });
+
+      if (!currentBGM.playing()) {
+        currentBGM.play();
+      }
+    } else {
+      if (currentBGM.playing()) {
+        currentBGM.pause();
+      }
+    }
+  };
 </script>
+
+<svelte:document onvisibilitychange={suspendAudio} />
