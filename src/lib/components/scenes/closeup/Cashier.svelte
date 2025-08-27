@@ -142,7 +142,7 @@
   .flag-wrapper {
     position: absolute;
     width: 95%;
-    height: calc(100% - 80px);
+    height: calc(100% - 100px);
     top: 5px;
   }
 
@@ -340,6 +340,7 @@
   @media (max-width: 768px) {
     .flag-wrapper {
       width: 100%;
+      height: calc(100% - 80px);
     }
 
     .flag-tablet {

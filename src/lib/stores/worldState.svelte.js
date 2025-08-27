@@ -22,7 +22,7 @@ let currentState = $state({
   muted: false,
   scene: "cafe",
   overlayType: "",
-  showDialog: null,
+  showDialog: "starting",
   povCamera: false,
   hudControls: false,
   bearTouches: 0,
