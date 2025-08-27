@@ -40,7 +40,11 @@
   showBlockerStore.set(showBlocker);
 
   onMount(() => {
-    const preloadImages = ["spread/1.webp", "grid.webp"];
+    const preloadImages = [
+      ...Array.from({ length: 7 }, (_, i) => `spread/${i + 1}.webp`),
+      "grid.webp",
+      "eat.apng",
+    ];
     preloadImages.forEach((imgPath) => {
       const img = new Image();
       img.src = image[imgPath];
