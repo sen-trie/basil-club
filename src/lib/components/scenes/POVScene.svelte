@@ -42,7 +42,7 @@
   }
 
   function onTouchMove(e) {
-    if (scene.currentState.overlayType) return;
+    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
     if (!isTouchDown || !cameraControls || e.touches.length !== 1) return;
 
     e.preventDefault();
