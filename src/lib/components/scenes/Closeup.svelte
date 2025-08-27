@@ -151,14 +151,14 @@
 
   .close-button {
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     pointer-events: all;
     will-change: transform;
     transition: transform 0.2s ease;
   }
 
   .close-button:hover {
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
 
   .grid-div {

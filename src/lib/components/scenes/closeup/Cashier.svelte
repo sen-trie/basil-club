@@ -142,7 +142,7 @@
   .flag-wrapper {
     position: absolute;
     width: 95%;
-    height: calc(100% - 100px);
+    height: calc(100% - 80px);
     top: 5px;
   }
 
