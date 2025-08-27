@@ -11,6 +11,3 @@
 {:else}
   B1F
 {/if}
-
-<style>
-</style>

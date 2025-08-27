@@ -359,7 +359,12 @@
     .payment-div,
     .complete-div {
       padding: calc(var(--checkout-padding-v) / 2) calc(var(--cashier-padding-h) / 2);
+      padding-top: 20px;
       gap: 15px;
+    }
+
+    .blackjack-div {
+      padding-top: 20px;
     }
 
     .cashier-title {

@@ -262,8 +262,12 @@
       white-space: nowrap;
     }
 
+    .info-banner {
+      height: 125px;
+    }
+
     .info-content {
-      padding: 0 0.5rem 0.5rem 0;
+      padding: 0 0.5rem 0.5rem 0.5rem;
       width: calc(100% - 1rem);
       font-size: 1.2rem;
       overflow-x: hidden;
