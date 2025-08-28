@@ -101,7 +101,7 @@
   {zoom}
 >
   <OrbitControls
-    enabled={!scene.currentState.hudControls}
+    enabled={!scene.currentState.hudControls && !scene.currentState.povCamera}
     bind:ref={controlsRef}
     {minPolarAngle}
     {maxPolarAngle}

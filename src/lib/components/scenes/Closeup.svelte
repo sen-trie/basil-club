@@ -40,7 +40,11 @@
   showBlockerStore.set(showBlocker);
 
   onMount(() => {
-    const preloadImages = ["spread/1.webp", "grid.webp"];
+    const preloadImages = [
+      ...Array.from({ length: 7 }, (_, i) => `spread/${i + 1}.webp`),
+      "grid.webp",
+      "eat.apng",
+    ];
     preloadImages.forEach((imgPath) => {
       const img = new Image();
       img.src = image[imgPath];
@@ -147,14 +151,14 @@
 
   .close-button {
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     pointer-events: all;
     will-change: transform;
     transition: transform 0.2s ease;
   }
 
   .close-button:hover {
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
 
   .grid-div {

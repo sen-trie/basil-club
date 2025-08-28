@@ -1,31 +1,31 @@
-<svg
-  viewBox="0 0 1084 446"
-  version="1.1"
-  style="
-    fill-rule:evenodd;
-    clip-rule:evenodd;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    stroke-miterlimit:1.5;
-    fill:none;
-    stroke:var(--colour-light);
-   ;"
->
-  <path d="M40.073,92.357l501.594,166.827l501.593,-166.827" />
-  <path d="M40.073,197.836l501.594,166.828l501.593,-166.828" />
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask id="x-cutout">
+      <rect width="24" height="24" fill="white" />
+      <path
+        d="M16 8L8 16M8.00001 8L16 16"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </mask>
+  </defs>
+
+  <circle cx="12" cy="12" r="12" fill="var(--colour-light)" mask="url(#x-cutout)" />
 </svg>
 
 <style>
   svg {
-    width: 200px;
-    height: 80px;
-    stroke-width: 20px;
+    width: 80px;
+    height: auto;
+    aspect-ratio: 1;
+    padding: 8px;
   }
 
   @media (max-width: 768px) {
     svg {
-      width: 150px;
-      height: 75px;
+      width: 70px;
     }
   }
 </style>

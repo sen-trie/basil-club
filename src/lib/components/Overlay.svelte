@@ -92,13 +92,15 @@
 
   .overlay-screen {
     position: absolute;
+    left: 0;
     right: 0;
     display: flex;
-    flex-direction: column;
-    align-items: end;
+    justify-content: flex-end;
+    flex-direction: row;
+    align-items: center;
     z-index: 10;
     overflow: hidden;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     gap: 1.5rem;
     pointer-events: none;
   }
@@ -114,16 +116,19 @@
 
   .interactable-count {
     position: relative;
-    right: -2rem;
-    padding: 0.5rem 2rem;
-    padding-left: 6rem;
     font-size: 2.5rem;
     font-weight: 700;
     text-align: right;
     cursor: pointer;
-    background: linear-gradient(-90deg, var(--c0) 0%, var(--c1) 75%, transparent 100%);
     transition: background 3.8s ease;
     transition-property: --c0, --c1;
+
+    position: absolute;
+    left: 0rem;
+    right: unset;
+    background: linear-gradient(90deg, var(--c0) 0%, var(--c1) 75%, transparent 100%);
+    padding: 0.5rem 2rem;
+    padding-right: 6rem;
   }
 
   .overlay-screen .interactable-count {
@@ -147,10 +152,6 @@
 
   @media (max-width: 768px) {
     .overlay-screen {
-      align-items: center;
-      flex-direction: row;
-      justify-content: flex-end;
-      left: 0;
       padding: 1rem 0;
       padding-right: 5px;
       gap: 10px;
@@ -169,10 +170,6 @@
     }
 
     .interactable-count {
-      position: absolute;
-      left: -1rem;
-      right: unset;
-      background: linear-gradient(90deg, var(--c0) 0%, var(--c1) 75%, transparent 100%);
       padding: 0.5rem 2rem;
       padding-right: 4rem;
       font-size: 1.6rem;

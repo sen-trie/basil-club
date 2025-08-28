@@ -16,19 +16,19 @@
   const sensitivity = 0.001;
 
   function onMouseDown(e) {
-    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
+    if (scene.currentState.overlayType) return;
     isMouseDown = true;
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;
   }
 
   function onMouseUp(e) {
-    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
+    if (scene.currentState.overlayType) return;
     isMouseDown = false;
   }
 
   function onTouchStart(e) {
-    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
+    if (scene.currentState.overlayType) return;
     if (e.touches.length === 1) {
       isTouchDown = true;
       lastTouchX = e.touches[0].clientX;
@@ -37,7 +37,7 @@
   }
 
   function onTouchEnd(e) {
-    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
+    if (scene.currentState.overlayType) return;
     isTouchDown = false;
   }
 
@@ -53,7 +53,7 @@
   }
 
   function onMouseMove(e) {
-    if (!scene.currentState.povCamera || scene.currentState.overlayType) return;
+    if (scene.currentState.overlayType) return;
     if (!isMouseDown || !cameraControls) return;
     updateCamera(e.clientX, e.clientY, lastMouseX, lastMouseY);
     lastMouseX = e.clientX;
@@ -110,6 +110,15 @@
       document.removeEventListener("touchmove", onTouchMove);
     };
   });
+
+  $effect(() => {
+    if (scene.currentState.povCamera) {
+      cameraControls.setTarget(0, -0.8, 0.1, false);
+      cameraControls.update();
+      lastMouseX = 0;
+      lastMouseY = 0;
+    }
+  });
 </script>
 
 <T.PerspectiveCamera
@@ -120,6 +129,7 @@
 >
   <CameraControls
     bind:ref={cameraControls}
+    enabled={scene.currentState.povCamera}
     mouseButtons={{
       left: 0, // disables rotate
       wheel: 0, // disables zoom

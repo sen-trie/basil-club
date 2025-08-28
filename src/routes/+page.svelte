@@ -3,8 +3,19 @@
   import { onMount } from "svelte";
 
   onMount(() => {
+    const preventGesture = (e) => e.preventDefault();
+
+    document.addEventListener("gesturestart", preventGesture);
+    document.addEventListener("gesturechange", preventGesture);
+    document.addEventListener("gestureend", preventGesture);
+
     const handleTouchMove = (e) => {
       if (e.target.closest(".scrollable")) return;
+
+      if (e.touches.length > 1) {
+        e.preventDefault();
+        return;
+      }
 
       if (window.scrollY === 0 && e.touches[0].clientY > 0) {
         e.preventDefault();
@@ -18,6 +29,9 @@
 
     return () => {
       document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("gesturestart", preventGesture);
+      document.removeEventListener("gesturechange", preventGesture);
+      document.removeEventListener("gestureend", preventGesture);
     };
   });
 </script>

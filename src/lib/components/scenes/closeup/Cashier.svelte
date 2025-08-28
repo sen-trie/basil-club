@@ -340,6 +340,7 @@
   @media (max-width: 768px) {
     .flag-wrapper {
       width: 100%;
+      height: calc(100% - 80px);
     }
 
     .flag-tablet {

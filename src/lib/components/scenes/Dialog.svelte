@@ -17,6 +17,8 @@
     "payment": "After ordering, try paying for your meal!",
     "blackjack": "Try ordering a lot of food, then run out of credits to pay!",
     "allfound": "Congratulations! You have found all the interactables!",
+    "starting":
+      "Welcome! Take your time to explore the café, there are many interactables scattered about!",
   };
 
   let dialogTimer = null;
@@ -25,9 +27,12 @@
     if (dialogTimer) {
       clearTimeout(dialogTimer);
     }
-    dialogTimer = setTimeout(() => {
-      scene.closeDialog();
-    }, 4000);
+    dialogTimer = setTimeout(
+      () => {
+        scene.closeDialog();
+      },
+      scene.currentState.showDialog !== "starting" ? 4000 : 12000,
+    );
   };
 
   $effect(() => {
@@ -71,7 +76,7 @@
     position: absolute;
     bottom: 2rem;
     left: 50%;
-    width: min(500px, 90%);
+    width: min(600px, 90%);
     translate: -50% 0;
     padding: 1rem 1.5rem;
     font-size: 1.6rem;
