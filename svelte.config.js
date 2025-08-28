@@ -11,9 +11,6 @@ const config = {
     files: {
       lib: "./src/lib/",
     },
-    paths: {
-            base: '/cafe'
-        }
   },
   relative: true,
   preprocess: [vitePreprocess()],
