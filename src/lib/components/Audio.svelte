@@ -7,15 +7,25 @@
 
   let { pageStarted } = $props();
 
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  const createHowl = (src) => {
+    const config = { src: [`${base}/audio/${src}`] };
+    if (isIOS) {
+      config.html5 = true;
+    }
+    return new Howl(config);
+  };
+
   const audio = {
-    eat: new Howl({ src: [`${base}/audio/eat.mp3`] }),
-    bgm: new Howl({ src: [`${base}/audio/bgm.mp3`] }),
-    bgmF: new Howl({ src: [`${base}/audio/bgm-f.mp3`] }),
-    bgmM: new Howl({ src: [`${base}/audio/bgm-m.mp3`] }),
-    bear: new Howl({ src: [`${base}/audio/bear.mp3`] }),
-    orderConfirmed: new Howl({ src: [`${base}/audio/order-confirmed.mp3`] }),
-    paymentSuccess: new Howl({ src: [`${base}/audio/payment-success.mp3`] }),
-    paymentUnsucess: new Howl({ src: [`${base}/audio/payment-unsucess.mp3`] }),
+    eat: createHowl("eat.mp3"),
+    bgm: createHowl("bgm.mp3"),
+    bgmF: createHowl("bgm-f.mp3"),
+    bgmM: createHowl("bgm-m.mp3"),
+    bear: createHowl("bear.mp3"),
+    orderConfirmed: createHowl("order-confirmed.mp3"),
+    paymentSuccess: createHowl("payment-success.mp3"),
+    paymentUnsucess: createHowl("payment-unsucess.mp3"),
   };
 
   let currentBGM = audio.bgm;
