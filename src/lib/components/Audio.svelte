@@ -5,6 +5,8 @@
 
   const scene = getScene();
 
+  let { pageStarted } = $props();
+
   const audio = {
     eat: new Howl({ src: [`${base}/audio/eat.mp3`] }),
     bgm: new Howl({ src: [`${base}/audio/bgm.mp3`] }),
@@ -74,6 +76,10 @@
   };
 
   const suspendAudio = () => {
+    if (!pageStarted) {
+      return;
+    }
+
     if (document.visibilityState === "visible") {
       if (Howler.ctx.state === "suspended") {
         Howler.ctx.resume();

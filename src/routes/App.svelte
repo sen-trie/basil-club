@@ -65,7 +65,7 @@
   <Overlay />
 {/if}
 
-<Audio bind:this={audioEl} isMuted={false} />
+<Audio bind:this={audioEl} {pageStarted} />
 <Studio enabled={false && dev} />
 
 <div class="main">
