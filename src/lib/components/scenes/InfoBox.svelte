@@ -76,6 +76,9 @@
             </a>
           </div>
           {@render sectionBreak("Credits", false)}
+          BGM by @murphymadebeats
+          <a href="https://www.youtube.com/watch?v=qzDvsMWqtHQ" target="_blank">[Listen] </a>
+          <br />
           <a
             href="https://sketchfab.com/3d-models/old-microphone-812ed8c6fee44602a376159f7990a765"
             target="_blank"
