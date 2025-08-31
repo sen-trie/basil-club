@@ -12,10 +12,8 @@
         dracoLoader: useDraco(),
       });
     } catch (e) {
-      alert("Failed to load transformed model, loading fallback.", e);
-      return useGltf(`${base}/models/m-toilet.glb`, {
-        dracoLoader: useDraco(),
-      });
+      alert(e);
+      return useGltf(`${base}/models/m-toilet.glb`, {});
     }
   };
 
