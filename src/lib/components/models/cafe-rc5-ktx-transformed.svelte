@@ -292,7 +292,7 @@
                     position={[0, -0.685, 0]}
                   >
                     <T.MeshBasicMaterial transparent={true} opacity={0.25} color="black" />
-                  </T.Mesh> -->
+                  </T.Mesh>
                 </T.Group>
               </Transform>
             {/snippet}

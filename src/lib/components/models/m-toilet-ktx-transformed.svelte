@@ -6,13 +6,12 @@
   const ktx2Loader = useKtx2(`${base}/transcoder/`);
   const load = () => {
     try {
-      alert("Loading...");
       return useGltf(`${base}/models/transformed/m-toilet-transformed.glb`, {
         ktx2Loader: ktx2Loader,
         dracoLoader: useDraco(),
       });
     } catch (e) {
-      alert(e);
+      console.error(e);
       return useGltf(`${base}/models/m-toilet.glb`, {});
     }
   };
@@ -59,7 +58,7 @@
       material={gltf.materials["MT-Set1"]}
       position={[0.51, -0.38, -4.23]}
     >
-      <!-- <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} alphaTest={0.1} /> -->
+      <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} />
       <T.Mesh
         name="Bear_Sign"
         geometry={gltf.nodes.Bear_Sign.geometry}
@@ -73,17 +72,12 @@
           scene.setInteractable("bear");
         }}
       >
-        <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} />
+        <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} />
         <Hitbox dim={[1.2, 1.2, 1.2]} />
       </T.Mesh>
     </T.Mesh>
-    <T.Mesh
-      name="MT-Set4"
-      geometry={gltf.nodes["MT-Set4"].geometry}
-      material={gltf.materials["MT-Set4"]}
-      position={[0.17, -0.76, 0.75]}
-    >
-      <!-- <T.MeshBasicMaterial map={gltf.materials["MT-Set4"].map} transparent={true} alphaTest={0.4} /> -->
+    <T.Mesh name="MT-Set4" geometry={gltf.nodes["MT-Set4"].geometry} position={[0.17, -0.76, 0.75]}>
+      <T.MeshBasicMaterial map={gltf.materials["MT-Set4"].map} transparent={true} />
       <T.Mesh
         name="Camp_Bench"
         geometry={gltf.nodes.Camp_Bench.geometry}
@@ -110,11 +104,7 @@
       material={gltf.materials["Maple Tree"]}
       position={[0.37, 1.28, -3.97]}
     >
-      <!-- <T.MeshBasicMaterial
-        map={gltf.materials["Maple Tree"].map}
-        transparent={true}
-        alphaTest={0.4}
-      /> -->
+      <T.MeshBasicMaterial map={gltf.materials["Maple Tree"].map} alphaTest={0.4} />
     </T.Mesh>
   {:catch err}
     {@render error?.({ error: err })}
