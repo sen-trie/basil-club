@@ -6,12 +6,13 @@
   const ktx2Loader = useKtx2(`${base}/transcoder/`);
   const load = () => {
     try {
+      alert("Loading...");
       return useGltf(`${base}/models/transformed/m-toilet-transformed.glb`, {
         ktx2Loader: ktx2Loader,
         dracoLoader: useDraco(),
       });
     } catch (e) {
-      console.error("Failed to load transformed model, loading fallback.", e);
+      alert("Failed to load transformed model, loading fallback.", e);
       return useGltf(`${base}/models/m-toilet.glb`, {
         dracoLoader: useDraco(),
       });
@@ -57,9 +58,10 @@
     <T.Mesh
       name="MT-Set1"
       geometry={gltf.nodes["MT-Set1"].geometry}
+      material={gltf.materials["MT-Set1"]}
       position={[0.51, -0.38, -4.23]}
     >
-      <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} alphaTest={0.1} />
+      <!-- <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} alphaTest={0.1} /> -->
       <T.Mesh
         name="Bear_Sign"
         geometry={gltf.nodes.Bear_Sign.geometry}
@@ -73,7 +75,7 @@
           scene.setInteractable("bear");
         }}
       >
-        <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} />
+        <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} />
         <Hitbox dim={[1.2, 1.2, 1.2]} />
       </T.Mesh>
     </T.Mesh>
@@ -83,7 +85,7 @@
       material={gltf.materials["MT-Set4"]}
       position={[0.17, -0.76, 0.75]}
     >
-      <T.MeshBasicMaterial map={gltf.materials["MT-Set4"].map} transparent={true} alphaTest={0.4} />
+      <!-- <T.MeshBasicMaterial map={gltf.materials["MT-Set4"].map} transparent={true} alphaTest={0.4} /> -->
       <T.Mesh
         name="Camp_Bench"
         geometry={gltf.nodes.Camp_Bench.geometry}
@@ -94,7 +96,7 @@
           window.open("https://www.youtube.com/watch?v=RgBwLQty8B4", "_blank");
         }}
       >
-        <T.MeshBasicMaterial map={gltf.materials["MT-Set4"].map} transparent={true} />
+        <T.MeshBasicMaterial map={gltf.materials["MT-Set4"].map} />
         <Hitbox dim={[1.5, 1.5, 1.5]} position={[-1.7, 0, 0.5]} />
       </T.Mesh>
     </T.Mesh>
@@ -107,13 +109,14 @@
     <T.Mesh
       name="Maple_Tree"
       geometry={gltf.nodes.Maple_Tree.geometry}
+      material={gltf.materials["Maple Tree"]}
       position={[0.37, 1.28, -3.97]}
     >
-      <T.MeshBasicMaterial
+      <!-- <T.MeshBasicMaterial
         map={gltf.materials["Maple Tree"].map}
         transparent={true}
         alphaTest={0.4}
-      />
+      /> -->
     </T.Mesh>
   {:catch err}
     {@render error?.({ error: err })}
