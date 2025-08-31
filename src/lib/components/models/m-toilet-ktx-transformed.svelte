@@ -2,6 +2,7 @@
   import { T } from "@threlte/core";
   import { useGltf, useCursor, useKtx2, useDraco } from "@threlte/extras";
   import { base } from "$app/paths";
+  import { DoubleSide } from "three/src/constants";
 
   const ktx2Loader = useKtx2(`${base}/transcoder/`);
   const load = () => {
@@ -46,6 +47,7 @@
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}
+    {console.log(gltf)}
     <T.Mesh
       name="MT-Set3"
       geometry={gltf.nodes["MT-Set3"].geometry}
@@ -104,7 +106,13 @@
       material={gltf.materials["Maple Tree"]}
       position={[0.37, 1.28, -3.97]}
     >
-      <T.MeshBasicMaterial map={gltf.materials["Maple Tree"].map} alphaTest={0.4} />
+      <T.MeshBasicMaterial
+        map={gltf.materials["Maple Tree"].map}
+        alphaTest={0.5}
+        transparent={false}
+        depthWrite={true}
+        side={DoubleSide}
+      />
     </T.Mesh>
   {:catch err}
     {@render error?.({ error: err })}
