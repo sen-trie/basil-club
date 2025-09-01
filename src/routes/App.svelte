@@ -1,5 +1,4 @@
 <script>
-  import Scene from "$lib/components/Scene.svelte";
   import { Canvas } from "@threlte/core";
   import { useProgress } from "@threlte/extras";
   import { Studio, Project } from "@threlte/theatre";
@@ -7,12 +6,13 @@
   import { dev } from "$app/environment";
   import { Tween } from "svelte/motion";
   import { fromStore } from "svelte/store";
+  import { audioRef } from "$lib/stores/worldState.svelte.js";
+  import { WebGLRenderer } from "three";
   import Loading from "$lib/components/loading/LoadingBar.svelte";
   import Overlay from "$lib/components/Overlay.svelte";
   import projectState from "$lib/assets/configState.json";
   import Audio from "$lib/components/Audio.svelte";
-  import { audioRef } from "$lib/stores/worldState.svelte.js";
-  import { WebGLRenderer } from "three";
+  import Scene from "$lib/components/Scene.svelte";
 
   let pageStarted = $state(false);
 

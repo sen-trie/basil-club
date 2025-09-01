@@ -19,6 +19,9 @@ showBlocker.subscribe((fn) => {
 export const audioRef = writable(null);
 
 let currentState = $state({
+  dev: "control",
+  devFire: "control",
+  devBush: "control",
   muted: false,
   scene: "cafe",
   overlayType: "",
@@ -37,7 +40,7 @@ let currentState = $state({
     "photo": false,
     "grid": false,
     "earl-street": false,
-    "fToilet": false,
+    "fToilet": true,
     "mToilet": false,
     "bear": false,
     "flag": false,

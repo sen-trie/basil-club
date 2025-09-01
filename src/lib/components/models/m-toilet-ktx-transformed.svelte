@@ -3,6 +3,7 @@
   import { useGltf, useCursor, useKtx2, useDraco } from "@threlte/extras";
   import { base } from "$app/paths";
   import { DoubleSide } from "three/src/constants";
+  import { onMount } from "svelte";
 
   const ktx2Loader = useKtx2(`${base}/transcoder/`);
   const load = () => {
@@ -41,13 +42,23 @@
   }
 
   const gltf = load();
+
+  onMount(() => {
+    window.onerror = (message, source, lineno, colno, error) => {
+      alert(message, source, lineno, colno, error);
+      return true;
+    };
+
+    window.onunhandledrejection = (event) => {
+      alert(event.reason);
+    };
+  });
 </script>
 
 <T.Group bind:ref dispose={false} scale={1.2} {...props}>
   {#await gltf}
     {@render fallback?.()}
   {:then gltf}
-    {console.log(gltf)}
     <T.Mesh
       name="MT-Set3"
       geometry={gltf.nodes["MT-Set3"].geometry}
@@ -60,7 +71,38 @@
       material={gltf.materials["MT-Set1"]}
       position={[0.51, -0.38, -4.23]}
     >
-      <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} />
+      {#if scene.currentState.devBush === "control"}{:else if scene.currentState.devBush === "basic"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["MT-Set1"].map}
+          alphaTest={0.5}
+          transparent={false}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {:else if scene.currentState.devBush === "opaq"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["MT-Set1"].map}
+          transparent={false}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {:else if scene.currentState.devBush === "trans"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["MT-Set1"].map}
+          transparent={true}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {:else if scene.currentState.devBush === "transAlpha"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["MT-Set1"].map}
+          transparent={true}
+          premultipliedAlpha={true}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {/if}
+
       <T.Mesh
         name="Bear_Sign"
         geometry={gltf.nodes.Bear_Sign.geometry}
@@ -74,12 +116,43 @@
           scene.setInteractable("bear");
         }}
       >
-        <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={true} />
+        <T.MeshBasicMaterial map={gltf.materials["MT-Set1"].map} transparent={false} />
         <Hitbox dim={[1.2, 1.2, 1.2]} />
       </T.Mesh>
     </T.Mesh>
     <T.Mesh name="MT-Set4" geometry={gltf.nodes["MT-Set4"].geometry} position={[0.17, -0.76, 0.75]}>
-      <T.MeshBasicMaterial map={gltf.materials["MT-Set4"].map} transparent={true} />
+      {#if scene.currentState.devFire === "control"}{:else if scene.currentState.devFire === "basic"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["MT-Set4"].map}
+          alphaTest={0.5}
+          transparent={false}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {:else if scene.currentState.devFire === "opaq"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["MT-Set4"].map}
+          transparent={false}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {:else if scene.currentState.devFire === "trans"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["MT-Set4"].map}
+          transparent={true}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {:else if scene.currentState.devFire === "transAlpha"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["MT-Set4"].map}
+          transparent={true}
+          premultipliedAlpha={true}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {/if}
+
       <T.Mesh
         name="Camp_Bench"
         geometry={gltf.nodes.Camp_Bench.geometry}
@@ -103,16 +176,39 @@
     <T.Mesh
       name="Maple_Tree"
       geometry={gltf.nodes.Maple_Tree.geometry}
-      material={gltf.materials["Maple Tree"]}
       position={[0.37, 1.28, -3.97]}
     >
-      <T.MeshBasicMaterial
-        map={gltf.materials["Maple Tree"].map}
-        alphaTest={0.5}
-        transparent={false}
-        depthWrite={true}
-        side={DoubleSide}
-      />
+      {#if scene.currentState.dev === "control"}{:else if scene.currentState.dev === "basic"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["Maple Tree"].map}
+          alphaTest={0.5}
+          transparent={false}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {:else if scene.currentState.dev === "opaq"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["Maple Tree"].map}
+          transparent={false}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {:else if scene.currentState.dev === "trans"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["Maple Tree"].map}
+          transparent={true}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {:else if scene.currentState.dev === "transAlpha"}
+        <T.MeshBasicMaterial
+          map={gltf.materials["Maple Tree"].map}
+          transparent={true}
+          premultipliedAlpha={true}
+          depthWrite={true}
+          side={DoubleSide}
+        />
+      {/if}
     </T.Mesh>
   {:catch err}
     {@render error?.({ error: err })}
