@@ -3,7 +3,7 @@
   import { dev } from "$app/environment";
   import { isMobile, getScene } from "$lib/stores/worldState.svelte.js";
 
-  const scene = getScene();
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   let currentProgress = $state(0);
   $effect(() => {
@@ -26,6 +26,12 @@
       DESKTOP
     {/if}
   {/if}
+
+  {#if isIOS}
+    <p class="ios-warning">
+      iOS Only: <br /> To hear sounds, please turn off "silent mode" on your device
+    </p>
+  {/if}
 {/if}
 
 <style>
@@ -47,5 +53,15 @@
     font-size: 2rem;
     font-weight: 700;
     color: #ebded9;
+  }
+
+  .ios-warning {
+    position: absolute;
+    top: calc(50% + 4rem);
+    translate: 0 -50%;
+    max-width: 250px;
+    text-align: center;
+    font-size: 1rem;
+    color: var(--colour-black);
   }
 </style>

@@ -7,13 +7,8 @@
 
   let { pageStarted } = $props();
 
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
   const createHowl = (src) => {
-    const config = { src: [`${base}/audio/${src}`] };
-    if (isIOS) {
-      config.html5 = true;
-    }
+    const config = { src: [`${base}/audio/${src}`], preload: true };
     return new Howl(config);
   };
 
