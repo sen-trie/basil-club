@@ -37,7 +37,7 @@ let currentState = $state({
     "photo": false,
     "grid": false,
     "earl-street": false,
-    "fToilet": true,
+    "fToilet": false,
     "mToilet": false,
     "bear": false,
     "flag": false,
