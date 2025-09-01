@@ -71,38 +71,13 @@
       material={gltf.materials["MT-Set1"]}
       position={[0.51, -0.38, -4.23]}
     >
-      {#if scene.currentState.devBush === "control"}{:else if scene.currentState.devBush === "basic"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["MT-Set1"].map}
-          alphaTest={0.5}
-          transparent={false}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {:else if scene.currentState.devBush === "opaq"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["MT-Set1"].map}
-          transparent={false}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {:else if scene.currentState.devBush === "trans"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["MT-Set1"].map}
-          transparent={true}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {:else if scene.currentState.devBush === "transAlpha"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["MT-Set1"].map}
-          transparent={true}
-          premultipliedAlpha={true}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {/if}
-
+      <T.MeshBasicMaterial
+        map={gltf.materials["MT-Set1"].map}
+        alphaTest={0.5}
+        transparent={false}
+        depthWrite={true}
+        side={DoubleSide}
+      />
       <T.Mesh
         name="Bear_Sign"
         geometry={gltf.nodes.Bear_Sign.geometry}
@@ -121,38 +96,13 @@
       </T.Mesh>
     </T.Mesh>
     <T.Mesh name="MT-Set4" geometry={gltf.nodes["MT-Set4"].geometry} position={[0.17, -0.76, 0.75]}>
-      {#if scene.currentState.devFire === "control"}{:else if scene.currentState.devFire === "basic"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["MT-Set4"].map}
-          alphaTest={0.5}
-          transparent={false}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {:else if scene.currentState.devFire === "opaq"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["MT-Set4"].map}
-          transparent={false}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {:else if scene.currentState.devFire === "trans"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["MT-Set4"].map}
-          transparent={true}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {:else if scene.currentState.devFire === "transAlpha"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["MT-Set4"].map}
-          transparent={true}
-          premultipliedAlpha={true}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {/if}
-
+      <T.MeshBasicMaterial
+        map={gltf.materials["MT-Set4"].map}
+        alphaTest={0.5}
+        transparent={false}
+        depthWrite={true}
+        side={DoubleSide}
+      />
       <T.Mesh
         name="Camp_Bench"
         geometry={gltf.nodes.Camp_Bench.geometry}
@@ -178,37 +128,13 @@
       geometry={gltf.nodes.Maple_Tree.geometry}
       position={[0.37, 1.28, -3.97]}
     >
-      {#if scene.currentState.dev === "control"}{:else if scene.currentState.dev === "basic"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["Maple Tree"].map}
-          alphaTest={0.5}
-          transparent={false}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {:else if scene.currentState.dev === "opaq"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["Maple Tree"].map}
-          transparent={false}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {:else if scene.currentState.dev === "trans"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["Maple Tree"].map}
-          transparent={true}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {:else if scene.currentState.dev === "transAlpha"}
-        <T.MeshBasicMaterial
-          map={gltf.materials["Maple Tree"].map}
-          transparent={true}
-          premultipliedAlpha={true}
-          depthWrite={true}
-          side={DoubleSide}
-        />
-      {/if}
+      <T.MeshBasicMaterial
+        map={gltf.materials["Maple Tree"].map}
+        alphaTest={0.5}
+        transparent={false}
+        depthWrite={true}
+        side={DoubleSide}
+      />
     </T.Mesh>
   {:catch err}
     {@render error?.({ error: err })}

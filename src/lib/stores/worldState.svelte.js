@@ -19,9 +19,6 @@ showBlocker.subscribe((fn) => {
 export const audioRef = writable(null);
 
 let currentState = $state({
-  dev: "control",
-  devFire: "control",
-  devBush: "control",
   muted: false,
   scene: "cafe",
   overlayType: "",
