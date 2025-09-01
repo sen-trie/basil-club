@@ -34,6 +34,7 @@
     if (!currentBGM.playing()) {
       currentBGM.loop(true);
       currentBGM.play();
+      updateMediaSession();
     }
   };
 
@@ -66,18 +67,21 @@
     setTimeout(() => {
       currentBGM.stop();
       currentBGM = newBGM;
+      updateMediaSession();
     }, crossFadeDuration);
   };
 
   export const pauseBGM = () => {
     if (currentBGM.playing()) {
       currentBGM.pause();
+      updateMediaSession();
     }
   };
 
   export const resumeBGM = () => {
     if (!currentBGM.playing()) {
       currentBGM.play();
+      updateMediaSession();
     }
   };
 
@@ -104,6 +108,16 @@
       }
     }
   };
+
+  function updateMediaSession() {
+    if (!("mediaSession" in navigator)) return;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: "Idolatrize World (Chill Café Mix)",
+      artist: "Basil Club",
+      artwork: [{ src: `${base}/textures/full.webp`, type: "image/webp" }],
+    });
+  }
 </script>
 
 <svelte:document onvisibilitychange={suspendAudio} />
