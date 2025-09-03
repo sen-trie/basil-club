@@ -90,7 +90,7 @@
     }
 
     if (document.visibilityState === "visible") {
-      if (Howler.ctx.state === "suspended") {
+      if (Howler.ctx.state === "suspended" || Howler.ctx.state === "interrupted") {
         Howler.ctx.resume();
       }
 
