@@ -2,7 +2,7 @@
 
 [Live site](https://www.basilclub.cafe/) is hosted on Vercel.
 
-The main domain, [basilclub.cafe](https://www.basilclub.cafe/), is hosted on a [seperate repository](https://github.com/sen-trie/basil-club).
+The main domain, [basilclub.cafe](https://www.basilclub.cafe/), is hosted on a [seperate repository](https://github.com/sen-trie/basil-main).
 
 Made using Threlte v8. Uses the following features
 - Draco and KTX2 compression
