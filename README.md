@@ -1,6 +1,6 @@
 ## Repository for interactive Basil Club site
 
-[Live site](https://www.basilclub.cafe/) is hosted on Vercel.
+[Live site](https://explore.basilclub.cafe/) is hosted on Vercel.
 
 The main domain, [basilclub.cafe](https://www.basilclub.cafe/), is hosted on a [seperate repository](https://github.com/sen-trie/basil-main).
 
